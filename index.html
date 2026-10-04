@@ -1,0 +1,1385 @@
+<!doctype html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<title>Accordo</title>
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="color-scheme" content="light dark">
+<meta name="theme-color" media="(prefers-color-scheme: light)" content="#F2F2F7">
+<meta name="theme-color" media="(prefers-color-scheme: dark)" content="#000000">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="Accordo">
+<meta name="format-detection" content="telephone=no">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="icon-180.png">
+<link rel="icon" href="icon-192.png">
+<link rel="apple-touch-startup-image" href="splash-1170x2532.png" media="(device-width: 390px) and (device-height: 844px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait)">
+<link rel="apple-touch-startup-image" href="splash-1179x2556.png" media="(device-width: 393px) and (device-height: 852px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait)">
+<link rel="apple-touch-startup-image" href="splash-1284x2778.png" media="(device-width: 428px) and (device-height: 926px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait)">
+<link rel="apple-touch-startup-image" href="splash-1290x2796.png" media="(device-width: 430px) and (device-height: 932px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait)">
+<link rel="apple-touch-startup-image" href="splash-1206x2622.png" media="(device-width: 402px) and (device-height: 874px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait)">
+<link rel="apple-touch-startup-image" href="splash-1320x2868.png" media="(device-width: 440px) and (device-height: 956px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait)">
+<link rel="apple-touch-startup-image" href="splash-1125x2436.png" media="(device-width: 375px) and (device-height: 812px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait)">
+<link rel="apple-touch-startup-image" href="splash-828x1792.png" media="(device-width: 414px) and (device-height: 896px) and (-webkit-device-pixel-ratio: 2) and (orientation: portrait)">
+<link rel="apple-touch-startup-image" href="splash-750x1334.png" media="(device-width: 375px) and (device-height: 667px) and (-webkit-device-pixel-ratio: 2) and (orientation: portrait)">
+<style>
+/* =====================================================================
+   ACCORDO · design system per iOS
+   Principi Apple: chiarezza, deferenza, profondità. Materiali in vetro,
+   liste raggruppate, titoli grandi, colori di sistema, un solo tinta.
+   ===================================================================== */
+:root{
+  --font:-apple-system,BlinkMacSystemFont,"SF Pro Text","SF Pro Display",system-ui,"Helvetica Neue",Helvetica,Arial,sans-serif;
+  --round:ui-rounded,"SF Pro Rounded",-apple-system,system-ui,sans-serif;
+  /* sfondi (systemGroupedBackground, secondarySystemGroupedBackground) */
+  --bg:#F2F2F7; --cell:#FFFFFF; --cell2:#F2F2F7; --fill:rgba(120,120,128,.12); --fill2:rgba(120,120,128,.20);
+  /* testo (label, secondaryLabel, tertiaryLabel) */
+  --l1:#000000; --l2:rgba(60,60,67,.62); --l3:rgba(60,60,67,.34); --sep:rgba(60,60,67,.18);
+  /* tinta del brand: ottone */
+  --tint:#F5B83D; --tint-ink:#1A1200; --tint-text:#946000; --tint-wash:rgba(245,184,61,.22); --tint-line:#D99A12;
+  /* colori di sistema */
+  --green:#34C759; --green-t:#1E7B34; --red:#FF3B30; --red-t:#C4170C; --orange:#FF9500;
+  --glass:rgba(249,249,251,.74); --glass-line:rgba(0,0,0,.08); --glass-btn:rgba(255,255,255,.7);
+  --shadow:0 1px 2px rgba(0,0,0,.04),0 8px 24px rgba(0,0,0,.06);
+  --r-card:24px; --r-list:20px; --r-btn:26px;
+  color-scheme:light dark;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#000000; --cell:#1C1C1E; --cell2:#2C2C2E; --fill:rgba(120,120,128,.24); --fill2:rgba(120,120,128,.36);
+  --l1:#FFFFFF; --l2:rgba(235,235,245,.62); --l3:rgba(235,235,245,.32); --sep:rgba(84,84,88,.55);
+  --tint-text:#FFC85A; --tint-wash:rgba(245,184,61,.2);
+  --green:#30D158; --green-t:#30D158; --red:#FF453A; --red-t:#FF6961; --orange:#FF9F0A;
+  --glass:rgba(24,24,26,.72); --glass-line:rgba(255,255,255,.1); --glass-btn:rgba(60,60,64,.7);
+  --shadow:0 1px 2px rgba(0,0,0,.3),0 8px 24px rgba(0,0,0,.4); color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#000000; --cell:#1C1C1E; --cell2:#2C2C2E; --fill:rgba(120,120,128,.24); --fill2:rgba(120,120,128,.36);
+  --l1:#FFFFFF; --l2:rgba(235,235,245,.62); --l3:rgba(235,235,245,.32); --sep:rgba(84,84,88,.55);
+  --tint-text:#FFC85A; --tint-wash:rgba(245,184,61,.2);
+  --green:#30D158; --green-t:#30D158; --red:#FF453A; --red-t:#FF6961; --orange:#FF9F0A;
+  --glass:rgba(24,24,26,.72); --glass-line:rgba(255,255,255,.1); --glass-btn:rgba(60,60,64,.7);
+  --shadow:0 1px 2px rgba(0,0,0,.3),0 8px 24px rgba(0,0,0,.4); color-scheme:dark}
+:root[data-theme="light"]{color-scheme:light}
+
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html{background:var(--bg);-webkit-text-size-adjust:100%;text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--l1);font:17px/1.35 var(--font);letter-spacing:-.41px;-webkit-font-smoothing:antialiased;overscroll-behavior-y:none;-webkit-touch-callout:none}
+button,input{font:inherit;letter-spacing:inherit;color:inherit}
+button{cursor:pointer;-webkit-user-select:none;user-select:none;touch-action:manipulation}
+#app{min-height:100vh;min-height:100dvh;max-width:560px;margin:0 auto;position:relative}
+.scr{min-height:100vh;min-height:100dvh;display:flex;flex-direction:column}
+.scr.push{animation:pushIn .36s cubic-bezier(.32,.72,0,1)}
+.scr.pop{animation:popIn .36s cubic-bezier(.32,.72,0,1)}
+.scr.fade{animation:fadeIn .28s ease-out}
+@keyframes pushIn{from{transform:translateX(36px);opacity:0}to{transform:none;opacity:1}}
+@keyframes popIn{from{transform:translateX(-36px);opacity:0}to{transform:none;opacity:1}}
+@keyframes fadeIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+@keyframes pop{0%{transform:scale(.6);opacity:0}60%{transform:scale(1.08);opacity:1}100%{transform:scale(1)}}
+
+/* ---------- tipografia (Dynamic Type dove Safari lo consente) ---------- */
+.lt{font:700 34px/1.12 var(--font);letter-spacing:.37px;margin:0;text-wrap:balance}
+.ls{font:400 17px/1.35 var(--font);color:var(--l2);margin:8px 0 0;text-wrap:pretty}
+.t-title2{font:700 22px/1.2 var(--font);letter-spacing:.35px;margin:0}
+.t-body{font:400 17px/1.35 var(--font);letter-spacing:-.41px;margin:0}
+.t-head{font:600 17px/1.3 var(--font);letter-spacing:-.41px}
+.t-sub{font:400 15px/1.35 var(--font);letter-spacing:-.24px;color:var(--l2);margin:0}
+.t-foot{font:400 13px/1.38 var(--font);letter-spacing:-.08px;color:var(--l2);margin:0}
+.t-cap{font:500 12px/1.2 var(--font);color:var(--l2);letter-spacing:0;text-transform:uppercase;letter-spacing:.4px}
+@supports (font:-apple-system-body){
+  .t-body{font:-apple-system-body;letter-spacing:-.41px}
+  .t-sub{font:-apple-system-subheadline;letter-spacing:-.24px}
+  .t-foot{font:-apple-system-footnote;letter-spacing:-.08px}
+  .t-head{font:-apple-system-headline;letter-spacing:-.41px}
+}
+.num{font-family:var(--round);font-variant-numeric:tabular-nums}
+.sec{color:var(--l2)} .ter{color:var(--l3)} .tx{color:var(--tint-text)}
+
+/* ---------- barra di navigazione (vetro) ---------- */
+.nav{position:sticky;top:0;z-index:20;height:calc(52px + env(safe-area-inset-top,0px));padding:env(safe-area-inset-top,0px) 12px 0;display:grid;grid-template-columns:1fr auto 1fr;align-items:center;transition:background .2s,box-shadow .2s}
+.nav.compact{background:var(--glass);-webkit-backdrop-filter:saturate(180%) blur(24px);backdrop-filter:saturate(180%) blur(24px);box-shadow:0 .5px 0 var(--glass-line)}
+.nav .ttl{font:600 17px/1 var(--font);letter-spacing:-.41px;opacity:0;transition:opacity .2s;white-space:nowrap}
+.nav.compact .ttl{opacity:1}
+.nav .l{justify-self:start;display:flex}.nav .r{justify-self:end;display:flex;gap:8px}
+.gbtn{min-width:44px;height:44px;border-radius:22px;border:0;display:inline-flex;align-items:center;justify-content:center;gap:2px;padding:0 12px;background:var(--glass-btn);-webkit-backdrop-filter:saturate(180%) blur(20px);backdrop-filter:saturate(180%) blur(20px);box-shadow:0 0 0 .5px var(--glass-line),0 2px 8px rgba(0,0,0,.06);color:var(--l1);font:500 17px/1 var(--font);letter-spacing:-.41px}
+.gbtn:active{transform:scale(.94)}
+.gbtn.txt{color:var(--tint-text);font-weight:600}
+.content{flex:1;padding:4px 16px 24px;display:flex;flex-direction:column;gap:24px}
+.content.pad{padding-top:12px}
+.head{padding:0 4px}
+.steps{display:flex;gap:6px;justify-content:center;padding:0 0 4px}
+.steps i{width:6px;height:6px;border-radius:3px;background:var(--fill2);transition:all .25s}
+.steps i.on{background:var(--tint);width:20px}
+
+/* ---------- dock (azioni in basso) ---------- */
+.dock{position:sticky;bottom:0;z-index:15;padding:20px 16px calc(14px + env(safe-area-inset-bottom,0px));display:flex;flex-direction:column;gap:10px;background:linear-gradient(to top,var(--bg) 62%,transparent)}
+.btn{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;height:52px;border-radius:var(--r-btn);border:0;background:var(--tint);color:var(--tint-ink);font:600 17px/1 var(--font);letter-spacing:-.41px;box-shadow:0 1px 2px rgba(0,0,0,.08),0 6px 18px rgba(245,184,61,.28);transition:transform .15s,opacity .15s}
+.btn:active{transform:scale(.975);opacity:.9}
+.btn.tinted{background:var(--tint-wash);color:var(--tint-text);box-shadow:none}
+.btn.gray{background:var(--fill);color:var(--l1);box-shadow:none}
+.btn.plain{background:none;color:var(--tint-text);box-shadow:none;height:44px;font-weight:500}
+.btn.danger{background:rgba(255,59,48,.14);color:var(--red-t);box-shadow:none}
+.btn.sm{width:auto;height:40px;padding:0 18px;font-size:15px;border-radius:20px}
+.btn:disabled{opacity:.35;box-shadow:none}
+
+/* ---------- liste raggruppate ---------- */
+.list{background:var(--cell);border-radius:var(--r-list);overflow:hidden}
+.row{display:flex;align-items:center;gap:12px;width:100%;min-height:56px;padding:10px 16px;background:none;border:0;text-align:left;position:relative;color:var(--l1)}
+.row+.row::before,.row.sep::before{content:"";position:absolute;top:0;left:16px;right:0;height:.5px;background:var(--sep)}
+.list.ic .row+.row::before{left:58px}
+button.row:active{background:var(--fill)}
+.row .rt{flex:1;min-width:0;display:flex;flex-direction:column;gap:1px}
+.row .rt b{font-weight:400}.row .rt small{font:400 15px/1.3 var(--font);color:var(--l2);letter-spacing:-.24px}
+.row .val{color:var(--l2);font-variant-numeric:tabular-nums;white-space:nowrap}
+.row .chv{color:var(--l3);display:flex}
+.tile{width:30px;height:30px;border-radius:8px;display:grid;place-items:center;flex:none;background:var(--tint);color:var(--tint-ink)}
+.tile.gray{background:var(--fill2);color:var(--l1)}
+.tile.green{background:var(--green);color:#fff}.tile.red{background:var(--red);color:#fff}
+.tile.lg{width:44px;height:44px;border-radius:12px}
+.chk{color:var(--tint-text);display:flex}
+.hdr{font:400 13px/1.2 var(--font);letter-spacing:-.08px;color:var(--l2);text-transform:uppercase;padding:0 16px 8px}
+.ftr{font:400 13px/1.38 var(--font);letter-spacing:-.08px;color:var(--l2);padding:8px 16px 0}
+.card{background:var(--cell);border-radius:var(--r-card);padding:20px}
+.card.hero{background:radial-gradient(120% 90% at 100% 0%,rgba(245,184,61,.26),transparent 60%),var(--cell)}
+.card.tight{padding:16px}
+
+/* ---------- controlli ---------- */
+.segc{display:flex;background:var(--fill);border-radius:12px;padding:2px;gap:0}
+.segc button{flex:1;border:0;background:none;height:32px;border-radius:10px;font:500 13px/1 var(--font);letter-spacing:-.08px;color:var(--l1);transition:background .2s,box-shadow .2s}
+.segc button.on{background:var(--cell);box-shadow:0 0 0 .5px rgba(0,0,0,.04),0 3px 8px rgba(0,0,0,.12),0 3px 1px rgba(0,0,0,.04)}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .segc button.on{background:#636366}}
+:root[data-theme="dark"] .segc button.on{background:#636366}
+.ab{display:grid;grid-template-columns:1fr 1fr;background:var(--fill);border-radius:28px;padding:4px;gap:4px}
+.ab button{border:0;background:none;border-radius:24px;height:64px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;color:var(--l2);transition:background .25s,color .25s,transform .25s}
+.ab button b{font:600 17px/1 var(--font)}.ab button small{font:500 13px/1 var(--font);font-variant-numeric:tabular-nums}
+.ab button.on{background:var(--cell);color:var(--l1);box-shadow:var(--shadow)}
+.ab button.on.after{background:var(--tint);color:var(--tint-ink)}
+.tgl{width:51px;height:31px;border-radius:16px;background:var(--fill2);position:relative;border:0;padding:0;flex:none;transition:background .2s}
+.tgl::after{content:"";position:absolute;top:2px;left:2px;width:27px;height:27px;border-radius:50%;background:#fff;box-shadow:0 2px 6px rgba(0,0,0,.25);transition:transform .2s}
+.tgl.on{background:var(--green)}.tgl.on::after{transform:translateX(20px)}
+.input{width:100%;height:50px;border-radius:14px;border:0;background:var(--cell);padding:0 16px;font:400 17px/1 var(--font);color:var(--l1);outline:none}
+.input::placeholder{color:var(--l3)}
+.input:focus{box-shadow:0 0 0 2px var(--tint)}
+input[type=range]{-webkit-appearance:none;appearance:none;width:100%;height:28px;background:none;margin:0}
+input[type=range]::-webkit-slider-runnable-track{height:4px;border-radius:2px;background:var(--fill2)}
+input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:28px;height:28px;border-radius:50%;background:#fff;margin-top:-12px;box-shadow:0 2px 8px rgba(0,0,0,.3)}
+.stepper{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:10px 12px 10px 16px;min-height:64px}
+.stepper .l{display:flex;flex-direction:column;flex:1;min-width:0}
+.stepper .v{font:600 28px/1 var(--round);min-width:76px;text-align:center;font-variant-numeric:tabular-nums}
+.stepper .v small{font:500 15px var(--font);color:var(--l2);margin-left:2px}
+.stepper button{width:44px;height:44px;border-radius:22px;border:0;background:var(--fill);display:grid;place-items:center;color:var(--l1)}
+.stepper button:active{background:var(--fill2)}
+.pill{display:inline-flex;align-items:center;gap:5px;font:600 13px/1 var(--font);padding:6px 11px 6px 9px;border-radius:999px;background:var(--fill);color:var(--l2);white-space:nowrap}
+.pill.good{background:rgba(52,199,89,.16);color:var(--green-t)}.pill.bad{background:rgba(255,59,48,.14);color:var(--red-t)}.pill.ac{background:var(--tint-wash);color:var(--tint-text)}
+.banner{display:flex;gap:12px;padding:14px 16px;border-radius:18px;background:var(--cell);font:400 15px/1.38 var(--font);letter-spacing:-.24px;color:var(--l2)}
+.banner b{color:var(--l1);font-weight:600}.banner .ic{margin-top:1px}
+.banner.bad{background:rgba(255,59,48,.12)}.banner.bad .ic{color:var(--red)}
+.banner.good{background:rgba(52,199,89,.13)}.banner.good .ic{color:var(--green)}
+.banner.info .ic{color:var(--tint-text)}
+.feat{display:flex;gap:16px;align-items:flex-start}
+.vsl.center{align-items:center}
+.dot{width:8px;height:8px;border-radius:50%;background:var(--l3);display:inline-block}
+.sev{display:inline-flex;gap:4px}.sev i{width:8px;height:8px;border-radius:50%;background:var(--fill2)}.sev i.on{background:var(--tint)}
+
+/* ---------- visuali ---------- */
+.center{text-align:center;align-items:center}
+.hero-ic{width:96px;height:96px;border-radius:26px;display:grid;place-items:center;background:var(--tint-wash);color:var(--tint-text);margin:0 auto}
+.appicon{width:96px;height:96px;border-radius:22%;background:#0B0B0C;display:grid;place-items:center;color:#fff;--mkbg:#0B0B0C;box-shadow:0 0 0 .5px rgba(255,255,255,.12),0 10px 30px rgba(0,0,0,.25);margin:0 auto}
+.ringg{position:relative;display:grid;place-items:center}
+.ringg svg{position:absolute;inset:0;transform:rotate(-90deg)}
+.ringg .n{font:700 44px/1 var(--round);letter-spacing:-.04em}
+.ringg.sm .n{font-size:30px}
+.rg{transition:stroke-dashoffset 1.1s cubic-bezier(.2,.8,.2,1)}
+.spec{display:flex;align-items:flex-end;gap:3px;height:96px}
+.spec i{flex:1;min-width:2px;height:8%;background:var(--l3);border-radius:3px;transition:height .1s linear,background .2s}
+.spec.live i{background:var(--tint)}
+.spec i.pk{background:var(--red)}
+.gauge{position:relative;height:14px;border-radius:7px;background:linear-gradient(90deg,var(--fill2) 0 28%,rgba(52,199,89,.55) 28% 78%,rgba(255,149,0,.55) 78% 100%)}
+.gauge i{position:absolute;top:50%;left:0;width:26px;height:26px;margin:-13px 0 0 -13px;border-radius:50%;background:#fff;box-shadow:0 2px 8px rgba(0,0,0,.3);transition:left .15s linear}
+.bignum{font:700 64px/1 var(--round);letter-spacing:-.04em;font-variant-numeric:tabular-nums}
+.bignum small{font:500 20px var(--font);color:var(--l2);letter-spacing:-.4px;margin-left:4px}
+.big3{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.big3>div{background:var(--cell);border-radius:20px;padding:16px 4px 14px;text-align:center}
+.big3 .lab{font:500 12px/1 var(--font);color:var(--l2);letter-spacing:.2px;text-transform:uppercase}
+.big3 b{display:block;font:700 34px/1.1 var(--round);letter-spacing:-.03em;margin:8px 0 2px;font-variant-numeric:tabular-nums}
+.big3 small{font:400 13px/1 var(--font);color:var(--l2)}
+.fader{display:flex;flex-direction:column;align-items:center;gap:8px;flex:1}
+.fader .tr{position:relative;width:6px;height:150px;border-radius:3px;background:var(--fill2)}
+.fader .tr::before{content:"";position:absolute;left:-8px;right:-8px;top:50%;height:1px;background:var(--l3)}
+.fader .th{position:absolute;left:50%;width:30px;height:16px;margin-left:-15px;margin-top:-8px;border-radius:6px;background:#fff;box-shadow:0 1px 4px rgba(0,0,0,.35)}
+.fader.on .th{background:var(--tint)}.fader.on .tr{background:var(--tint)}
+.fader span{font:600 14px var(--round);font-variant-numeric:tabular-nums}.fader small{font-size:12px;color:var(--l2)}
+.knobs{display:flex;justify-content:space-around;gap:8px}
+.knob{display:flex;flex-direction:column;align-items:center;gap:10px}
+.kn{width:84px;height:84px;border-radius:50%;background:var(--cell2);box-shadow:inset 0 0 0 .5px var(--sep),0 2px 8px rgba(0,0,0,.12);position:relative}
+.kn i{position:absolute;left:50%;top:9px;width:5px;height:30px;margin-left:-2.5px;border-radius:3px;background:var(--l3);transform-origin:50% 33px;transform:rotate(var(--a))}
+.knob.on .kn i{background:var(--tint)}
+.knob b{font-size:15px;font-weight:600}.knob small{font-size:13px;color:var(--l2)}
+.cw{position:relative;width:100%}
+.cw svg{display:block;width:100%;height:auto;touch-action:pan-y;overflow:visible}
+.cw .tt{position:absolute;top:0;pointer-events:none;background:var(--glass);-webkit-backdrop-filter:blur(20px);backdrop-filter:blur(20px);box-shadow:0 0 0 .5px var(--glass-line),var(--shadow);border-radius:12px;padding:8px 10px;font-size:12px;min-width:140px;display:none;z-index:2}
+.tt .tth{font:600 12px var(--font);color:var(--l2);margin-bottom:4px}
+.tt .ttr{display:flex;align-items:center;gap:8px;line-height:1.7}.tt .ttr i{width:12px;height:3px;border-radius:2px;flex:none}
+.tt .ttr b{font-variant-numeric:tabular-nums;min-width:56px}.tt .ttr span{color:var(--l2)}
+.cw .ln{transition:opacity .35s,stroke-width .35s}
+.cw[data-act="0"] .ln-1{opacity:.22}.cw[data-act="1"] .ln-0{opacity:.22}
+.legend{display:flex;flex-wrap:wrap;gap:6px 16px;font:400 13px var(--font);color:var(--l2);margin-top:10px}
+.legend span{display:inline-flex;align-items:center;gap:6px}
+.legend i{width:16px;height:0;border-top:3px solid;border-radius:2px;display:inline-block}.legend i.d{border-top-style:dashed}
+.legend i.z{height:10px;width:16px;border:0;background:var(--green);opacity:.28;border-radius:3px}
+.tw{max-height:50vh;overflow:auto;border-radius:var(--r-list);background:var(--cell)}
+.tw table{width:100%;border-collapse:collapse;font:400 15px var(--font);font-variant-numeric:tabular-nums}
+.tw th,.tw td{text-align:right;padding:10px 16px;border-bottom:.5px solid var(--sep)}
+.tw th:first-child,.tw td:first-child{text-align:left}
+.tw th{position:sticky;top:0;background:var(--cell);font-weight:600;color:var(--l2);font-size:13px}
+.checkseal{width:72px;height:72px;border-radius:50%;background:var(--green);color:#fff;display:grid;place-items:center;margin:0 auto;animation:pop .5s cubic-bezier(.2,.9,.3,1.2)}
+.pre{margin:0;padding:16px;border-radius:var(--r-list);background:var(--cell);font:400 14px/1.6 ui-monospace,"SF Mono",Menlo,monospace;color:var(--l1);white-space:pre-wrap;letter-spacing:0}
+.vsl{display:flex;flex-direction:column;gap:6px}
+
+/* ---------- sheet ---------- */
+.scrim{position:fixed;inset:0;background:rgba(0,0,0,.38);z-index:40;animation:fadeOnly .25s}
+.sheet{position:fixed;left:0;right:0;bottom:0;margin:0 auto;max-width:560px;z-index:41;background:var(--bg);border-radius:32px 32px 0 0;padding:8px 16px calc(20px + env(safe-area-inset-bottom,0px));max-height:86dvh;overflow:auto;animation:sheetIn .38s cubic-bezier(.32,.72,0,1);box-shadow:0 -10px 50px rgba(0,0,0,.25)}
+.sheet .grab{width:36px;height:5px;border-radius:3px;background:var(--fill2);margin:0 auto 14px}
+@keyframes sheetIn{from{transform:translateY(100%)}to{transform:none}}
+@keyframes fadeOnly{from{opacity:0}to{opacity:1}}
+.toast{position:fixed;left:50%;bottom:calc(100px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);background:var(--glass);-webkit-backdrop-filter:blur(20px);backdrop-filter:blur(20px);box-shadow:0 0 0 .5px var(--glass-line),var(--shadow);padding:12px 18px;border-radius:22px;z-index:60;font:500 15px var(--font);animation:fadeIn .25s}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chip{display:inline-flex;align-items:center;min-height:40px;padding:0 16px;border-radius:20px;border:0;background:var(--fill);color:var(--l1);font:500 15px/1 var(--font)}
+.chip.on{background:var(--tint-wash);color:var(--tint-text);box-shadow:inset 0 0 0 1.5px var(--tint)}
+.path{display:flex;gap:6px;margin-top:18px}
+.path>div{flex:1;text-align:center;font:500 12px/1.2 var(--font);color:var(--l2)}
+.path i{display:grid;place-items:center;width:30px;height:30px;border-radius:50%;margin:0 auto 6px;background:var(--fill2);color:var(--l2)}
+.path .done i{background:var(--green);color:#fff}.path .cur i{background:var(--tint);color:var(--tint-ink)}.path .cur{color:var(--l1)}
+input[type=search]{-webkit-appearance:none;appearance:none}
+:root[data-text="large"] body{zoom:1.16}
+:root[data-text="large"] #app,:root[data-text="large"] .scr{min-height:calc(100dvh / 1.16)}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+@media (prefers-reduced-motion:reduce){.scr,.scr.push,.scr.pop,.scr.fade,.sheet,.scrim,.checkseal{animation:none}.rg,.spec i,.gauge i{transition:none}}
+</style>
+</head>
+<body>
+<div id="app"></div><div id="live" class="sr" aria-live="polite"></div>
+<script>
+'use strict';
+/* =============================================================
+   Accordo · prototipo funzionante per iPhone
+   Tutto locale: nessun account, nessun server, nessun dato inviato.
+   ============================================================= */
+const FAST=/[?&]fast=1/.test(location.search);           // solo per collaudo: misure 5 volte più brevi
+const $=(q,r=document)=>r.querySelector(q);
+const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
+const nf=v=>(v>0.049?'+':v<-0.049?'−':'')+Math.abs(v).toFixed(1).replace('.',',');
+const nf0=v=>(v>0?'+':v<0?'−':'')+Math.abs(Math.round(v));
+const hz=f=>f>=1000?(+(f/1000).toFixed(2)).toString().replace('.',',')+' kHz':Math.round(f)+' Hz';
+const kl=f=>f>=1000?(f/1000).toString().replace('.',',')+'k':String(f);
+const dBp=p=>10*Math.log10(Math.max(p,1e-30));
+
+/* ---------- icone (tratto 1,75, estremi arrotondati, stile SF Symbols) ---------- */
+const IC={
+ mic:'<rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5 11a7 7 0 0 0 14 0M12 18v3"/>',
+ speaker:'<rect x="6" y="3" width="12" height="18" rx="2.5"/><circle cx="12" cy="15" r="3"/><circle cx="12" cy="7.5" r=".6"/>',
+ sliders:'<path d="M6 4v16M12 4v16M18 4v16"/><path d="M3.5 15h5M9.5 8h5M15.5 12h5"/>',
+ drum:'<ellipse cx="12" cy="11" rx="8" ry="3.5"/><path d="M4 11v5c0 2 3.6 3.5 8 3.5s8-1.5 8-3.5v-5M8 3.5l3 5.5M16 3.5L13 9"/>',
+ guitar:'<path d="M14 10l6.5-6.5M17.5 3l3.5 3.5"/><path d="M11 9.5C8 8.5 5 10.5 5 13.5c0 1.8-2 2.3-2 4.2C3 20 5 21.5 7.3 21.5c3 0 5-2 5-5 0-1.2.7-1.8 1.7-3z"/>',
+ keys:'<rect x="3" y="6" width="18" height="12" rx="2"/><path d="M8 6v12M12 6v12M16 6v12"/>',
+ person:'<circle cx="12" cy="8" r="3.5"/><path d="M5 20c0-4 3-6 7-6s7 2 7 6"/>',
+ group:'<circle cx="9" cy="9" r="3"/><circle cx="17" cy="10" r="2.5"/><path d="M3 19c0-3.5 2.5-5 6-5s6 1.5 6 5M15 15c3 0 6 1 6 4"/>',
+ headset:'<path d="M5 14v-2a7 7 0 0 1 14 0v2"/><rect x="3" y="14" width="4" height="6" rx="1.5"/><rect x="17" y="14" width="4" height="6" rx="1.5"/><path d="M19 20c0 1.5-2 2-5 2"/>',
+ home:'<path d="M4 11l8-7 8 7v9a1 1 0 0 1-1 1h-4v-6H9v6H5a1 1 0 0 1-1-1z"/>',
+ clock:'<circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/>',
+ book:'<path d="M5 4h10a3 3 0 0 1 3 3v13H8a3 3 0 0 1-3-3z"/><path d="M5 17a3 3 0 0 1 3-3h10"/>',
+ check:'<path d="M5 12.5l4.5 4.5L19 7.5"/>', chev:'<path d="M9 5l7 7-7 7"/>', back:'<path d="M15 5l-7 7 7 7"/>',
+ plus:'<path d="M12 5v14M5 12h14"/>', minus:'<path d="M5 12h14"/>', x:'<path d="M6 6l12 12M18 6L6 18"/>',
+ alert:'<path d="M12 3.5l9.5 16.5h-19z"/><path d="M12 10v4.5M12 17.5v.3"/>',
+ info:'<circle cx="12" cy="12" r="9"/><path d="M12 11v6M12 7.5v.3"/>',
+ help:'<circle cx="12" cy="12" r="9"/><path d="M9.6 9.4a2.5 2.5 0 1 1 3.6 2.3c-.8.4-1.2 1-1.2 1.8M12 17v.3"/>',
+ euro:'<path d="M17 7.2a6 6 0 1 0 0 9.6M5 10h8M5 14h8"/>', share:'<path d="M12 3v12M7 8l5-5 5 5M5 14v6h14v-6"/>',
+ plug:'<path d="M9 3v5M15 3v5M7 8h10v3a5 5 0 0 1-10 0zM12 16v5"/>', cube:'<path d="M3 8l9-5 9 5v8l-9 5-9-5zM3 8l9 5 9-5M12 13v8"/>',
+ wave:'<path d="M3 12h2.5l2-6 3 12 3-9 2 3H21"/>', play:'<path d="M8 5l11 7-11 7z" fill="currentColor"/>', pause:'<path d="M9 5v14M15 5v14" stroke-width="3.4"/>',
+ refresh:'<path d="M20 11a8 8 0 0 0-14-4M4 4v4h4M4 13a8 8 0 0 0 14 4M20 20v-4h-4"/>',
+ vol:'<path d="M4 9v6h4l5 4V5L8 9zM16 9a4 4 0 0 1 0 6M18.5 6.5a8 8 0 0 1 0 11"/>',
+ gear:'<circle cx="12" cy="12" r="3"/><path d="M12 3v3M12 18v3M3 12h3M18 12h3M5.6 5.6l2.1 2.1M16.3 16.3l2.1 2.1M18.4 5.6l-2.1 2.1M7.7 16.3l-2.1 2.1"/>',
+ bulb:'<path d="M9 18h6M10 21h4M12 3a6 6 0 0 0-3.5 10.9c.6.5 1 1.2 1 2.1h5c0-.9.4-1.6 1-2.1A6 6 0 0 0 12 3z"/>',
+ lock:'<rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/>',
+ file:'<path d="M6 3h8l5 5v13H6z"/><path d="M14 3v5h5"/>',
+ target:'<circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="4.5"/><circle cx="12" cy="12" r=".8"/>',
+ trend:'<path d="M3 17l6-6 4 4 8-8M15 7h6v6"/>',
+ school:'<path d="M2 9l10-5 10 5-10 5z"/><path d="M6 11.5V16c0 1.5 3 3 6 3s6-1.5 6-3v-4.5"/>'
+};
+const ic=(n,s=20,sw=1.75)=>`<svg class="ic" width="${s}" height="${s}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="${sw}" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="flex:none">${IC[n]}</svg>`;
+const MARK=(s=40)=>`<svg width="${s}" height="${s}" viewBox="0 0 48 48" fill="none" aria-hidden="true"><path d="M10 42V22a14 14 0 0 1 28 0v20" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"/><path d="M16 31h16" stroke="#F5B83D" stroke-width="3.2" stroke-linecap="round"/><circle cx="27" cy="31" r="4.2" fill="#F5B83D" stroke="var(--mkbg,#000)" stroke-width="2.4"/></svg>`;
+
+/* ---------- dati salvati ---------- */
+const defQ=()=>({mixer:'',eqM:'peq',eqC:'peq4',sub:false,mon:'wedge',L:18,W:12,Hh:5,floor:'hard',walls:'plaster',ceil:'hard',ex:[],
+  src:{drum:'ac',bass:1,egtr:1,agtr:0,keys:1,vox:2,choir:0,preacher:'headset',interp:false,jolly:true},obj:'parola',extmic:false,pts:3});
+let DB={q:defQ(),qDone:false,hist:[],set:{theme:'auto',name:'',sala:'',days:[0],role:'new',text:'normal'},seen:false,cur:null,chk:{date:'',done:{}},rt:null,vol:{ref:null,lode:null,cal:null}};
+try{const s=JSON.parse(localStorage.getItem('accordo.v2')||'null');if(s){DB=Object.assign(DB,s);DB.q=Object.assign(defQ(),DB.q);DB.q.src=Object.assign(defQ().src,DB.q.src)}}catch(e){}
+const save=()=>{try{localStorage.setItem('accordo.v2',JSON.stringify(DB))}catch(e){}};
+function applyTheme(){document.documentElement.dataset.text=DB.set.text||'normal';const t=DB.set.theme;if(t==='auto')document.documentElement.removeAttribute('data-theme');else document.documentElement.setAttribute('data-theme',t)}
+
+/* ---------- bande e curva obiettivo ---------- */
+const F=[63,80,100,125,160,200,250,315,400,500,630,800,1000,1250,1600,2000,2500,3150,4000,5000,6300,8000,10000,12500];
+const gz=(f,f0,w)=>Math.exp(-.5*Math.pow(Math.log2(f/f0)/w,2));
+function targetCurve(f,obj,ref,V){
+  const sl=!V?1.6:V<800?1.4:V<2500?1.9:2.6;      // sale piccole: discesa più dolce; sale grandi: più marcata
+  let t=f<=1000?0.4*Math.log2(1000/f):-sl*Math.log2(f/1000);
+  const par=-1.5*gz(f,320,.6)+1.2*gz(f,3000,.7), mus=0.8*gz(f,100,.8);
+  t+= obj==='parola'?par : obj==='musica'?mus : (par+mus)/2;
+  if(ref==='musica'){ t+= f<100?-3*Math.log2(100/f): f>500?-3*Math.log2(f/500):0; }   // spettro medio tipico della musica (approssimato)
+  return t;
+}
+/* ---------- stima del riverbero (Sabine, approssimata) ---------- */
+function rt60(q){
+  const V=q.L*q.W*q.Hh,Sf=q.L*q.W,Sw=2*(q.L+q.W)*q.Hh;
+  const af={hard:.02,wood:.1,carpet:.3}[q.floor],aw={plaster:.03,drywall:.08,glass:.04}[q.walls],ac={hard:.03,acoustic:.55,beams:.12}[q.ceil];
+  let A=Sf*af+Sf*ac+Sw*aw+Sf*.2;                                   // 0,2: sedie, persone, porte
+  if(q.ex.includes('tende'))A+=.1*Sw; if(q.ex.includes('sedie'))A+=.15*Sf; if(q.ex.includes('pannelli'))A+=6; if(q.ex.includes('tappeti'))A+=.05*Sf;
+  return {V,t:0.161*V/Math.max(A,1)};
+}
+const rtLabel=t=>rtRate(t);
+
+/* =============================================================
+   MOTORE AUDIO
+   ============================================================= */
+const Eng={
+  ctx:null,stream:null,an:null,fbuf:null,tbuf:null,bb:null,gNoise:null,noiseSrc:null,settings:null,noiseOn:false,
+  async ensureCtx(){
+    if(!this.ctx){const AC=window.AudioContext||window.webkitAudioContext;if(!AC)throw new Error('no-audio');this.ctx=new AC();
+      this.ctx.onstatechange=()=>{if(this.ctx.state==='interrupted'||this.ctx.state==='suspended')this.ctx.resume().catch(()=>{})}}
+    if(this.ctx.state!=='running')await this.ctx.resume();
+  },
+  async openMic(){
+    await this.ensureCtx();
+    if(this.stream&&this.stream.getAudioTracks()[0]&&this.stream.getAudioTracks()[0].readyState==='live')return;
+    if(!window.isSecureContext)throw new Error('insecure');
+    if(!navigator.mediaDevices||!navigator.mediaDevices.getUserMedia)throw new Error('no-gum');
+    this.stream=await navigator.mediaDevices.getUserMedia({audio:{echoCancellation:false,noiseSuppression:false,autoGainControl:false,channelCount:1}});
+    const tr=this.stream.getAudioTracks()[0];this.settings=tr.getSettings?tr.getSettings():{};this.label=tr.label||'';
+    if(this.ctx.state!=='running')await this.ctx.resume();
+    const src=this.ctx.createMediaStreamSource(this.stream);
+    this.an=this.ctx.createAnalyser();this.an.fftSize=16384;this.an.smoothingTimeConstant=0;this.an.minDecibels=-140;this.an.maxDecibels=0;
+    const sink=this.ctx.createGain();sink.gain.value=0;src.connect(this.an);this.an.connect(sink);sink.connect(this.ctx.destination);
+    this.fbuf=new Float32Array(this.an.frequencyBinCount);this.tbuf=new Float32Array(this.an.fftSize);
+    this.binHz=this.ctx.sampleRate/this.an.fftSize;
+    this.bb=F.map(fc=>{const lo=fc*Math.pow(2,-1/6),hi=fc*Math.pow(2,1/6);const a=Math.max(1,Math.ceil(lo/this.binHz)),b=Math.max(a,Math.ceil(hi/this.binHz)-1);return[a,b]});
+  },
+  ready(){return !!(this.an&&this.stream&&this.stream.getAudioTracks()[0].readyState==='live')},
+  bandPow(){
+    this.an.getFloatFrequencyData(this.fbuf);const o=new Float64Array(F.length);
+    for(let i=0;i<F.length;i++){let s=0;const[a,b]=this.bb[i];for(let k=a;k<=b;k++)s+=Math.pow(10,this.fbuf[k]/10);o[i]=s}
+    return o;
+  },
+  level(){
+    this.an.getFloatTimeDomainData(this.tbuf);let s=0,pk=0;for(let i=0;i<this.tbuf.length;i++){const v=this.tbuf[i];s+=v*v;const a=Math.abs(v);if(a>pk)pk=a}
+    return{rms:Math.sqrt(s/this.tbuf.length),peak:pk};
+  },
+  pinkBuf(){
+    if(this._pink)return this._pink;const sr=this.ctx.sampleRate,n=sr*8,buf=this.ctx.createBuffer(1,n,sr),d=buf.getChannelData(0);
+    let b0=0,b1=0,b2=0,b3=0,b4=0,b5=0,b6=0;
+    for(let i=0;i<n;i++){const w=Math.random()*2-1;b0=.99886*b0+w*.0555179;b1=.99332*b1+w*.0750759;b2=.969*b2+w*.153852;b3=.8665*b3+w*.3104856;b4=.55*b4+w*.5329522;b5=-.7616*b5-w*.016898;
+      d[i]=(b0+b1+b2+b3+b4+b5+b6+w*.5362)*.11;b6=w*.115926}
+    const f=Math.floor(sr*.05);for(let i=0;i<f;i++){const t=i/f;d[i]*=t;d[n-1-i]*=t}    // dissolvenze ai bordi del loop
+    return this._pink=buf;
+  },
+  async startNoise(level){
+    await this.ensureCtx();
+    if(!this.noiseSrc){this.noiseSrc=this.ctx.createBufferSource();this.noiseSrc.buffer=this.pinkBuf();this.noiseSrc.loop=true;
+      this.gNoise=this.ctx.createGain();this.gNoise.gain.value=0;this.noiseSrc.connect(this.gNoise);this.gNoise.connect(this.ctx.destination);this.noiseSrc.start()}
+    this.setNoise(level);this.noiseOn=true;
+  },
+  setNoise(level){if(this.gNoise)this.gNoise.gain.setTargetAtTime(level*level*0.6,this.ctx.currentTime,.7)},
+  stopNoise(){if(this.noiseSrc){try{this.gNoise.gain.setTargetAtTime(0,this.ctx.currentTime,.1);const s=this.noiseSrc;setTimeout(()=>{try{s.stop();s.disconnect()}catch(e){}},400)}catch(e){}this.noiseSrc=null;this.gNoise=null}this.noiseOn=false},
+  closeMic(){if(this.stream){this.stream.getTracks().forEach(t=>t.stop());this.stream=null;this.an=null}}
+};
+/* misura: media di potenza per banda su `ms` millisecondi */
+let CUR_MEAS=null;
+function measure(ms,onTick){
+  return new Promise(res=>{
+    const acc={p:new Float64Array(F.length),n:0,peak:0,r2:0},t0=performance.now();
+    const id=setInterval(()=>{
+      if(!Eng.ready()){clearInterval(id);res(null);return}
+      const bp=Eng.bandPow(),l=Eng.level();for(let i=0;i<F.length;i++)acc.p[i]+=bp[i];acc.n++;acc.peak=Math.max(acc.peak,l.peak);acc.r2+=l.rms*l.rms;
+      const fr=(performance.now()-t0)/ms;if(onTick)onTick(bp,Math.min(1,fr),l);
+      if(fr>=1){clearInterval(id);CUR_MEAS=null;res({pow:acc.p.map(v=>v/acc.n),n:acc.n,peak:acc.peak,rms:Math.sqrt(acc.r2/acc.n)})}
+    },110);
+    CUR_MEAS=()=>{clearInterval(id);res(null)};
+  });
+}
+
+/* =============================================================
+   ANALISI
+   ============================================================= */
+const MID=F.map((f,i)=>f>=200&&f<=4000?i:-1).filter(i=>i>=0);
+const mean=a=>a.reduce((x,y)=>x+y,0)/a.length;
+function bell(f,x){return x.g*Math.exp(-.5*Math.pow(Math.log(f/x.f)/(.294/x.q),2))}
+function zoneName(f){return f<100?'Rimbombo':f<200?'Bassi gonfi':f<500?'Fango':f<1000?'Scatolato':f<2000?'Nasale':f<5000?'Durezza':f<10000?'Sibilanti':'Frizzante'}
+const ZONE_TXT={Rimbombo:'Il basso rimbomba.','Bassi gonfi':'I bassi coprono il resto.',Fango:'La voce suona ovattata.',Scatolato:'Il suono è un po\' scatolato.',Nasale:'La voce suona nasale.',Durezza:'Le S e le chitarre pungono.',Sibilanti:'Le S sono taglienti.',Frizzante:'Gli alti sono troppo aperti.'};
+function analyze(points,floor,opt){
+  const n=F.length,valid=new Array(n).fill(true),Ls=[],lvs=[];
+  points.forEach(pt=>{
+    const L=new Array(n);
+    for(let i=0;i<n;i++){const p0=pt.pow[i],nz=floor?floor.pow[i]:0;let p=p0;
+      if(floor){if(p0>2*nz)p=p0-nz;if(p0<4*nz)valid[i]=false}                         // sotto 6 dB sopra il rumore: banda poco affidabile
+      L[i]=dBp(p)}
+    const m=mean(MID.map(i=>L[i]));lvs.push(m);Ls.push(L.map(v=>v-m));
+  });
+  const M=F.map((f,i)=>dBp(mean(Ls.map(L=>Math.pow(10,L[i]/10)))));
+  const SPf=F.map((f,i)=>{const v=Ls.map(L=>L[i]);return Math.max(...v)-Math.min(...v)});
+  const T=F.map(f=>targetCurve(f,opt.obj,opt.ref,opt.V));
+  let D=M.map((v,i)=>v-T[i]);const c=mean(MID.map(i=>D[i]));D=D.map(v=>v-c);
+  return{D,SP:SPf,T,valid,npts:points.length,cov:lvs.map(v=>v-lvs[0])};
+}
+function planEq(a,opt){
+  const alta=opt.tier==='alta',maxCut=opt.ref==='musica'?3:alta?6:4,maxN=alta?4:3,fLo=alta?50:100,fHi=alta?12500:8000,thr=opt.ref==='musica'?4.5:3;
+  const{D,SP,valid}=a,Ds=D.map((d,i)=>((D[i-1]??d)+2*d+(D[i+1]??d))/4);
+  const cands=[],varia=[];
+  for(let i=0;i<F.length;i++){
+    if(F[i]<fLo||F[i]>fHi||!valid[i]||Ds[i]<thr)continue;
+    if(Ds[i]<(Ds[i-1]??-99)||Ds[i]<(Ds[i+1]??-99))continue;
+    if(SP[i]>9){varia.push({f:F[i],d:Ds[i]});continue}
+    let w=1;for(let j=i-1;j>=0&&Ds[j]>=thr*.6;j--)w++;for(let j=i+1;j<F.length&&Ds[j]>=thr*.6;j++)w++;
+    const N=Math.max(w,1)/3,Q=clamp(Math.sqrt(Math.pow(2,N))/(Math.pow(2,N)-1),.8,6);
+    const g=-clamp(Math.round(.7*Ds[i]*2)/2,1,maxCut);
+    cands.push({f:F[i],g,q:+Q.toFixed(1),d:Ds[i],name:zoneName(F[i])});
+  }
+  cands.sort((x,y)=>y.d-x.d);
+  const picked=[];for(const c of cands){if(picked.length>=maxN)break;if(picked.some(p=>Math.abs(Math.log2(p.f/c.f))<.5))continue;picked.push(c)}
+  picked.sort((x,y)=>x.f-y.f);
+  const dips=[];for(let i=1;i<F.length-1;i++)if(valid[i]&&F[i]>=fLo&&F[i]<=fHi&&Ds[i]<=-5&&Ds[i]<=Ds[i-1]&&Ds[i]<=Ds[i+1])dips.push({f:F[i],d:Ds[i]});
+  const lf=[];for(let i=0;i<F.length;i++)if(F[i]<fLo&&valid[i]&&Ds[i]>=4)lf.push({f:F[i],d:Ds[i]});
+  const P=D.map((d,i)=>d+picked.reduce((s,x)=>s+bell(F[i],x),0));
+  const mad=arr=>{const v=[];F.forEach((f,i)=>{if(f>=100&&f<=8000&&a.valid[i])v.push(Math.abs(arr[i]))});return v.length?mean(v):0};
+  const sc=arr=>clamp(Math.round(100-14*mad(arr)),0,100);
+  const cl=(()=>{const v=[];F.forEach((f,i)=>{if(f>=2000&&f<=4000&&a.valid[i])v.push(D[i])});return v.length?mean(v):0})();
+  return{filters:picked,P,score0:sc(D),score1:sc(P),varia,dips:dips.slice(0,1),lf,clar:cl};
+}
+const scoreLabel=s=>s>=75?['Buona','good']:s>=60?['Migliorabile','ac']:['Da sistemare','bad'];
+
+/* =============================================================
+   RICETTE E CONSIGLI (valori di partenza)
+   ============================================================= */
+const REC={
+ preacher_headset:{n:'Chi predica · headset',ic:'headset',hpf:100,cuts:[[300,-3,1.2,'meno ovattato']],boost:[[3000,2,'più presenza, solo se non fischia']],g:'Picchi tra −18 e −12 dB sul meter',note:'Microfono a due dita dalla bocca.'},
+ preacher_lav:{n:'Chi predica · lavalier',ic:'mic',hpf:120,cuts:[[250,-3,1.2,'meno ovattato']],boost:[[3500,1.5,'più presenza']],g:'Picchi tra −18 e −12 dB',note:'Il lavalier sta lontano dalla bocca: fai bene il ring-out.'},
+ preacher_hand:{n:'Chi predica · palmare',ic:'mic',hpf:100,cuts:[[250,-2,1.2,'meno effetto prossimità']],boost:[[4000,1,'più chiarezza']],g:'Picchi tra −18 e −12 dB',note:'Tienilo a due dita dalla bocca.'},
+ preacher_lectern:{n:'Chi predica · leggio',ic:'mic',hpf:120,cuts:[[300,-3,1.2,'meno scatolato']],boost:[],g:'Picchi tra −18 e −12 dB',note:'Distanza e movimento: il microfono a leggio fischia più degli altri.'},
+ vox:{n:'Voci soliste',ic:'person',hpf:90,cuts:[[250,-2,1.2,'meno fango']],boost:[[4000,2,'più chiarezza']],g:'Picchi tra −18 e −12 dB',note:'Compressore leggero, se lo hai.'},
+ choir:{n:'Coro',ic:'group',hpf:120,cuts:[[300,-2,1,'meno fango']],boost:[[5000,1,'più aria']],g:'Picchi tra −20 e −14 dB',note:'Microfoni alti, tenuti lontani dalle casse.'},
+ agtr:{n:'Chitarra acustica',ic:'guitar',hpf:80,cuts:[[200,-3,1.2,'meno rimbombo']],boost:[[5000,1,'più brillantezza']],g:'Picchi tra −18 e −12 dB',note:'Diretta (DI) se possibile.'},
+ egtr:{n:'Chitarra elettrica',ic:'guitar',hpf:100,cuts:[[400,-2,1,'meno scatolato']],boost:[],g:'Picchi tra −18 e −12 dB',note:'Alza l\'ampli da terra e inclinalo verso l\'orecchio di chi suona.'},
+ bass:{n:'Basso',ic:'guitar',hpf:40,cuts:[[250,-2,1.2,'meno fango']],boost:[[800,1,'più definizione']],g:'Picchi tra −16 e −10 dB',note:'Diretto (DI).'},
+ keys:{n:'Tastiera o piano',ic:'keys',hpf:60,cuts:[[300,-1,1,'meno fango']],boost:[],g:'Picchi tra −18 e −12 dB',note:'Lascia piatto il resto.'},
+ jolly:{n:'Microfono jolly · testimonianze e preghiera',ic:'mic',hpf:120,cuts:[[300,-3,1.2,'meno ovattato']],boost:[],g:'Fader basso, alzalo solo quando parla',note:'Un palmare pronto, gli altri chiusi. Non toccare il gain dopo il ring-out: muovi il fader.'},
+ interp:{n:'Interprete · traduzione dal vivo',ic:'headset',hpf:120,cuts:[[300,-2,1.2,'meno ovattato']],boost:[],g:'Picchi tra −18 e −12 dB',note:'Di solito va alle cuffie dei fedeli, non in sala. Usa un\'uscita separata (aux o matrice).'},
+ drum_ac:{n:'Batteria acustica',ic:'drum',hpf:40,cuts:[[300,-4,1.5,'grancassa meno scatolata']],boost:[],g:'Picchi tra −16 e −10 dB',note:'In sala piccola la batteria copre tutto: schermo e volume basso.'},
+ drum_el:{n:'Batteria elettronica',ic:'drum',hpf:40,cuts:[],boost:[],g:'Picchi tra −18 e −12 dB',note:'Di solito va tenuta più bassa del previsto.'}
+};
+function sourcesFromQ(q){
+  const s=q.src,l=[];l.push('preacher_'+s.preacher);if(s.jolly)l.push('jolly');if(s.interp)l.push('interp');
+  if(s.vox>0)l.push('vox');if(s.choir>0)l.push('choir');if(s.agtr>0)l.push('agtr');if(s.egtr>0)l.push('egtr');if(s.bass>0)l.push('bass');if(s.keys>0)l.push('keys');
+  if(s.drum==='ac')l.push('drum_ac');if(s.drum==='el')l.push('drum_el');return l;
+}
+function recipeLines(r,eqC){
+  const L=[];
+  if(r.hpf)L.push({t:'Taglia i bassi',d:eqC==='none'?'Non disponibile sul tuo mixer':`Filtro a ${r.hpf} Hz (tasto «low-cut»)`});
+  if(eqC==='peq4'){r.cuts.forEach(c=>L.push({t:c[3][0].toUpperCase()+c[3].slice(1),d:`${nf(c[1])} dB a ${hz(c[0])} · Q ${String(c[2]).replace('.',',')}`}));
+    r.boost.forEach(c=>L.push({t:c[2][0].toUpperCase()+c[2].slice(1),d:`${nf(c[1])} dB a ${hz(c[0])}`}))}
+  else if(eqC==='knob'){if(r.cuts.length)L.push({t:'Meno fango',d:'Abbassa un poco i medi-bassi (manopola «Low-Mid» o «Medi»)'});if(r.boost.length)L.push({t:'Più presenza',d:'Alza di poco i medi o gli alti, solo se non fischia'})}
+  L.push({t:'Livello d\'ingresso',d:r.g});
+  return L;
+}
+function tipsFor(q,res){
+  const known=DB.qDone,t=[],est=rt60(q),V=est.V,RT=DB.rt?DB.rt.t:est.t,rtKnown=!!DB.rt||known,d=res?res.D:null,at=(f1,f2)=>d?Math.max(...F.map((f,i)=>f>=f1&&f<=f2?d[i]:-99)):-99;
+  const cov=(res&&res.cov)||[],cs=cov.length>1?Math.max(...cov)-Math.min(...cov):0,clar=res&&res.clar!==undefined&&res.clar<=-3;
+  if(!known||q.src.preacher==='hand'||q.src.preacher==='lectern')t.push({c:0,cost:'Gratis',t:'Microfono più vicino alla bocca',w:'Dimezzando la distanza guadagni circa 6 dB prima del fischio.',s:3,ic:'mic'});
+  if(clar)t.push({c:0,cost:'Gratis',t:'Più presenza sulla voce, dal canale',w:'Le consonanti (2–4 kHz) arrivano deboli. Alza di poco 3 kHz sul microfono di chi predica, non sul master.',s:3,ic:'person'});
+  if(cs>6)t.push({c:0,cost:'Gratis',t:'Il suono non è uguale in tutta la sala',w:`C'è una differenza di ${Math.round(cs)} dB tra i punti. Inclina le casse verso il fondo o portale più vicino al pubblico.`,s:3,ic:'speaker'});
+  if(q.sub||at(63,100)>3)t.push({c:0,cost:'Gratis',t:'Stacca il sub dal muro e dagli angoli',w:'Un sub in angolo gonfia i bassi. Mezzo metro già aiuta.',s:2,ic:'speaker'});
+  if(known&&q.src.egtr>0)t.push({c:0,cost:'Gratis',t:'Alza l\'ampli della chitarra da terra',w:'Su una sedia, inclinato verso l\'orecchio di chi suona: meno medio-basso in sala.',s:2,ic:'guitar'});
+  if(known&&q.mon==='wedge')t.push({c:0,cost:'Gratis',t:'Abbassa i monitor di palco',w:'I monitor entrano nei microfoni e fanno fischiare. Meno volume, più chiarezza.',s:2,ic:'speaker'});
+  if(known&&q.src.jolly)t.push({c:0,cost:'Gratis',t:'Un solo palmare aperto alla volta',w:'Nelle testimonianze e nella preghiera, i microfoni aperti in più sono la prima causa di fischi.',s:2,ic:'mic'});
+  if(known&&q.src.drum==='ac'&&V<2500)t.push({c:1,cost:'€ 40–80',t:'Schermo e cuscino per la batteria',w:'In una sala di questa dimensione la batteria acustica copre voci e parola.',s:2,ic:'drum'});
+  if(known&&q.src.drum==='ac'&&q.src.egtr>0&&q.mon==='wedge')t.push({c:3,cost:'Da valutare',t:'Palco silenzioso',w:'Chitarre dirette, schermo sulla batteria e in-ear al posto dei monitor: il volume in sala lo decide l\'impianto.',s:3,ic:'drum'});
+  if(rtKnown&&RT>1.4)t.push({c:0,cost:'Gratis',t:'Cerca l\'eco a ping tra le pareti',w:'Batti le mani tra due pareti uguali e se senti un «ping» ripetuto, copri una delle due con una tenda o un quadro grande.',s:2,ic:'cube'});
+  const rts=RT.toFixed(1).replace('.',',');
+  if(rtKnown&&RT>1.4&&!q.ex.includes('tende'))t.push({c:2,cost:'€ 80–150',t:'Tende pesanti sulla parete di fondo',w:`Il riverbero è ${rts} s${DB.rt?'':' (stimato)'}. Le tende lo accorciano.`,s:3,ic:'cube'});
+  if(rtKnown&&RT>1.4&&q.ex.includes('tende')&&!q.ex.includes('pannelli'))t.push({c:3,cost:'€ 150–300',t:'Pannelli fonoassorbenti sul fondo e sui lati',w:'Quattro o cinque pannelli sulle pareti più riflettenti.',s:3,ic:'cube'});
+  if(rtKnown&&RT>1.4&&!q.ex.includes('tappeti')&&q.floor==='hard')t.push({c:2,cost:'€ 50–120',t:'Tappeto nel corridoio centrale',w:'Il pavimento duro rimbalza il suono. Un tappeto lungo aiuta un poco.',s:1,ic:'cube'});
+  t.push({c:4,cost:'Da valutare',t:'Ascolto assistito per chi usa apparecchi acustici',w:'Molti fedeli con apparecchi acustici smettono di venire se non sentono la predicazione. Esistono anelli a induzione e trasmettitori con cuffie.',s:2,ic:'person'});
+  t.sort((a,b)=>a.c-b.c);return t;
+}
+
+
+/* =============================================================
+   RIVERBERO (RT60) col test dell'eco: tre battiti di mani
+   Metodo: integrazione all'indietro di Schroeder, bande d'ottava 500, 1000, 2000 Hz.
+   ============================================================= */
+Eng.capture=async function(){
+  await this.openMic();const c=this.ctx,chunks=[];let node;const sink=c.createGain();sink.gain.value=0;
+  try{
+    if(!this._wk){const code="class C extends AudioWorkletProcessor{process(i){const x=i[0]&&i[0][0];if(x)this.port.postMessage(x.slice(0));return true}}registerProcessor('cap',C)";
+      await c.audioWorklet.addModule(URL.createObjectURL(new Blob([code],{type:'application/javascript'})));this._wk=1}
+    node=new AudioWorkletNode(c,'cap',{numberOfOutputs:1,outputChannelCount:[1]});node.port.onmessage=e=>chunks.push(e.data);
+  }catch(e){node=c.createScriptProcessor(2048,1,1);node.onaudioprocess=ev=>{chunks.push(new Float32Array(ev.inputBuffer.getChannelData(0)))}}
+  const src=c.createMediaStreamSource(this.stream);src.connect(node);node.connect(sink);sink.connect(c.destination);
+  return{stop(){try{src.disconnect();node.disconnect()}catch(e){}const n=chunks.reduce((s,a)=>s+a.length,0),out=new Float32Array(n);let o=0;chunks.forEach(a=>{out.set(a,o);o+=a.length});return{x:out,sr:c.sampleRate}}};
+};
+function bpf(x,sr,f0,Q){
+  const w=2*Math.PI*f0/sr,al=Math.sin(w)/(2*Q),c=Math.cos(w),b0=al,b2=-al,a0=1+al,a1=-2*c,a2=1-al;
+  const y=new Float64Array(x.length);let x1=0,x2=0,y1=0,y2=0;
+  for(let i=0;i<x.length;i++){const v=(b0*x[i]+b2*x2-a1*y1-a2*y2)/a0;x2=x1;x1=x[i];y2=y1;y1=v;y[i]=v}
+  return y;
+}
+function rtAnalyze(x,sr){
+  const B=Math.round(sr*.002),nb=Math.floor(x.length/B),env=new Float64Array(nb);
+  for(let b=0;b<nb;b++){let s=0;for(let i=b*B,e=i+B;i<e;i++)s+=x[i]*x[i];env[b]=s/B}
+  const srt=Array.from(env).sort((a,b)=>a-b),nz=Math.max(srt[Math.floor(nb*.25)],1e-12),thr=nz*1000;       // 30 dB sopra il fondo
+  const ev=[];let last=-1e9;
+  for(let b=0;b<nb;b++){if(env[b]>thr&&(b-last)*B/sr>1.5){let p=b,m=env[b];for(let k=b;k<Math.min(nb,b+20);k++)if(env[k]>m){m=env[k];p=k}ev.push(p);last=p}}
+  const res={500:[],1000:[],2000:[]};let approx=false;
+  ev.forEach((p,k)=>{
+    const s0=Math.max(0,p*B-Math.round(sr*.004)),s1=Math.min(x.length,k+1<ev.length?ev[k+1]*B-Math.round(sr*.3):p*B+Math.round(sr*3.5));
+    if(s1-s0<sr*.8)return;
+    const seg=x.subarray(s0,s1);
+    [500,1000,2000].forEach(fc=>{
+      const y=bpf(bpf(seg,sr,fc,1.414),sr,fc,1.414),n=y.length,e=new Float64Array(n);for(let i=0;i<n;i++)e[i]=y[i]*y[i];
+      const t0=Math.floor(n*.88);let Nn=0;for(let i=t0;i<n;i++)Nn+=e[i];Nn=Math.max(Nn/(n-t0),1e-20);
+      const Bk=Math.round(sr*.01),nk=Math.floor(n/Bk),sm=[];for(let b=0;b<nk;b++){let s=0;for(let i=b*Bk;i<(b+1)*Bk;i++)s+=e[i];sm.push(s/Bk)}
+      let pk=0,pb=0;sm.forEach((v,b)=>{if(v>pk){pk=v;pb=b}});
+      let end=n;for(let b=pb+3;b<nk;b++){if(sm[b]<Nn*2){end=b*Bk;break}}
+      const dr=10*Math.log10(pk/Nn);if(end<sr*.3||dr<25)return;
+      const edc=new Float64Array(end);let acc=0;for(let i=end-1;i>=0;i--){acc+=Math.max(e[i]-Nn,0);edc[i]=acc}
+      const E0=edc[0];if(E0<=0)return;
+      const pts=[];const st=Math.round(sr*.01);for(let i=0;i<end;i+=st)pts.push([i/sr,10*Math.log10(Math.max(edc[i]/E0,1e-12))]);
+      const fit=(hi,lo)=>{const sel=pts.filter(p=>p[1]<=hi&&p[1]>=lo);if(sel.length<4)return null;const mt=mean(sel.map(p=>p[0])),mv=mean(sel.map(p=>p[1]));let sxy=0,sxx=0;sel.forEach(p=>{sxy+=(p[0]-mt)*(p[1]-mv);sxx+=(p[0]-mt)*(p[0]-mt)});const sl=sxy/sxx;return sl<0?-60/sl:null};
+      let t=null;if(dr>=35)t=fit(-5,-25);else{t=fit(-5,-15);approx=true}
+      if(t&&t>.1&&t<8)res[fc].push(t);
+    });
+  });
+  const med=a=>{if(!a.length)return null;const s=[...a].sort((p,q)=>p-q);return s[Math.floor(s.length/2)]};
+  const bands={500:med(res[500]),1000:med(res[1000]),2000:med(res[2000])},vals=Object.values(bands).filter(v=>v);
+  return{n:ev.length,bands,rt:vals.length?mean(vals):null,approx};
+}
+const rtRate=t=>t<=1.2?['Ottimo per la parola','good']:t<=1.5?['Accettabile','ac']:t<=2?['Lungo','bad']:['Molto lungo','bad'];
+
+/* ---------- volume: livello ponderato A (approssimato dalle bande) ---------- */
+const AW=[-26.2,-22.5,-19.1,-16.1,-13.4,-10.9,-8.6,-6.6,-4.8,-3.2,-1.9,-.8,0,.6,1,1.2,1.3,1.2,1,.5,-.1,-1.1,-2.5,-4.3];
+const aLevel=bp=>dBp(Array.from(bp).reduce((s,p,i)=>s+p*Math.pow(10,AW[i]/10),0));
+
+/* =============================================================
+   GRAFICO
+   ============================================================= */
+const CH={};let chN=0;
+function chart(o){
+  const id='c'+(++chN),w=o.w||358,h=o.h||230,ml=30,mr=8,mt=16,mb=26,real=o.mode==='real';
+  const[y0,y1]=real?[-16,10]:[-7.5,8],ticks=real?[-12,-6,0,6]:[-6,-3,0,3,6];
+  const X=f=>ml+Math.log(f/63)/Math.log(12500/63)*(w-ml-mr),Y=v=>mt+(y1-v)/(y1-y0)*(h-mt-mb);
+  const T=o.T,pts=v=>v.map((d,i)=>[X(F[i]),Y(real?T[i]+d:d)]);
+  const path=(p,a,b)=>{let d=`M${p[a][0].toFixed(1)} ${p[a][1].toFixed(1)}`;for(let i=a;i<b;i++){const p0=p[Math.max(i-1,0)],p1=p[i],p2=p[i+1],p3=p[Math.min(i+2,p.length-1)];
+    d+=`C${(p1[0]+(p2[0]-p0[0])/6).toFixed(1)} ${(p1[1]+(p2[1]-p0[1])/6).toFixed(1)} ${(p2[0]-(p3[0]-p1[0])/6).toFixed(1)} ${(p2[1]-(p3[1]-p1[1])/6).toFixed(1)} ${p2[0].toFixed(1)} ${p2[1].toFixed(1)}`}return d};
+  const clampY=p=>p.map(q=>[q[0],clamp(q[1],mt,h-mb)]);
+  let s=`<svg viewBox="0 0 ${w} ${h}" role="img" aria-label="${esc(o.label||'Risposta della sala rispetto all\'obiettivo')}">`;
+  if(!real)s+=`<rect x="${ml}" y="${Y(3)}" width="${w-ml-mr}" height="${Y(-3)-Y(3)}" rx="6" fill="var(--green)" opacity=".13"/>`;
+  ticks.forEach(t=>{s+=`<line x1="${ml}" x2="${w-mr}" y1="${Y(t)}" y2="${Y(t)}" stroke="var(--sep)" stroke-width="${t===0&&!real?1.2:.6}"/><text x="${ml-7}" y="${Y(t)+3.5}" text-anchor="end" font-size="10.5" fill="var(--l2)">${t>0?'+':t<0?'−':''}${Math.abs(t)}</text>`});
+  [125,250,500,1000,2000,4000,8000].forEach(f=>{s+=`<text x="${X(f)}" y="${h-6}" text-anchor="middle" font-size="10.5" fill="var(--l2)">${kl(f)}</text>`});
+  if(!real)s+=`<text x="${ml+6}" y="${Y(3)+12}" font-size="10" fill="var(--green-t)" font-weight="600">zona giusta</text>`;
+  const first=o.ser[0];
+  if(o.spread&&o.SP&&first){const up=first.v.map((d,i)=>[X(F[i]),clamp(Y((real?T[i]:0)+d+o.SP[i]/4),mt,h-mb)]),dn=first.v.map((d,i)=>[X(F[i]),clamp(Y((real?T[i]:0)+d-o.SP[i]/4),mt,h-mb)]).reverse();
+    s+=`<polygon points="${up.concat(dn).map(p=>p.map(n=>n.toFixed(1)).join(',')).join(' ')}" fill="var(--l1)" opacity=".07"/>`}
+  if(real)s+=`<path d="${path(pts(F.map(()=>0)),0,23)}" fill="none" stroke="var(--l3)" stroke-width="1.6" stroke-dasharray="4 5"/>`;
+  const model=[];
+  o.ser.forEach((se,k)=>{const p=clampY(pts(se.v));
+    s+=`<g class="ln ln-${k}"><path d="${path(p,2,21)}" fill="none" stroke="${se.c}" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/><path d="${path(p,0,2)}" fill="none" stroke="${se.c}" stroke-width="2.6" stroke-linecap="round" stroke-dasharray="1 6" opacity=".7"/><path d="${path(p,21,23)}" fill="none" stroke="${se.c}" stroke-width="2.6" stroke-linecap="round" stroke-dasharray="1 6" opacity=".7"/></g>`;
+    model.push({n:se.n,c:se.c,v:se.v.map((d,i)=>real?T[i]+d:d)})});
+  if(real)model.unshift({n:'Obiettivo',c:'var(--l3)',v:T});
+  (o.marks||[]).forEach(m=>{const i=F.indexOf(m.f);if(i<0)return;const v=first.v[i],x=X(m.f),y=clamp(Y(real?T[i]+v:v),mt+2,h-mb);
+    s+=`<circle cx="${x}" cy="${y}" r="5" fill="var(--red)" stroke="var(--cell)" stroke-width="2.5"/><text x="${clamp(x,40,w-40)}" y="${Math.max(y-11,11)}" text-anchor="middle" font-size="11" font-weight="600" fill="var(--l1)">${esc(m.l)} ${nf(v)}</text>`});
+  s+=`<line class="xh" x1="0" x2="0" y1="${mt}" y2="${h-mb}" stroke="var(--l3)" style="display:none"/><rect x="${ml}" y="0" width="${w-ml-mr}" height="${h}" fill="transparent"/></svg>`;
+  CH[id]={w,X,model};
+  let lg='';if(real)lg+=`<span><i class="d" style="border-color:var(--l3)"></i>Obiettivo</span>`;
+  o.ser.forEach(se=>lg+=`<span><i style="border-color:${se.c}"></i>${se.n}</span>`);
+  if(o.spread)lg+=`<span><i class="z" style="background:var(--l1);opacity:.12"></i>Tra i punti</span>`;
+  if(!real)lg+=`<span><i class="z"></i>Zona giusta</span>`;
+  return `<div class="cw" data-cid="${id}" data-act="${o.act??''}" tabindex="0">${s}<div class="tt"></div></div><div class="legend">${lg}</div>`;
+}
+function hookCharts(root){
+  root.querySelectorAll('.cw[data-cid]').forEach(w=>{
+    const m=CH[w.dataset.cid];if(!m||w._h)return;w._h=1;
+    const svg=w.querySelector('svg'),xh=w.querySelector('.xh'),tt=w.querySelector('.tt');
+    const show=i=>{const x=m.X(F[i]);xh.setAttribute('x1',x);xh.setAttribute('x2',x);xh.style.display='block';tt.replaceChildren();
+      const hd=document.createElement('div');hd.className='tth';hd.textContent=hz(F[i]);tt.append(hd);
+      m.model.forEach(s=>{const r=document.createElement('div');r.className='ttr';const k=document.createElement('i');k.style.background=s.c;const b=document.createElement('b');b.textContent=nf(s.v[i])+' dB';const n=document.createElement('span');n.textContent=s.n;r.append(k,b,n);tt.append(r)});
+      tt.style.display='block';const W=w.getBoundingClientRect().width,px=x/m.w*W;tt.style.left=(px>W/2?Math.max(0,px-tt.offsetWidth-12):px+12)+'px'};
+    const hide=()=>{xh.style.display='none';tt.style.display='none'};
+    const mv=e=>{const r=svg.getBoundingClientRect(),vx=(e.clientX-r.left)/r.width*m.w;let b=0,bd=1e9;F.forEach((f,i)=>{const d=Math.abs(m.X(f)-vx);if(d<bd){bd=d;b=i}});show(b);w._i=b};
+    svg.addEventListener('pointermove',mv);svg.addEventListener('pointerdown',mv);svg.addEventListener('pointerleave',hide);
+    w.addEventListener('keydown',e=>{if(e.key==='ArrowRight'||e.key==='ArrowLeft'){e.preventDefault();w._i=clamp((w._i??12)+(e.key==='ArrowRight'?1:-1),0,F.length-1);show(w._i)}});
+  });
+}
+function tableHTML(cols){
+  let t='<table><thead><tr><th>Banda</th>'+cols.map(c=>`<th>${c.n}</th>`).join('')+'</tr></thead><tbody>';
+  F.forEach((f,i)=>{t+=`<tr><td>${hz(f)}</td>`+cols.map(c=>`<td>${nf(c.v[i])}</td>`).join('')+'</tr>'});return t+'</tbody></table>';
+}
+const specHTML=(live)=>`<div class="spec ${live?'live':''}" id="spec" role="img" aria-label="Spettro in tempo reale">${F.map(()=>'<i></i>').join('')}</div><div style="display:flex;justify-content:space-between;margin-top:6px" class="t-foot"><span>63 Hz</span><span>1 kHz</span><span>12 kHz</span></div>`;
+function paintSpec(bp,pk){
+  const el=$('#spec');if(!el)return;const L=Array.from(bp,dBp),m=mean(L);
+  [...el.children].forEach((c,i)=>{c.style.height=clamp(46+(L[i]-m)*3.4,6,100)+'%';c.classList.toggle('pk',i===pk)});
+}
+
+/* =============================================================
+   COMPONENTI UI (iOS)
+   ============================================================= */
+const R={v:'home',p:{},stack:[],dir:'fade',timers:[]};
+const VIEWS={},ACT={};
+const tmr=(f,ms)=>{const id=setInterval(f,ms);R.timers.push(id);return id};
+const later=(f,ms)=>{const id=setTimeout(f,ms);R.timers.push(id);return id};
+function cleanup(){R.timers.forEach(t=>{clearInterval(t);clearTimeout(t)});R.timers=[];if(CUR_MEAS){CUR_MEAS();CUR_MEAS=null}}
+const tile=(i,c='')=>`<span class="tile ${c}">${ic(i,18,2)}</span>`;
+const gb=(icon,a,label,attrs='')=>`<button class="gbtn" data-a="${a}" aria-label="${label}" ${attrs}>${ic(icon,20,2)}</button>`;
+function navbar(o={}){
+  const l=o.left!==undefined?o.left:(o.back===false?'':`<button class="gbtn" data-a="back" aria-label="Indietro">${ic('back',22,2.4)}</button>`);
+  return `<div class="nav ${o.compact?'compact':''}" id="nav" data-fixed="${o.compact?1:0}"><div class="l">${l}</div><div class="ttl">${o.title||''}</div><div class="r">${o.right||''}</div></div>`;
+}
+const scr=o=>`<div class="scr ${R.dir}">${navbar(o.nav||{})}<div class="content ${o.cls||''}">${o.lt?`<div class="head"><h1 class="lt">${o.lt}</h1>${o.ls?`<p class="ls">${o.ls}</p>`:''}</div>`:''}${o.body||''}</div>${o.dock?`<div class="dock">${o.dock}</div>`:''}</div>`;
+const btn=(l,a,c='',x='')=>`<button class="btn ${c}" ${a} ${x}>${l}</button>`;
+const row=o=>{const T=o.a?'button':'div';return `<${T} class="row" ${o.a||''}>${o.tile?tile(o.tile,o.tc||''):''}${o.lead||''}<div class="rt"><b>${o.t}</b>${o.s?`<small>${o.s}</small>`:''}</div>${o.val!==undefined?`<span class="val">${o.val}</span>`:''}${o.right||''}${o.chk?`<span class="chk">${ic('check',22,2.6)}</span>`:''}${o.chev?`<span class="chv">${ic('chev',16,2.6)}</span>`:''}</${T}>`};
+const list=(rows,hdr,ftr,cls='')=>`<div>${hdr?`<div class="hdr">${hdr}</div>`:''}<div class="list ${cls}">${rows.join('')}</div>${ftr?`<div class="ftr">${ftr}</div>`:''}</div>`;
+const pill=(k,t)=>`<span class="pill ${k}">${k==='good'?ic('check',13,2.6):k==='bad'?ic('alert',13,2.2):''}${t}</span>`;
+const sev=n=>`<span class="sev" role="img" aria-label="Priorità ${n} su 3">${'<i class="on"></i>'.repeat(n)}${'<i></i>'.repeat(3-n)}</span>`;
+const banner=(k,i,h)=>`<div class="banner ${k}">${ic(i,22,1.9)}<span>${h}</span></div>`;
+const seg=(arr)=>`<div class="segc">${arr.map(([t,on,a])=>`<button class="${on?'on':''}" ${a}>${t}</button>`).join('')}</div>`;
+const steps=(n,t)=>`<div class="steps" aria-label="Passo ${n} di ${t}">${Array.from({length:t},(_,i)=>`<i class="${i<n?'on':''}"></i>`).join('')}</div>`;
+const stepper=(l,sub,k,v,u)=>`<div class="stepper"><div class="l"><b class="t-head" style="font-weight:600">${l}</b><span class="t-foot">${sub}</span></div><button data-a="num" data-k="${k}" data-d="-1" aria-label="Meno">${ic('minus',20,2.2)}</button><div class="v">${v}<small>${u}</small></div><button data-a="num" data-k="${k}" data-d="1" aria-label="Più">${ic('plus',20,2.2)}</button></div>`;
+const ringSVG=(pct,size,sw,col='var(--tint)')=>{const r=(size-sw)/2,c=2*Math.PI*r;return `<svg width="${size}" height="${size}" viewBox="0 0 ${size} ${size}" aria-hidden="true"><circle cx="${size/2}" cy="${size/2}" r="${r}" fill="none" stroke="var(--fill2)" stroke-width="${sw}"/><circle class="rg" cx="${size/2}" cy="${size/2}" r="${r}" fill="none" stroke="${col}" stroke-width="${sw}" stroke-linecap="round" style="stroke-dasharray:${c.toFixed(1)};stroke-dashoffset:${(c*(1-pct)).toFixed(1)}" data-c="${c.toFixed(1)}"/></svg>`};
+const scoreRing=(n,size=124)=>`<div class="ringg" style="width:${size}px;height:${size}px">${ringSVG(0,size,12)}<span class="n num" data-count="${n}">${n}</span></div>`;
+/* anima gli anelli e i numeri appena la schermata è visibile */
+function animateIn(){
+  document.querySelectorAll('.ringg').forEach(g=>{const n=g.querySelector('[data-count]'),rg=g.querySelector('.rg');if(!rg||!n)return;const tgt=+(n?n.dataset.count:0);const c=+rg.dataset.c;
+    requestAnimationFrame(()=>requestAnimationFrame(()=>{rg.style.strokeDashoffset=(c*(1-tgt/100)).toFixed(1)}));
+    if(n&&!matchMedia('(prefers-reduced-motion: reduce)').matches){const t0=performance.now();const f=t=>{const k=Math.min(1,(t-t0)/900),e=1-Math.pow(1-k,3);n.textContent=Math.round(tgt*e);if(k<1)requestAnimationFrame(f)};n.textContent=0;requestAnimationFrame(f)}});
+}
+function openSheet(html){closeSheet();const d=document.createElement('div');d.id='sheetRoot';d.innerHTML=`<div class="scrim" data-a="closeSheet"></div><div class="sheet" role="dialog"><div class="grab"></div>${html}</div>`;document.body.append(d)}
+function closeSheet(){const d=$('#sheetRoot');if(d)d.remove()}
+function toast(t){document.querySelectorAll('.toast').forEach(x=>x.remove());const d=document.createElement('div');d.className='toast';d.textContent=t;document.body.append(d);setTimeout(()=>d.remove(),1500)}
+ACT.closeSheet=closeSheet;
+
+/* ---------- navigazione ---------- */
+function go(v,p={},o={}){
+  if(R.v==='eco'&&v!=='eco')ecoAbort();
+  if(!o.replace)R.stack.push({v:R.v,p:R.p});
+  if(!['meas','diag','ring','listen'].includes(v))Eng.stopNoise();
+  if(v!=='listen')Player.stop();
+  if(v==='listen'&&R.v!=='listen')Player.mode='dry';
+  R.dir=o.dir||(o.replace?'fade':'push');R.v=v;R.p=p;render();window.scrollTo(0,0);
+}
+let back=function(){
+  if(R.v==='eco')ecoAbort();
+  const s=R.stack.pop();closeSheet();
+  if(!s){go('home',{},{replace:true});return}
+  if(!['meas','diag','ring','listen'].includes(s.v))Eng.stopNoise();
+  if(s.v!=='listen')Player.stop();
+  R.dir='pop';R.v=s.v;R.p=s.p;render();window.scrollTo(0,0);
+};
+function render(keepScroll){
+  const y=window.scrollY;if(keepScroll)R.dir='none';cleanup();const V=VIEWS[R.v];
+  $('#app').innerHTML=V.html(R.p);hookCharts($('#app'));animateIn();if(V.after)V.after(R.p);
+  if(keepScroll)window.scrollTo(0,y);
+  onScroll();
+}
+function onScroll(){const n=$('#nav');if(!n||n.dataset.fixed==='1')return;n.classList.toggle('compact',window.scrollY>(document.querySelector('.lt')?40:6))}
+addEventListener('scroll',onScroll,{passive:true});
+document.addEventListener('click',e=>{const t=e.target.closest('[data-a]');if(!t||t.disabled)return;const f=ACT[t.dataset.a];if(f){e.preventDefault();f(t.dataset,t)}});
+ACT.go=d=>go(d.v);ACT.back=()=>back();
+
+const isIOS=/iPad|iPhone|iPod/.test(navigator.userAgent)||(navigator.platform==='MacIntel'&&navigator.maxTouchPoints>1);
+const standalone=window.navigator.standalone===true||matchMedia('(display-mode: standalone)').matches;
+
+/* =============================================================
+   ANTEPRIMA SONORA (il momento "wow")
+   Suona dal telefono nel mixer con la correzione già applicata.
+   ============================================================= */
+async function synthDemo(sr){
+  const OC=window.OfflineAudioContext||window.webkitOfflineAudioContext,oc=new OC(1,Math.round(sr*16),sr);
+  const out=oc.createGain();out.gain.value=.55;out.connect(oc.destination);
+  const noise=oc.createBuffer(1,Math.round(sr*.12),sr),nd=noise.getChannelData(0);for(let i=0;i<nd.length;i++)nd[i]=Math.random()*2-1;
+  const chords=[[65.41,164.81,196,261.63,329.63],[61.74,146.83,196,246.94,392],[55,164.81,220,261.63,329.63],[43.65,174.61,220,261.63,349.23]];   // Do, Sol/Si, La-, Fa
+  chords.forEach((ch,ci)=>{const t0=ci*4;
+    const lp=oc.createBiquadFilter();lp.type='lowpass';lp.frequency.value=2400;lp.Q.value=.5;
+    const pg=oc.createGain();pg.gain.setValueAtTime(0,t0);pg.gain.linearRampToValueAtTime(.2,t0+.5);pg.gain.setValueAtTime(.2,t0+3.3);pg.gain.linearRampToValueAtTime(0,t0+4.05);lp.connect(pg);pg.connect(out);
+    ch.slice(1).forEach(f=>[-8,8].forEach(d=>{const o=oc.createOscillator();o.type='sawtooth';o.frequency.value=f;o.detune.value=d;const g=oc.createGain();g.gain.value=.07;o.connect(g);g.connect(lp);o.start(t0);o.stop(t0+4.1)}));
+    const b=oc.createOscillator();b.type='sine';b.frequency.value=ch[0]*2;const bg=oc.createGain();bg.gain.setValueAtTime(0,t0);bg.gain.linearRampToValueAtTime(.34,t0+.05);bg.gain.exponentialRampToValueAtTime(.001,t0+3.9);b.connect(bg);bg.connect(out);b.start(t0);b.stop(t0+4);
+    for(let k=0;k<8;k++){const t=t0+k*.5,f=ch[1+(k%4)]*2;const o=oc.createOscillator();o.type='triangle';o.frequency.value=f;const g=oc.createGain();g.gain.setValueAtTime(0,t);g.gain.linearRampToValueAtTime(.16,t+.01);g.gain.exponentialRampToValueAtTime(.001,t+.45);o.connect(g);g.connect(out);o.start(t);o.stop(t+.5)}
+    for(let k=0;k<8;k+=2){const t=t0+k*.5,o=oc.createOscillator();o.type='sine';o.frequency.setValueAtTime(130,t);o.frequency.exponentialRampToValueAtTime(48,t+.12);const g=oc.createGain();g.gain.setValueAtTime(.6,t);g.gain.exponentialRampToValueAtTime(.001,t+.3);o.connect(g);g.connect(out);o.start(t);o.stop(t+.35)}
+    for(let k=0;k<16;k++){const t=t0+k*.25,s=oc.createBufferSource();s.buffer=noise;const hp=oc.createBiquadFilter();hp.type='highpass';hp.frequency.value=6500;const g=oc.createGain();g.gain.setValueAtTime(k%2?.05:.1,t);g.gain.exponentialRampToValueAtTime(.001,t+.07);s.connect(hp);hp.connect(g);g.connect(out);s.start(t);s.stop(t+.1)}
+  });
+  return oc.startRendering();
+}
+const Player={buf:null,kind:'demo',name:'Musica d\'esempio',playing:false,mode:'dry',vol:.3,node:null,dry:null,wet:null,mst:null,
+  async prepare(kind,file){
+    await Eng.ensureCtx();this.kind=kind;
+    if(kind==='demo'){this.name='Musica d\'esempio';if(!this._demo||this._demoSr!==Eng.ctx.sampleRate){this._demo=await synthDemo(Eng.ctx.sampleRate);this._demoSr=Eng.ctx.sampleRate}this.buf=this._demo}
+    else if(kind==='pink'){this.name='Rumore rosa';this.buf=Eng.pinkBuf()}
+    else if(kind==='file'&&file){this.name=file.name.replace(/\.[^.]+$/,'');const ab=await file.arrayBuffer();this.buf=await new Promise((res,rej)=>Eng.ctx.decodeAudioData(ab,res,rej))}
+  },
+  async play(filters){
+    await Eng.ensureCtx();if(!this.buf)await this.prepare('demo');this.stop(true);
+    const c=Eng.ctx,src=c.createBufferSource();src.buffer=this.buf;src.loop=true;
+    const dry=c.createGain(),wet=c.createGain(),mst=c.createGain(),mk=c.createGain();
+    dry.gain.value=this.mode==='dry'?1:0;wet.gain.value=this.mode==='wet'?1:0;mst.gain.value=0;
+    src.connect(dry);dry.connect(mst);
+    let prev=src;const fl=(filters||[]);
+    fl.forEach(f=>{const b=c.createBiquadFilter();b.type='peaking';b.frequency.value=f.f;b.gain.value=f.g;b.Q.value=f.q;prev.connect(b);prev=b});
+    // volume pareggiato: compensa la perdita media così "prima" e "dopo" suonano ugualmente forti
+    const avg=mean(F.filter(f=>f>=100&&f<=8000).map(f=>Math.pow(10,fl.reduce((s,x)=>s+bell(f,x),0)/10)));
+    mk.gain.value=clamp(Math.pow(10,-dBp(avg)/20),.5,1.7);
+    prev.connect(mk);mk.connect(wet);wet.connect(mst);mst.connect(c.destination);
+    src.start();mst.gain.setTargetAtTime(this.vol,c.currentTime,.4);
+    Object.assign(this,{node:src,dry,wet,mst,playing:true});
+  },
+  stop(quick){
+    if(this.node){const n=this.node,m=this.mst,c=Eng.ctx;try{m.gain.setTargetAtTime(0,c.currentTime,.05);setTimeout(()=>{try{n.stop();n.disconnect()}catch(e){}},quick?80:250)}catch(e){}}
+    this.node=null;this.playing=false;
+  },
+  setMode(m){this.mode=m;if(this.dry){const t=Eng.ctx.currentTime;this.dry.gain.setTargetAtTime(m==='dry'?1:0,t,.06);this.wet.gain.setTargetAtTime(m==='wet'?1:0,t,.06)}},
+  setVol(v){this.vol=v;if(this.mst)this.mst.gain.setTargetAtTime(v,Eng.ctx.currentTime,.08)}
+};
+
+/* =============================================================
+   SCHERMATE
+   ============================================================= */
+const getE=id=>DB.hist.find(h=>h.id===(id||DB.cur))||DB.hist[0];
+const eqName={peq:'Parametrico',geq:'Grafico',knob:'Tre manopole',none:'Nessuno'};
+
+/* ---- benvenuto ---- */
+const feat=(i,t,s)=>`<div class="feat">${tile(i,'lg')}<div><b class="t-head" style="font-weight:600;display:block">${t}</b><span class="t-sub">${s}</span></div></div>`;
+VIEWS.welcome={html:()=>scr({nav:{back:false},cls:'pad',body:`
+  <div class="vsl center" style="gap:20px;margin-top:8px"><div class="appicon">${MARK(54)}</div><h1 class="lt" style="text-align:center">Benvenuto<br>in Accordo</h1></div>
+  <div class="vsl" style="gap:26px;padding:8px 6px">${feat('wave','Misura la sala','Il microfono del telefono ascolta come suona il tuo ambiente.')}${feat('vol','Ascolta la differenza','Senti subito come cambia il suono con la correzione giusta.')}${feat('sliders','Sistema in pochi minuti','Ti diciamo quali manopole girare sul tuo mixer.')}</div>
+  ${isIOS&&!standalone?banner('info','share','Per averla sempre a portata: tocca <b>Condividi</b>, poi <b>Aggiungi alla schermata Home</b>.'):''}`,
+  dock:`${btn('Continua','data-a="welcomeDone"')}<p class="t-foot" style="text-align:center">Tutto resta sul tuo telefono. Nessun account.</p>`})};
+ACT.welcomeDone=()=>{DB.seen=true;save();go('role',{},{replace:true,dir:'push'})};
+
+ACT.start=()=>{DB.q.src.preacher=DB.q.src.preacher||'headset';M.reset(false);go('setup',{s:0})};
+ACT.remeasure=()=>{const e=getE();M.reset(true);if(e&&e.src)M.src=e.src;go('meas')};
+ACT.homeListen=()=>{DB.cur=DB.hist[0].id;go('listen',{id:DB.cur})};
+ACT.goTips=()=>DB.qDone?go('tips'):go('room',{s:0,then:'tips'});
+
+/* ---- domande iniziali ---- */
+const illCable=`<svg viewBox="0 0 320 120" width="100%" role="img" aria-label="Il telefono è collegato con un cavo al mixer" style="max-width:340px;margin:0 auto;display:block"><rect x="14" y="14" width="56" height="92" rx="14" fill="none" stroke="var(--l1)" stroke-width="2.2"/><rect x="34" y="20" width="16" height="4" rx="2" fill="var(--l3)"/><circle cx="42" cy="82" r="9" fill="var(--tint)"/><path d="M70 60 C120 60 120 78 160 78 S 200 60 236 60" fill="none" stroke="var(--tint)" stroke-width="3" stroke-linecap="round"/><rect x="236" y="22" width="72" height="76" rx="12" fill="none" stroke="var(--l1)" stroke-width="2.2"/><g stroke="var(--l2)" stroke-width="2.4" stroke-linecap="round"><path d="M254 36v50M272 36v50M290 36v50"/></g><g fill="var(--tint)"><rect x="248" y="56" width="12" height="7" rx="3"/><rect x="266" y="44" width="12" height="7" rx="3"/><rect x="284" y="64" width="12" height="7" rx="3"/></g></svg>`;
+const SETUP=[
+ {lt:'Che mixer hai?',ls:'Scegli quello che somiglia di più al tuo.',k:'mixType',help:1,opts:[['digital','Digitale, con schermo o app','Per esempio X32, XR18, QU, SQ, TF','sliders'],['analog','Analogico, con manopole','Per esempio Yamaha MG, Mackie, Behringer Xenyx','gear'],['powered','Nell\'amplificatore o nelle casse','Casse amplificate con ingressi e manopole','speaker'],['unknown','Non lo so','Va bene lo stesso','help']]},
+ {lt:'Ha un equalizzatore a barre?',ls:'Una fila di cursori verticali, di solito separata dal mixer.',k:'geqx',opts:[['yes','Sì','Tanti cursori verticali','wave'],['no','No o non so','Solo manopole','gear']]},
+ {lt:'Cosa conta di più in questa sala?',ls:'Cambia la curva a cui puntiamo.',k:'obj',opts:[['parola','La parola','Predicazione chiara, in ogni posto','person'],['musica','La musica','Adorazione piena e calda','vol'],['entrambe','Tutte e due','Il compromesso migliore','group']]},
+ {lt:'Come arriva il suono alle casse?',ls:'Il telefono ascolta. Per fare rumore serve un modo.',k:'src',opts:[['cable','Con un cavo','Dal telefono a un canale del mixer. Consigliato.','plug'],['mixer','Dal generatore del mixer','Se il tuo mixer ha il rumore rosa.','sliders'],['nocable','Senza cavo','Una canzone già in sala. Meno preciso.','speaker']],ill:1}
+];
+const SDOT=[1,1,2,3];
+VIEWS.setup={html:p=>{
+  const s=p.s||0,S=SETUP[s],cur=S.k==='src'?M.src:S.k==='mixType'?DB.q.mixType:S.k==='geqx'?(DB.q.eqM==='geq'?'yes':'no'):DB.q[S.k];
+  const rows=S.opts.map(([k,t,sub,i])=>row({tile:i,tc:cur===k?'':'gray',t,s:sub,a:`data-a="pick" data-k="${S.k}" data-v="${k}"`,chk:cur===k}));
+  return scr({nav:{title:'',right:S.help?`<button class="gbtn" data-a="mixHelp" aria-label="Aiuto">${ic('help',20,2)}</button>`:''},lt:S.lt,ls:S.ls,
+    body:`${steps(SDOT[s],3)}${S.ill?illCable:''}${list(rows,'','','ic')}`,dock:s===3?btn('Continua','data-a="setupNext"'):''})}};
+ACT.pick=d=>{const s=R.p.s||0;
+  if(d.k==='src')M.src=d.v;else if(d.k==='mixType')applyMix(d.v);else if(d.k==='geqx')DB.q.eqM=d.v==='yes'?'geq':'none';else DB.q[d.k]=d.v;save();render(true);
+  if(d.k!=='src'){const nx=d.k==='mixType'?(d.v==='analog'?1:2):s+1;later(()=>{R.p={s:nx};R.dir='push';render();window.scrollTo(0,0)},260)}};
+ACT.setupNext=()=>go('meas',{},{});
+ACT.mixHelp=()=>openSheet(`<h2 class="t-title2" style="margin:6px 0 14px">Come lo riconosco?</h2>${list(MIXHELP.slice(0,3).map(m=>row({tile:m.i,t:m.t,s:m.steps[0]})),'','','ic')}<div style="height:12px"></div>${btn('Ho capito','data-a="closeSheet"','tinted')}`);
+const _bk3=back;back=function(){if(R.v==='setup'&&(R.p.s||0)>0){const s=R.p.s;R.p={s:(s===2&&DB.q.mixType!=='analog')?0:s-1};R.dir='pop';render();window.scrollTo(0,0);return}_bk3()};ACT.back=()=>back();
+
+/* =============================================================
+   MISURA
+   ============================================================= */
+const M={stage:'perm',src:'cable',vol:.06,floor:null,floorDb:'',pts:[],i:0,after:false,res:null,err:'',qc:null,total:3,snr:null,
+ reset(after){this.stage=Eng.ready()?'floor':'perm';this.after=!!after;this.floor=null;this.pts=[];this.i=0;this.err='';this.qc=null;this.snr=null;this.total=after?Math.min(3,DB.q.pts):DB.q.pts;this.vol=.06},
+ dur(){return(this.src==='nocable'?20000:8000)/(FAST?5:1)},
+ ref(){return this.src==='nocable'?'musica':'pink'}};
+const PT_NAMES=['Davanti, al centro','A metà sala','In fondo','Lato sinistro','Lato destro','In un angolo','Davanti, a lato'];
+function mapSVG(cur){const P=[[135,86],[135,134],[135,190],[48,134],[222,134],[48,190],[222,86]].slice(0,M.total);
+  return `<svg viewBox="0 0 270 236" width="100%" style="max-width:340px;margin:0 auto;display:block" role="img" aria-label="Pianta della sala con i punti di misura"><rect x="40" y="6" width="190" height="36" rx="12" fill="var(--fill)"/><text x="135" y="29" text-anchor="middle" font-size="12" font-weight="600" fill="var(--l2)">Palco</text><rect x="48" y="14" width="14" height="20" rx="4" fill="var(--l3)"/><rect x="208" y="14" width="14" height="20" rx="4" fill="var(--l3)"/>
+  ${[62,78,94,110,126,142,158,174,190,206].map(y=>[70,90,110,130,150,170,190].map(x=>`<circle cx="${x+(x>130?8:0)}" cy="${y}" r="2.2" fill="var(--fill2)"/>`).join('')).join('')}
+  ${P.map(([x,y],k)=>{const on=k===cur,done=cur!==undefined&&k<cur;return `<circle cx="${x}" cy="${y}" r="15" fill="${on?'var(--tint)':done?'var(--tint-wash)':'var(--cell)'}" stroke="${on||done?'var(--tint)':'var(--l3)'}" stroke-width="2"/><text x="${x}" y="${y+5}" text-anchor="middle" font-size="14" font-weight="700" fill="${on?'var(--tint-ink)':'var(--l1)'}">${k+1}</text>`}).join('')}
+  <rect x="108" y="214" width="54" height="20" rx="8" fill="var(--fill)"/><text x="135" y="228" text-anchor="middle" font-size="11" fill="var(--l2)">Regia</text></svg>`}
+const helpBtn=`<button class="gbtn" data-a="mHelp" aria-label="Aiuto">${ic('help',20,2)}</button>`;
+VIEWS.meas={html:()=>{
+  const st=M.stage;
+  if(st==='perm')return scr({nav:{title:'',right:''},cls:'pad',body:`<div class="vsl center" style="gap:20px;margin-top:14px"><div class="hero-ic">${ic('mic',44,1.7)}</div><div><h1 class="lt" style="text-align:center">Accordo deve ascoltare la sala</h1><p class="ls" style="text-align:center">Il microfono serve solo a misurare quanto suona ogni zona di frequenza.</p></div></div>${banner('info','lock','<b>Niente audio salvato o inviato.</b> Teniamo solo i livelli per frequenza, sul tuo telefono.')}${M.err?banner('bad','alert',M.err):''}`,dock:btn('Consenti il microfono','data-a="mmic"')});
+  if(st==='floor'||st==='floorrun'||st==='floordone'){
+    const run=st==='floorrun',done=st==='floordone';
+    return scr({nav:{title:'',right:run?'':helpBtn,back:!run},cls:'pad',body:`${steps(1,4)}<div class="head" style="text-align:center"><h1 class="lt">${done?'Perfetto':run?'Silenzio, per favore':'Un attimo di silenzio'}</h1><p class="ls">${done?'Il rumore di fondo è misurato.':'Chiedi a tutti di fare silenzio. Misuriamo il rumore di fondo.'}</p></div>
+      <div style="display:grid;place-items:center;padding:6px 0">${done?`<div class="checkseal">${ic('check',38,3)}</div>`:`<div class="ringg" style="width:180px;height:180px">${ringSVG(0,180,12)}<span class="n num" id="rn">${run?(FAST?1:5):''}${run?'':ic('mic',48,1.6)}</span></div>`}</div>
+      ${run?`<div>${specHTML(1)}</div>`:''}${done&&M.floorDb>-40?banner('bad','alert','<b>La sala è un po\' rumorosa.</b> Se puoi, spegni ventilatori o aria condizionata, o continua comunque.'):''}`,
+      dock:run||done?'':btn('Siamo in silenzio','data-a="mfloor"')})}
+  if(st==='level'){
+    const msg=M.src==='cable'?'Alza piano il fader del canale del telefono sul mixer.':M.src==='mixer'?'Fai partire il generatore di rumore rosa e portalo a volume normale.':'Fai partire una canzone che conosci, a volume normale.';
+    return scr({nav:{title:'',right:helpBtn},cls:'pad',body:`${steps(2,4)}<div class="head" style="text-align:center"><h1 class="lt" id="lvT">Regola il volume</h1><p class="ls" id="lvS">${msg}</p></div>
+      <div class="card" style="padding:24px 20px"><div style="display:flex;justify-content:space-between;margin-bottom:12px" class="t-foot"><span>Troppo piano</span><span>Giusto</span><span>Troppo forte</span></div><div class="gauge"><i id="gpos"></i></div><div style="text-align:center;margin-top:20px"><span id="lvPill">${pill('','In ascolto…')}</span></div></div>
+      <div>${specHTML(1)}</div><div id="lvHint"></div>`,dock:`<button class="btn gray" data-a="mgo" data-s="pos" id="lvSkip">Continua comunque</button>`})}
+  if(st==='pos')return scr({nav:{title:'',right:helpBtn},cls:'pad',body:`${steps(3,4)}<div class="head" style="text-align:center"><h1 class="lt">Dove misuriamo?</h1><p class="ls">${M.total} punti, ${Math.round(M.dur()/1000)} secondi ciascuno. Tieni il telefono all'altezza dell'orecchio, da seduto, rivolto verso le casse.</p></div>${mapSVG(0)}`,dock:btn('Inizia dal punto 1','data-a="mrun"')});
+  if(st==='run')return scr({nav:{title:'Punto '+(M.i+1)+' di '+M.total,compact:true,back:false,right:`<button class="gbtn txt" data-a="mgo" data-s="pos">Annulla</button>`},cls:'pad',body:`<div class="head" style="text-align:center"><div class="t-cap">Punto ${M.i+1} di ${M.total}</div><h1 class="lt" style="margin-top:8px">${PT_NAMES[M.i]}</h1></div>
+      <div style="display:grid;place-items:center;padding:4px 0"><div class="ringg" style="width:190px;height:190px">${ringSVG(0,190,12)}<span class="n num" id="rn">${Math.round(M.dur()/1000)}</span></div></div><div>${specHTML(1)}</div><p class="t-sub" style="text-align:center">Resta fermo e in silenzio.</p><div style="max-width:200px;margin:0 auto;width:100%">${mapSVG(M.i)}</div>`});
+  if(st==='between'){
+    const q=M.qc,bad=q&&(q.clip||(q.snr!=null&&q.snr<6)),last=M.i>=M.total;
+    return scr({nav:{title:'Punto '+M.i+' di '+M.total,compact:true,back:false},cls:'pad',body:`<div class="vsl center" style="gap:16px"><div class="checkseal">${ic('check',38,3)}</div><h1 class="lt" style="text-align:center">Punto ${M.i} salvato</h1></div>${mapSVG(last?undefined:M.i)}
+      ${q&&q.clip?banner('bad','alert','<b>Il microfono è andato in saturazione.</b> Abbassa il volume e ripeti il punto.'):q&&q.snr!=null&&q.snr<6?banner('bad','alert','<b>Si sente poco il rumore sopra il fondo.</b> Alza un po\' il volume e ripeti il punto.'):''}
+      <p class="t-body" style="text-align:center">${last?'Hai finito. Ora analizziamo.':'Prossimo: <b>'+PT_NAMES[M.i]+'</b>.'}</p>`,dock:`${btn(last?'Analizza la sala':'Misura il punto '+(M.i+1),'data-a="mnext"')}${btn('Ripeti questo punto','data-a="mrepeat"','plain')}`})}
+  if(st==='ana')return scr({nav:{title:'',back:false},cls:'pad',body:`<div class="head" style="text-align:center;margin-top:30px"><h1 class="lt">Stiamo leggendo la sala</h1></div>
+      <div class="list" id="anaList">${['Media dei punti','Confronto con l\'obiettivo','Calcolo della correzione'].map((t,i)=>`<div class="row" id="ana${i}" style="opacity:.35"><span class="step-dot" style="width:24px;display:grid;place-items:center">${ic('check',20,2.6)}</span><div class="rt"><b>${t}</b></div></div>`).join('')}</div>`});
+  return '';
+},after:()=>{
+  const st=M.stage;
+  if(st==='floorrun')runMeasure();
+  if(st==='floordone')later(()=>{M.stage='level';R.dir='fade';render()},1000);
+  if(st==='level')levelLoop();
+  if(st==='run')runMeasure();
+  if(st==='ana'){[0,1,2].forEach(i=>later(()=>{const e=$('#ana'+i);if(e){e.style.opacity=1;e.querySelector('.step-dot').style.color='var(--tint-text)'}},300+i*500));later(finishAnalysis,1900)}
+}};
+ACT.mHelp=()=>openSheet(`<h2 class="t-title2" style="margin:6px 0 14px">Come funziona</h2>${list([row({tile:'plug',t:'Con un cavo',s:'Dal telefono a un canale libero del mixer, con il fader basso. Il telefono fa il rumore, la sala lo suona, il microfono lo ascolta.'}),row({tile:'sliders',t:'Dal generatore',s:'Se il mixer ha un generatore di rumore rosa, usalo. Il telefono ascolta soltanto.'}),row({tile:'speaker',t:'Senza cavo',s:'Fai suonare una canzone già collegata all\'impianto. Un po\' meno preciso.'}),row({tile:'vol',t:'Su iPhone',s:'Disattiva il tasto silenzioso e porta il volume a metà.'})],'','','ic')}<div style="height:12px"></div>${btn('Chiudi','data-a="closeSheet"','tinted')}`);
+ACT.mgo=d=>{if(Eng.noiseOn&&d.s!=='level'&&d.s!=='pos')Eng.stopNoise();M.stage=d.s;R.dir='fade';render();window.scrollTo(0,0)};
+ACT.mmic=async()=>{
+  try{await Eng.openMic();M.err='';M.stage='floor';R.dir='push';render();window.scrollTo(0,0)}
+  catch(e){const n=e&&e.name,m=e&&e.message;
+    M.err=m==='insecure'?'Il microfono funziona solo da una pagina sicura (https). Apri Accordo dall\'indirizzo https o dall\'icona installata.':n==='NotAllowedError'||n==='SecurityError'?'Il microfono è bloccato. Su iPhone: Impostazioni › Apps › Safari › Microfono, oppure tocca «aA» nella barra e scegli Impostazioni sito web.':n==='NotFoundError'?'Non troviamo un microfono su questo dispositivo.':'Non riusciamo ad aprire il microfono ('+esc(n||m||'errore')+').';
+    M.stage='perm';R.dir='none';render()}
+};
+ACT.mfloor=()=>{M.stage='floorrun';R.dir='fade';render()};
+ACT.mrun=()=>{M.i=0;M.stage='run';R.dir='push';render();window.scrollTo(0,0)};
+ACT.mnext=()=>{if(M.i<M.total){M.stage='run';R.dir='fade';render();window.scrollTo(0,0)}else{Eng.stopNoise();M.stage='ana';R.dir='fade';render()}};
+ACT.mrepeat=()=>{M.i=Math.max(0,M.i-1);M.pts.pop();M.stage='run';R.dir='fade';render()};
+function levelLoop(){
+  if(M.src==='cable'&&!Eng.noiseOn){M.vol=.06;Eng.startNoise(M.vol).catch(()=>{})}
+  let ok=0,t0=performance.now();
+  tmr(()=>{
+    if(!Eng.ready())return;const bp=Eng.bandPow(),l=Eng.level();paintSpec(bp);
+    const snr=M.floor?mean(MID.map(i=>dBp(bp[i])-dBp(M.floor.pow[i]))):14,clip=l.peak>.95;M.snr=snr;
+    if(M.src==='cable'&&Eng.noiseOn){if(clip)M.vol=Math.max(.03,M.vol-.05);else if(snr<14&&M.vol<.7)M.vol=Math.min(.7,M.vol+.02);else if(snr>28)M.vol=Math.max(.03,M.vol-.02);Eng.setNoise(M.vol)}
+    const g=$('#gpos');if(g)g.style.left=clamp(snr/36*100,0,100)+'%';
+    const good=snr>=10&&snr<=28&&!clip,low=snr<10,pl=$('#lvPill');
+    if(pl)pl.innerHTML=good?pill('good','Perfetto'):clip||snr>28?pill('bad','Troppo forte'):pill('','Troppo piano');
+    ok=good?ok+1:0;
+    const hint=$('#lvHint');if(hint&&performance.now()-t0>12000&&!good)hint.innerHTML=banner('bad','alert',low?'<b>Non sentiamo abbastanza rumore.</b> Controlla il cavo, il canale e i fader del mixer, e il volume del telefono.':'<b>Il suono è troppo forte per il microfono.</b> Abbassa il fader.');
+    else if(hint&&good)hint.innerHTML='';
+    if(ok>=14){M.stage='pos';R.dir='fade';render();window.scrollTo(0,0)}
+  },120);
+}
+async function runMeasure(){
+  const floorRun=M.stage==='floorrun',ms=floorRun?(FAST?1000:5000):M.dur(),tot=Math.round(ms/1000),circ=floorRun?2*Math.PI*84:2*Math.PI*89;
+  const r=await measure(ms,(bp,fr,l)=>{paintSpec(bp);const rn=$('#rn');if(rn)rn.textContent=Math.max(0,Math.ceil(tot*(1-fr)));const rg=$('.ringg .rg');if(rg)rg.style.strokeDashoffset=(+rg.dataset.c*(1-fr)).toFixed(1)});
+  if(!r)return;
+  if(floorRun){M.floor=r;M.floorDb=Math.round(20*Math.log10(Math.max(r.rms,1e-6)));M.stage='floordone';R.dir='fade';render();return}
+  M.pts.push(r);M.i++;const snr=M.floor?mean(MID.map(i=>dBp(r.pow[i])-dBp(M.floor.pow[i]))):null;
+  M.qc={snr,clip:r.peak>.98};M.stage='between';R.dir='fade';render();window.scrollTo(0,0);
+}
+function finishAnalysis(){
+  Eng.stopNoise();
+  const q=DB.q,ref=M.ref(),tier=q.extmic?'alta':'base',opt={obj:q.obj,ref:ref==='musica'?'musica':'pink',tier,V:DB.qDone?rt60(q).V:undefined};
+  const a=analyze(M.pts,M.floor,opt),pl=planEq(a,opt);
+  if(M.after&&DB.cur){const e=DB.hist.find(h=>h.id===DB.cur);
+    if(e){e.after={D:a.D.map(v=>+v.toFixed(2)),score:pl.score0,t:Date.now()};save();go('cmp',{id:e.id},{replace:true,dir:'fade'});return}}
+  const e={id:Date.now(),t:Date.now(),score:pl.score0,scoreAfter:pl.score1,D:a.D.map(v=>+v.toFixed(2)),P:pl.P.map(v=>+v.toFixed(2)),SP:a.SP.map(v=>+v.toFixed(1)),T:a.T.map(v=>+v.toFixed(2)),valid:a.valid,cov:a.cov.map(v=>+v.toFixed(1)),clar:+pl.clar.toFixed(1),
+    filters:pl.filters,varia:pl.varia,dips:pl.dips,lf:pl.lf,tier,ref:opt.ref,src:M.src,npts:a.npts,obj:q.obj,q:JSON.parse(JSON.stringify(q)),prog:{}};
+  DB.hist.unshift(e);DB.hist=DB.hist.slice(0,30);DB.cur=e.id;M.res=e;save();R.stack=[];go('res',{id:e.id},{replace:true,dir:'fade'});
+}
+
+/* ---- il tuo suono ---- */
+VIEWS.res={html:p=>{
+  const e=getE(p.id);if(!e)return scr({nav:{},lt:'Nessuna taratura',body:''});
+  const lab=scoreLabel(e.score),top=[...e.filters].sort((a,b)=>b.d-a.d),hasEq=(e.q||DB.q).eqM!=='none';
+  const cov=e.cov||[],cs=cov.length>1?Math.max(...cov)-Math.min(...cov):0,clar=e.clar!==undefined&&e.clar<=-3;
+  const issues=top.slice(0,2).map(f=>ZONE_TXT[f.name]);
+  if(clar)issues.push('Le consonanti arrivano deboli: si sente ma si capisce meno.');
+  if(cs>6)issues.push('Il suono non è uguale in tutta la sala.');
+  const sentence=issues.length?issues.slice(0,2).join(' '):'Suona bene: non serve toccare l\'equalizzatore.';
+  const rows=top.map(f=>row({tile:'target',tc:'gray',t:f.name,s:`${hz(f.f)} · ${ZONE_TXT[f.name]}`,right:sev(f.d>=6?3:f.d>=4?2:1)}));
+  if(clar)rows.push(row({tile:'person',tc:'gray',t:'Consonanti deboli',s:'2–4 kHz sotto il livello giusto. Si risolve sul canale di chi predica.',right:pill('ac','Chiarezza')}));
+  if(cov.length>1)rows.push(row({tile:'group',tc:'gray',t:'Copertura della sala',s:cov.map((v,i)=>PT_NAMES[i].split(',')[0]+' '+(i===0?'0':nf(v))).join(' · ')+' dB',right:pill(cs<=4?'good':cs<=6?'ac':'bad',cs<=4?'Regolare':cs<=6?'Accettabile':'Irregolare')}));
+  if(e.lf.length)rows.push(row({tile:'speaker',tc:'gray',t:'Bassi sotto 100 Hz',s:'Più forti del previsto. Il telefono lì è meno preciso.',right:pill('','Indicativo')}));
+  if(e.varia.length)rows.push(row({tile:'group',tc:'gray',t:'Cambia da posto a posto',s:e.varia.map(v=>hz(v.f)).join(', ')+'. Non si risolve con l\'EQ.'}));
+  if(DB.rt)rows.push(row({tile:'wave',tc:'gray',t:'Riverbero',s:DB.rt.t.toFixed(1).replace('.',',')+' s · l\'EQ non lo risolve',right:pill(rtRate(DB.rt.t)[1],rtRate(DB.rt.t)[0]),a:'data-a="go" data-v="eco"',chev:1}));
+  else rows.push(row({tile:'wave',tc:'gray',t:'Misura il riverbero',s:'Il problema numero uno delle chiese. Tre battiti di mani.',a:'data-a="go" data-v="eco"',chev:1}));
+  const fix=top.length||clar;
+  return scr({nav:{back:false,right:`<button class="gbtn txt" data-a="go" data-v="home">Fine</button>`,title:'Il tuo suono'},lt:'Il tuo suono',ls:sentence,
+    body:`<div class="card hero" style="display:flex;gap:18px;align-items:center">${scoreRing(e.score,104)}<div style="flex:1;min-width:0">${pill(lab[1],lab[0])}<p class="t-body" style="margin-top:10px">${top.length?`Con una piccola correzione può salire a <b class="num">${e.scoreAfter}</b>.`:'Non c\'è niente da correggere sul master.'}</p></div></div>
+    <div class="card tight"><div style="display:flex;justify-content:space-between;align-items:center"><div class="t-head">Come risponde la sala</div><button class="gbtn" style="min-width:36px;height:36px;padding:0" data-a="chartHelp" aria-label="Come leggere il grafico">${ic('help',18,2)}</button></div><p class="t-foot" style="margin-bottom:12px">Lo zero è dove vorresti essere. Tocca il grafico per i valori.</p>${chart({T:e.T,SP:e.SP,spread:1,marks:e.filters.map(f=>({f:f.f,l:f.name})),ser:[{n:'Misurata',v:e.D,c:'var(--l1)'}]})}${e.tier==='base'?`<p class="t-foot" style="margin-top:10px">Misura col telefono: affidabile da circa 100 Hz a 8 kHz. Fuori da lì il tratteggio è indicativo.</p>`:''}</div>
+    ${e.ref==='musica'?banner('info','info','Misura senza rumore rosa: il confronto è con uno spettro medio tipico, quindi meno preciso.'):''}
+    ${e.valid.filter(v=>!v).length>5?banner('bad','alert','Diverse zone sono coperte dal rumore di fondo. Alza il volume del rumore rosa o ripeti in silenzio.'):''}
+    ${list(rows,'Cosa abbiamo trovato','','ic')}`,
+    dock:top.length&&hasEq?`${btn(ic('vol',20,2)+'Ascolta la differenza','data-a="go" data-v="listen"')}${btn('Come sistemarlo','data-a="go" data-v="plan"','tinted')}`:fix?btn('Come sistemarlo','data-a="go" data-v="plan"'):btn('Fine','data-a="go" data-v="home"')})}};
+
+ACT.chartHelp=()=>openSheet(`<h2 class="t-title2" style="margin:6px 0 14px">Come leggere il grafico</h2>${list([row({tile:'target',t:'Lo zero è l\'obiettivo',s:'La linea piatta è il suono che vorresti in sala.'}),row({tile:'trend',t:'Sopra lo zero: troppo forte',s:'Quella zona è troppo spinta. Si risolve abbassando.'}),row({tile:'check',t:'Fascia verde: va bene',s:'Dentro ±3 dB non serve toccare niente.'}),row({tile:'alert',t:'Punto rosso: il problema',s:'Il punto che fa più differenza. Il numero è di quanti dB.'})],'','','ic')}<div style="height:12px"></div>${btn('Ho capito','data-a="closeSheet"','tinted')}`);
+/* ---- ascolta la differenza ---- */
+VIEWS.listen={html:p=>{
+  const e=getE(p.id);if(!e)return '';const needCable=e.src!=='cable';
+  const act=Player.mode==='wet'?1:0;
+  return scr({nav:{title:'Ascolta la differenza',compact:false,right:''},lt:'Ascolta la differenza',ls:needCable?'Collega il telefono al mixer con un cavo per sentirla in sala. Stesso volume nei due casi.':'Il telefono suona nel mixer, con e senza correzione. Stesso volume.',
+    body:`<div class="card tight"><div class="cw-wrap" id="lcw">${chart({T:e.T,act,ser:[{n:'Prima',v:e.D,c:'var(--l1)'},{n:'Dopo',v:e.P,c:'var(--tint-line)'}]})}</div></div>
+    <div class="ab" id="ab"><button class="${act?'':'on'}" data-a="lmode" data-m="dry"><b>Prima</b><small>${e.score}</small></button><button class="${act?'on after':''}" data-a="lmode" data-m="wet"><b>Dopo</b><small>${e.scoreAfter}</small></button></div>
+    <div style="display:grid;place-items:center"><button class="gbtn" id="lplay" data-a="lplay" aria-label="Riproduci" style="width:84px;height:84px;border-radius:42px;background:var(--tint);color:var(--tint-ink);box-shadow:0 8px 28px rgba(245,184,61,.4)">${ic('play',36,2)}</button><p class="t-foot" id="lstate" style="margin-top:12px;text-align:center">Tocca per ascoltare</p></div>
+    ${list([row({tile:'file',tc:'gray',t:'Brano',val:esc(Player.name),a:'data-a="lsrc"',chev:1}),row({tile:'vol',tc:'gray',t:'Volume',right:`<input type="range" id="lvol" min="3" max="100" value="${Math.round(Player.vol*100)}" style="width:150px">`})],'','','ic')}
+    ${banner('info','vol','<b>Parte piano.</b> Tieni il fader del canale del telefono basso e alzalo poco alla volta.')}`,
+    dock:`${btn('Mi piace, sistemiamolo','data-a="listenOk"')}<button class="btn plain" data-a="back">Indietro</button>`})},
+ after:()=>{const v=$('#lvol');if(v)v.addEventListener('input',()=>Player.setVol(v.value/100)); if(Player.playing)syncPlay()}};
+function syncPlay(){const b=$('#lplay'),s=$('#lstate');if(b)b.innerHTML=ic(Player.playing?'pause':'play',36,2);if(s)s.textContent=Player.playing?'In riproduzione · '+(Player.mode==='wet'?'Dopo':'Prima'):'Tocca per ascoltare'}
+ACT.lplay=async()=>{const e=getE();if(Player.playing){Player.stop();syncPlay();return}
+  try{await Player.play(e.filters);e.listened=true;save();syncPlay()}catch(err){toast('Non riesco a riprodurre')}};
+ACT.lmode=d=>{Player.setMode(d.m);const e=getE(),act=d.m==='wet'?1:0;
+  [...$('#ab').children].forEach((b,i)=>{b.classList.toggle('on',i===act);b.classList.toggle('after',i===1&&act===1)});
+  const cw=$('#lcw .cw');if(cw)cw.dataset.act=act;syncPlay()};
+ACT.lsrc=()=>openSheet(`<h2 class="t-title2" style="margin:6px 0 14px">Cosa vuoi ascoltare?</h2><div class="list ic">${row({tile:'vol',t:'Musica d\'esempio',s:'Accordi, basso e ritmo. Dura 16 secondi, in loop.',a:'data-a="lpick" data-k="demo"',chk:Player.kind==='demo'})}${row({tile:'wave',t:'Rumore rosa',s:'Il suono di prova, uguale in tutte le zone.',a:'data-a="lpick" data-k="pink"',chk:Player.kind==='pink'})}${row({tile:'file',t:'Un tuo brano',s:'Scegli un file audio dal telefono.',a:'data-a="lfile"',chev:1})}</div><input type="file" id="lfileIn" accept="audio/*" hidden>`);
+ACT.lpick=async d=>{closeSheet();const was=Player.playing;Player.stop(true);try{await Player.prepare(d.k);if(was)await Player.play(getE().filters)}catch(e){toast('Non riesco a caricarlo')}render(true)};
+ACT.lfile=()=>{const f=$('#lfileIn');f.onchange=async()=>{const file=f.files[0];if(!file)return;closeSheet();Player.stop(true);try{await Player.prepare('file',file);await Player.play(getE().filters)}catch(e){toast('Formato non supportato')}render(true)};f.click()};
+ACT.listenOk=()=>{Player.stop();go('plan')};
+
+/* ---- sistemalo sul mixer ---- */
+VIEWS.plan={html:()=>{
+  const e=getE();if(!e)return '';const q=e.q||DB.q,P=e.prog||{},srcs=sourcesFromQ(q);
+  const items=[];
+  if(q.eqM!=='none')items.push(['eq','EQ del master',e.filters.length?`${e.filters.length} ${e.filters.length===1?'banda':'bande'} da girare · il cambio più grande`:'Niente da correggere','sliders',1]);
+  items.push(['ch','Microfoni e strumenti',DB.qDone?`${srcs.length} ricette`:'Racconta la sala per le ricette','guitar']);
+  items.push(['ring','Fischio del microfono','Ring-out guidato · 3 minuti','mic']);
+  items.push(['tips','Consigli economici',DB.qDone?'Dal gratuito al più utile':'Racconta la sala per i consigli','bulb']);
+  const rows=items.map(([k,t,s,i,first],n)=>row({lead:`<span class="tile ${P[k]?'green':first?'':'gray'}">${P[k]?ic('check',18,2.8):`<b style="font:700 15px var(--round)">${n+1}</b>`}</span>`,t,s,a:`data-a="planGo" data-k="${k}"`,chev:1}));
+  return scr({nav:{title:'Sistemalo sul mixer'},lt:'Sistemalo sul mixer',ls:'Nell\'ordine giusto. Il primo passo cambia di più.',body:list(rows,'','Tocca un passo per cominciare.','ic'),
+    dock:`${btn(ic('refresh',20,2)+'Rimisura e confronta','data-a="remeasure"')}${btn('Salva la scheda','data-a="go" data-v="sheet"','tinted')}`})}};
+ACT.planGo=d=>{if((d.k==='ch'||d.k==='tips')&&!DB.qDone){go('room',{s:0,then:d.k});return}go(d.k,{i:0})};
+const mark=k=>{const e=getE();if(e){e.prog=e.prog||{};e.prog[k]=true;save()}};
+
+/* master, banda per banda */
+VIEWS.eq={html:p=>{
+  const e=getE(),q=e.q||DB.q,i=p.i||0,fl=e.filters;
+  if(q.eqM==='none'||!fl.length)return scr({nav:{title:'EQ del master'},lt:q.eqM==='none'?'Il master non ha EQ':'Niente da correggere',ls:q.eqM==='none'?'Sistemiamo il resto con le ricette, il ring-out e i consigli.':'Nessuna zona supera la soglia in modo affidabile. Meglio non toccare niente.',body:'',dock:btn('Avanti','data-a="eqdone"')});
+  const x=fl[i];let visual='';
+  if(q.eqM==='peq')visual=`<div class="big3"><div><div class="lab">Frequenza</div><b>${x.f>=1000?(x.f/1000).toString().replace('.',',')+'k':x.f}</b><small>Hz</small></div><div><div class="lab">Guadagno</div><b>${nf(x.g)}</b><small>dB</small></div><div><div class="lab">Larghezza Q</div><b>${String(x.q).replace('.',',')}</b><small>${x.q<2?'larga':'stretta'}</small></div></div>`;
+  else if(q.eqM==='geq'){const iso=[50,63,80,100,125,160,200,250,315,400,500,630,800,1000,1250,1600,2000,2500,3150,4000,5000,6300,8000,10000,12500],vals=iso.map(f=>({f,g:Math.round(bell(f,x))})),idx=vals.map((v,k)=>v.g?k:-1).filter(k=>k>=0),a=Math.max(0,(idx[0]??0)-1),b=Math.min(iso.length,(idx[idx.length-1]??0)+2);
+    visual=`<div class="card"><div style="display:flex;gap:4px">${vals.slice(a,b).map(v=>`<div class="fader ${v.g?'on':''}"><span>${v.g?nf0(v.g):'0'}</span><div class="tr"><div class="th" style="top:${50-(v.g/12)*50}%"></div></div><small>${kl(v.f)}</small></div>`).join('')}</div></div><p class="t-foot">Abbassa solo i cursori colorati, delle quantità indicate.</p>`}
+  else{const ge=x.g*.6,hr=12+(ge/15)*5,mid=x.f>=200&&x.f<=3000,knob=x.f<200?'Bassi':mid?'Medi':'Alti',clock=h=>{const hh=Math.floor(h),mm=Math.round((h-hh)*2)*30;return 'ore '+hh+(mm?':30':'')},ang=((hr-12)/5)*150;
+    visual=`<div class="card"><div class="knobs">${['Bassi','Medi','Alti'].map(n=>`<div class="knob ${n===knob?'on':''}"><div class="kn" style="--a:${n===knob?ang:0}deg"><i></i></div><b>${n}</b><small>${n===knob?clock(hr)+' · circa '+nf(ge)+' dB':'ore 12'}</small></div>`).join('')}</div></div><p class="t-foot">Con tre manopole la correzione è approssimata.</p>`}
+  const what={Fango:'Abbassa la voce ovattata: i medi-bassi sono troppo forti.',Durezza:'Togli un po\' di durezza: le S e le chitarre pungono.',Rimbombo:'Il basso rimbomba.',['Bassi gonfi']:'I bassi coprono il resto.',Scatolato:'Il suono è scatolato: togli un po\' di questa zona.',Nasale:'La voce suona nasale.',Sibilanti:'Le S sono taglienti.',Frizzante:'Gli alti sono troppo aperti.'}[x.name]||'';
+  return scr({nav:{title:x.name,compact:false},lt:`${x.name}`,ls:what,body:`${steps(i+1,fl.length)}${visual}${banner('info','refresh','<b>Confronta.</b> Premi il tasto «EQ» del master per escluderlo e riascolta. Deve suonare più aperto e più pulito.')}`,
+    dock:`${btn(i>=fl.length-1?'Fatto':'Fatto, prossima banda','data-a="eqnext"')}${btn('Salta questa banda','data-a="eqnext"','plain')}`})}};
+ACT.eqnext=()=>{const e=getE(),i=R.p.i||0;if(i>=e.filters.length-1)ACT.eqdone();else{R.p={i:i+1};R.dir='push';render();window.scrollTo(0,0)}};
+ACT.eqdone=()=>{mark('eq');go('verify',{},{replace:true})};
+const _bk=back;back=function(){if(R.v==='eq'&&(R.p.i||0)>0){R.p={i:R.p.i-1};R.dir='pop';render();return}_bk()};ACT.back=()=>back();
+VIEWS.verify={html:()=>scr({nav:{back:false,right:`<button class="gbtn txt" data-a="go" data-v="plan">Più tardi</button>`},cls:'pad',body:`<div class="vsl center" style="gap:18px;margin-top:20px"><div class="checkseal">${ic('check',38,3)}</div><div><h1 class="lt" style="text-align:center">Fatto.</h1><p class="ls" style="text-align:center">Ora rimisuriamo gli stessi punti per vedere cosa è cambiato davvero.</p></div></div>`,dock:`${btn('Rimisura la sala','data-a="remeasure"')}`})};
+
+/* ---- microfoni e strumenti (ricette) ---- */
+VIEWS.ch={html:()=>{const e=getE(),q=e.q||DB.q,L=sourcesFromQ(q);
+  return scr({nav:{title:'Microfoni e strumenti'},lt:'Microfoni e strumenti',ls:'Valori di partenza. Poi ascolta e correggi a orecchio.',body:`${q.eqC==='none'?banner('info','info','Il tuo mixer non ha EQ sui canali: conta il livello d\'ingresso.'):''}${list(L.map(id=>row({tile:REC[id].ic,t:REC[id].n,a:`data-a="recipe" data-id="${id}"`,chev:1})),'','','ic')}`,dock:btn('Fatto','data-a="chdone"')})}};
+ACT.chdone=()=>{mark('ch');back()};
+function recipeSheet(id){const r=REC[id],q=(getE()&&getE().q)||DB.q,Ls=recipeLines(r,q.eqC);
+  openSheet(`<div style="display:flex;gap:14px;align-items:center;margin:6px 0 16px">${tile(r.ic,'lg')}<h2 class="t-title2">${r.n}</h2></div>${list(Ls.map(l=>row({t:l.t,s:l.d})))}${r.note?`<p class="t-foot" style="margin:12px 4px 4px">${r.note}</p>`:''}<div style="height:14px"></div>${btn('Chiudi','data-a="closeSheet"','tinted')}`)}
+ACT.recipe=d=>recipeSheet(d.id);
+
+/* ---- consigli ---- */
+const tips=e=>tipsFor(e.q||DB.q,e);
+const tipLib=t=>/Tende/.test(t)?'tende':/Pannelli/.test(t)?'pannelli':/Tappeto/.test(t)?'tappeti':/sub/.test(t)?'sub':/Schermo/.test(t)?'schermo':/ping/.test(t)?'flutter':/uguale in tutta/.test(t)?'casse':'';
+VIEWS.tips={html:()=>{const e=getE()||{lf:[],D:null},t=tips(e);
+  return scr({nav:{title:'Consigli'},lt:'Consigli',ls:'In ordine di costo, dal gratuito al più utile.',body:`${t.length?list(t.map(x=>row({tile:x.ic,tc:x.c===0?'green':'gray',t:x.t,a:tipLib(x.t)?`data-a="acu" data-id="${tipLib(x.t)}"`:'',chev:tipLib(x.t)?1:0,s:x.w+`<span style="display:flex;gap:12px;align-items:center;margin-top:10px">${pill(x.c===0?'good':'',x.cost)}${sev(x.s)}</span>`})),'','Stime indicative. I puntini mostrano quanto aiuta.','ic'):'<p class="t-body">Nessun consiglio particolare per questa sala.</p>'}${DB.qDone?'':btn('Racconta la sala','data-a="roomStart"','tinted')}`,dock:getE()?btn('Fatto','data-a="tipsdone"'):''})}};
+ACT.tipsdone=()=>{mark('tips');back()};ACT.roomStart=()=>go('room',{s:0,then:'tips'});
+
+/* ---- racconta la sala ---- */
+const RS=4;
+VIEWS.room={html:p=>{
+  const q=DB.q,s=p.s||0;let lt='',ls='',b='';
+  if(s===0){lt='Com\'è fatta la sala?';ls='Tre misure. Non hai un metro? Conta i passi: uno vale circa 75 cm.';const r=rt60(q),lab=rtLabel(r.t);
+    b=`<div class="list">${stepper('Lunghezza','Dal palco al fondo','L',q.L,'m')}${stepper('Larghezza','Da parete a parete','W',q.W,'m')}${stepper('Altezza','Al soffitto','Hh',q.Hh,'m')}</div><div class="card"><div class="t-cap">Riverbero stimato</div><div style="display:flex;justify-content:space-between;align-items:center;margin-top:8px"><span class="bignum" style="font-size:44px">${r.t.toFixed(1).replace('.',',')}<small>s</small></span>${pill(lab[1],lab[0])}</div><p class="t-foot" style="margin-top:8px">Ideale per la parola: sotto 1,2 s. Per misurarlo davvero c'è il test dell'eco.</p></div>`}
+  if(s===1){lt='Di cosa sono fatte le superfici?';ls='Una scelta per ogni gruppo.';const sg=(h,k,arr)=>list(arr.map(([v,t])=>row({t,a:`data-a="set" data-k="${k}" data-v="${v}"`,chk:q[k]===v})),h);
+    b=`${sg('Pavimento','floor',[['hard','Piastrelle o cemento'],['wood','Legno'],['carpet','Moquette']])}${sg('Pareti','walls',[['plaster','Intonaco'],['drywall','Cartongesso'],['glass','Molte vetrate']])}${sg('Soffitto','ceil',[['hard','Duro e alto'],['acoustic','Fonoassorbente'],['beams','Travi in legno']])}${list([['tende','Tende'],['sedie','Sedie imbottite'],['pannelli','Pannelli acustici'],['tappeti','Tappeti']].map(([k,t])=>row({t,right:`<button class="tgl ${q.ex.includes(k)?'on':''}" data-a="ex" data-v="${k}" aria-label="${t}" aria-pressed="${q.ex.includes(k)}"></button>`})),'In sala c\'è')}`}
+  if(s===2){lt='Cosa suonate?';ls='Attiva quello che c\'è. Con + e − scegli quanti.';const S=q.src;
+    const it=(i,t,k)=>row({tile:i,tc:S[k]>0?'':'gray',t,right:S[k]>0?`<div style="display:flex;align-items:center;gap:10px"><button class="gbtn" style="min-width:36px;height:36px;padding:0" data-a="cnt" data-k="${k}" data-d="-1">${ic('minus',16,2.4)}</button><b class="num" style="min-width:18px;text-align:center">${S[k]}</b><button class="gbtn" style="min-width:36px;height:36px;padding:0" data-a="cnt" data-k="${k}" data-d="1">${ic('plus',16,2.4)}</button></div>`:`<button class="gbtn" style="min-width:36px;height:36px;padding:0" data-a="cnt" data-k="${k}" data-d="1">${ic('plus',16,2.4)}</button>`});
+    b=`${list([row({tile:'drum',tc:S.drum==='ac'?'':'gray',t:'Batteria acustica',right:`<button class="tgl ${S.drum==='ac'?'on':''}" data-a="drum" data-v="ac" aria-label="Batteria acustica"></button>`}),row({tile:'drum',tc:S.drum==='el'?'':'gray',t:'Batteria elettronica',right:`<button class="tgl ${S.drum==='el'?'on':''}" data-a="drum" data-v="el" aria-label="Batteria elettronica"></button>`}),it('guitar','Basso','bass'),it('guitar','Chitarra elettrica','egtr'),it('guitar','Chitarra acustica','agtr'),it('keys','Tastiera o piano','keys'),it('person','Voci soliste','vox'),it('group','Coro','choir')],'','','ic')}${list([row({tile:'speaker',tc:q.sub?'':'gray',t:'Ho un sub',right:`<button class="tgl ${q.sub?'on':''}" data-a="subt" aria-label="Sub"></button>`}),row({tile:'speaker',tc:q.mon==='wedge'?'':'gray',t:'Monitor di palco',right:`<button class="tgl ${q.mon==='wedge'?'on':''}" data-a="montog" aria-label="Monitor"></button>`})],'Palco','','ic')}${list([row({tile:'group',tc:q.src.jolly?'':'gray',t:'Testimonianze e preghiera con palmari',right:`<button class="tgl ${q.src.jolly?'on':''}" data-a="jollyt" aria-label="Palmari"></button>`}),row({tile:'headset',tc:q.src.interp?'':'gray',t:'Traduzione dal vivo',right:`<button class="tgl ${q.src.interp?'on':''}" data-a="intt" aria-label="Traduzione"></button>`})],'Nel culto','','ic')}`}
+  if(s===3){lt='Che microfono usa chi predica?';ls='Decide quanto serve il ring-out.';b=list([['headset','Headset','Sulla testa, mani libere','headset'],['lav','Lavalier','Clip sul vestito','mic'],['hand','Palmare','In mano','mic'],['lectern','Leggio','Collo d\'oca fisso','mic']].map(([k,t,sub,i])=>row({tile:i,tc:q.src.preacher===k?'':'gray',t,s:sub,a:`data-a="pre" data-v="${k}"`,chk:q.src.preacher===k})),'','','ic')+`<div class="list">${row({tile:'info',tc:'gray',t:'Ho un microfono di misura',right:`<button class="tgl ${q.extmic?'on':''}" data-a="extmic" aria-label="Microfono di misura"></button>`})}</div><p class="t-foot" style="padding:0 16px">Con un microfono di misura i consigli arrivano anche sui bassi.</p>`}
+  return scr({nav:{title:'Racconta la sala'},lt,ls,body:`${steps(s+1,RS)}${b}`,dock:btn(s<RS-1?'Avanti':'Fatto','data-a="roomNext"')})}};
+ACT.set=d=>{DB.q[d.k]=d.v;save();render(true)};
+ACT.ex=d=>{const a=DB.q.ex,i=a.indexOf(d.v);i<0?a.push(d.v):a.splice(i,1);save();render(true)};
+ACT.num=d=>{const lim={L:[6,60],W:[4,40],Hh:[2.5,20]}[d.k],st=d.k==='Hh'?.5:1;DB.q[d.k]=clamp(+(DB.q[d.k]+st*+d.d).toFixed(1),lim[0],lim[1]);save();render(true)};
+ACT.drum=d=>{DB.q.src.drum=DB.q.src.drum===d.v?'none':d.v;save();render(true)};
+ACT.cnt=d=>{const S=DB.q.src;S[d.k]=clamp(S[d.k]+ +d.d,0,12);save();render(true)};
+ACT.pre=d=>{DB.q.src.preacher=d.v;save();render(true)};
+ACT.jollyt=()=>{DB.q.src.jolly=!DB.q.src.jolly;save();render(true)};ACT.intt=()=>{DB.q.src.interp=!DB.q.src.interp;save();render(true)};
+ACT.subt=()=>{DB.q.sub=!DB.q.sub;save();render(true)};ACT.montog=()=>{DB.q.mon=DB.q.mon==='wedge'?'none':'wedge';save();render(true)};ACT.extmic=()=>{DB.q.extmic=!DB.q.extmic;save();render(true)};
+ACT.roomNext=()=>{const s=R.p.s||0;if(s<RS-1){R.p=Object.assign({},R.p,{s:s+1});R.dir='push';render();window.scrollTo(0,0)}else{DB.qDone=true;save();const t=R.p.then||'tips';go(t,{i:0},{replace:true})}};
+const _bk2=back;back=function(){if(R.v==='room'&&(R.p.s||0)>0){R.p=Object.assign({},R.p,{s:R.p.s-1});R.dir='pop';render();return}_bk2()};ACT.back=()=>back();
+
+/* ---- ring-out ---- */
+const RO={list:[],cand:null,hist:[],run:false};
+VIEWS.ring={html:()=>scr({nav:{title:'Ring-out'},lt:'Ring-out',ls:'Metti il telefono dove usa il microfono chi predica. Alza piano il volume del microfono finché fischia.',body:`
+  <div class="card"><div class="t-cap">Fischio trovato</div><div style="display:flex;justify-content:space-between;align-items:center;margin:8px 0 16px"><span class="bignum" style="font-size:44px" id="roF">—</span><span id="roP">${pill('','In ascolto')}</span></div>${specHTML(0)}</div><div id="roCut"></div><div id="roList"></div>`,
+  dock:`${btn(RO.run?'Ferma l\'ascolto':'Inizia ad ascoltare','data-a="roToggle"',RO.run?'gray':'')}${btn('Fatto','data-a="rodone"','plain')}`}),
+ after:()=>{if(RO.run)roLoop();roDraw()}};
+ACT.roToggle=async()=>{if(RO.run){RO.run=false;render(true);return}try{await Eng.openMic();RO.run=true;RO.hist=[];render(true)}catch(e){toast('Microfono non disponibile')}};
+function roLoop(){
+  tmr(()=>{
+    if(!Eng.ready())return;Eng.an.getFloatFrequencyData(Eng.fbuf);const fb=Eng.fbuf,bh=Eng.binHz,k0=Math.round(150/bh),k1=Math.round(10000/bh);
+    let pk=-1e9,pi=0;for(let k=k0;k<k1;k++)if(fb[k]>pk){pk=fb[k];pi=k}
+    let sum=0,c=0;for(let k=Math.max(k0,pi-40);k<Math.min(k1,pi+40);k++)if(Math.abs(k-pi)>3){sum+=Math.pow(10,fb[k]/10);c++}
+    const around=dBp(sum/Math.max(c,1)),prom=pk-around,f=pi*bh;
+    paintSpec(Eng.bandPow(),F.findIndex(fc=>f>=fc*Math.pow(2,-1/6)&&f<fc*Math.pow(2,1/6)));
+    RO.hist.push({f,prom,pk});if(RO.hist.length>10)RO.hist.shift();
+    const stable=RO.hist.length>=8&&RO.hist.every(h=>h.prom>14&&Math.abs(h.f-f)/f<.03&&h.pk>-85);
+    const fe=$('#roF'),pe=$('#roP');
+    if(stable){RO.cand=Math.round(f/(f<1000?5:25))*(f<1000?5:25);if(fe)fe.textContent=hz(RO.cand);if(pe)pe.innerHTML=pill('bad','Fischia');
+      $('#roCut').innerHTML=`<div class="big3"><div><div class="lab">Frequenza</div><b>${RO.cand>=1000?(RO.cand/1000).toString().replace('.',',')+'k':RO.cand}</b><small>Hz</small></div><div><div class="lab">Taglio</div><b>−6</b><small>dB</small></div><div><div class="lab">Q</div><b>8</b><small>stretta</small></div></div><div style="margin-top:14px">${btn('Ho tagliato questa frequenza','data-a="roAdd"','tinted')}</div>`}
+    else{RO.cand=null;if(fe)fe.textContent='—';if(pe)pe.innerHTML=pill('','In ascolto');const c2=$('#roCut');if(c2)c2.innerHTML=''}
+  },120);
+}
+ACT.roAdd=()=>{if(RO.cand&&!RO.list.includes(RO.cand)){RO.list.push(RO.cand);roDraw();toast('Taglio aggiunto')}};
+function roDraw(){const el=$('#roList');if(!el)return;el.innerHTML=RO.list.length?list(RO.list.map(f=>row({t:hz(f),val:'−6 dB · Q 8'})),'Tagli fatti · '+RO.list.length+' di 3',RO.list.length>=3?'Dopo tre tagli, avvicina il microfono alla bocca: l\'EQ non basta più.':''):''}
+ACT.rodone=()=>{RO.run=false;mark('ring');const e=getE();if(e){e.ringList=RO.list.slice();save()}back()};
+
+/* ---- prima e dopo ---- */
+VIEWS.cmp={html:p=>{
+  const e=getE(p.id);if(!e||!e.after)return '';const a=e.after,d=a.score-e.score;
+  const rows=e.filters.map(f=>{const i=F.indexOf(f.f);return row({t:f.name,s:hz(f.f),right:`<div style="text-align:right"><b class="num">${nf(e.D[i])} → ${nf(a.D[i])}</b><div style="margin-top:4px">${Math.abs(a.D[i])<=3?pill('good','Ok'):pill('','Ancora')}</div></div>`})});
+  return scr({nav:{back:false,title:'Prima e dopo',right:`<button class="gbtn txt" data-a="go" data-v="home">Fine</button>`},lt:d>=3?'Si sente.':d<=-3?'Non è andata meglio':'Quasi uguale',ls:d>=3?'Il suono è migliorato davvero. Questa è la misura, non una previsione.':d<=-3?'Controlla di aver misurato negli stessi punti e con lo stesso volume.':'Se hai già girato le manopole, controlla di aver misurato negli stessi punti e con lo stesso volume.',
+    body:`<div class="card hero" style="text-align:center;padding:28px 20px"><div style="display:flex;align-items:center;justify-content:center;gap:18px"><span class="bignum" style="color:var(--l3);font-size:48px">${e.score}</span><span class="ter">${ic('chev',26,2.4)}</span><span class="bignum" data-count="${a.score}" id="cmpN">${a.score}</span></div>${d>=1?`<div style="margin-top:14px">${pill('good','+'+d+' punti')}</div>`:''}</div>
+    <div class="card tight"><div class="t-head" style="margin-bottom:12px">La sala, prima e dopo</div>${chart({T:e.T,ser:[{n:'Prima',v:e.D,c:'var(--l3)'},{n:'Dopo',v:a.D,c:'var(--tint-line)'}],label:'Prima e dopo'})}</div>
+    ${rows.length?list(rows,'Le zone che abbiamo corretto'):''}`,dock:btn('Salva la scheda','data-a="go" data-v="sheet"')+btn('Scopri altro','data-a="go" data-v="home"','tinted')})},
+ after:()=>{const n=$('#cmpN');if(n&&!matchMedia('(prefers-reduced-motion: reduce)').matches){const t=+n.dataset.count,t0=performance.now(),f=x=>{const k=Math.min(1,(x-t0)/1100),e=1-Math.pow(1-k,3);n.textContent=Math.round(getE().score+(t-getE().score)*e);if(k<1)requestAnimationFrame(f)};requestAnimationFrame(f)}}};
+
+/* ---- scheda ---- */
+function sheetText(e){
+  const q=e.q,L=[];L.push(`Accordo · ${DB.set.name||'La mia chiesa'}${DB.set.sala?' · '+DB.set.sala:''}`);L.push(new Date(e.t).toLocaleDateString('it-IT',{day:'numeric',month:'long',year:'numeric'}));
+  L.push(`Punteggio: ${e.score}/100${e.after?' → '+e.after.score+'/100':''}`);L.push('');
+  if(q.eqM!=='none'){L.push('EQ MASTER');e.filters.forEach(f=>L.push(`• ${hz(f.f)}  ${nf(f.g)} dB  Q ${String(f.q).replace('.',',')}  (${f.name})`));if(!e.filters.length)L.push('• nessuna correzione')}
+  if(e.ringList&&e.ringList.length){L.push('');L.push('RING-OUT');e.ringList.forEach(f=>L.push(`• ${hz(f)}  −6 dB  Q 8`))}
+  if(DB.qDone){L.push('');L.push('CANALI');sourcesFromQ(q).forEach(id=>{const r=REC[id];L.push(`• ${r.n}: ${r.hpf?'taglia i bassi a '+r.hpf+' Hz':'—'}${r.cuts[0]?'; '+nf(r.cuts[0][1])+' dB a '+hz(r.cuts[0][0]):''}`)})}
+  return L.join('\n');
+}
+VIEWS.sheet={html:()=>{const e=getE();if(!e)return '';return scr({nav:{title:'La scheda'},lt:'Per il culto',ls:'Le impostazioni da riprodurre sul mixer.',body:`<pre class="pre" id="sheetTxt">${esc(sheetText(e))}</pre>`,dock:`${btn(ic('share',20,2)+'Condividi','data-a="share"')}${btn('Promemoria per i volontari','data-a="shareTeam"','tinted')}`})}};
+ACT.share=async()=>{const t=sheetText(getE());try{if(navigator.share)await navigator.share({text:t});else{await navigator.clipboard.writeText(t);toast('Copiato')}}catch(e){}};
+ACT.copy=async()=>{try{await navigator.clipboard.writeText(sheetText(getE()));toast('Copiato')}catch(e){const r=document.createRange();r.selectNode($('#sheetTxt'));getSelection().removeAllRanges();getSelection().addRange(r)}};
+
+/* ---- storico, ricette, glossario ---- */
+VIEWS.hist={html:()=>scr({nav:{title:'Storico'},lt:'Storico',ls:DB.hist.length?'Tocca una taratura per rivederla.':'Le tarature compariranno qui.',body:DB.hist.length?list(DB.hist.map(h=>row({lead:`<span class="num" style="font:700 24px var(--round);min-width:44px">${h.after?h.after.score:h.score}</span>`,t:new Date(h.t).toLocaleDateString('it-IT',{day:'numeric',month:'long',year:'numeric'}),s:`${h.npts} punti · ${h.tier==='alta'?'microfono di misura':'telefono'}${h.after?' · rimisurata':''}`,a:`data-a="open" data-id="${h.id}"`,chev:1}))):''})};
+ACT.open=d=>{DB.cur=+d.id;save();go('res',{id:+d.id})};
+VIEWS.rec={html:()=>scr({nav:{title:'Ricette'},lt:'Ricette',ls:'Valori di partenza per ogni canale, adattati al tuo EQ.',body:list(Object.keys(REC).map(id=>row({tile:REC[id].ic,t:REC[id].n,a:`data-a="recipe" data-id="${id}"`,chev:1})),'','','ic')})};
+const GL=[['Hz (hertz)','Quanto è grave o acuto un suono.','50 Hz è un rimbombo, 250 Hz è la parte calda della voce, 4.000 Hz è il «sibilo» delle S.'],['dB (decibel)','Quanto è forte un suono, o di quanto lo cambi.','1 dB si nota appena, 3 dB si sente bene, 6 dB è tanto.'],['Q (larghezza)','Quanto è larga la zona che l\'equalizzatore tocca.','Q basso = zona larga e morbida. Q alto = zona stretta, come un bisturi.'],['Equalizzatore (EQ)','Le manopole che cambiano il tono del suono.','Come i bassi e gli alti di una radio, ma molto più precisi.'],['Fischio (larsen, feedback)','Il microfono sente le casse e il suono si rinforza da solo.','Si risolve con un taglio stretto sulla frequenza che fischia, o avvicinando il microfono.'],['Riverbero','Quanto a lungo il suono resta in sala dopo che smetti di parlare.','In una sala con eco, le parole si sovrappongono e si capisce meno.'],['Filtro dei bassi (low-cut)','Taglia le frequenze basse che non servono.','Su una voce toglie rimbombi e colpi di fiato senza cambiare il timbro.'],['Rumore rosa','Un suono di prova con la stessa energia in ogni zona.','Il «fruscio» che usiamo per misurare la sala.'],['Gain (ingresso)','Quanto amplifichi il microfono appena entra nel mixer.','Si regola a inizio culto. Dopo si muove solo il fader.'],['Fader','Il cursore che alza o abbassa il volume di un canale.','Giù è silenzio, su è più forte. Lo zero è la posizione di riferimento.'],['Master','Il volume generale di tutto quello che esce dalle casse.','Un piccolo movimento cambia tutto: muovilo con calma.'],['DI (cassetta diretta)','Un\'interfaccia che porta il suono di uno strumento al mixer senza microfono.','Si usa per tastiere, basso e chitarre acustiche.'],['Alimentazione phantom (48 V)','Corrente che alcuni microfoni a condensatore richiedono.','Se un microfono a condensatore non si sente, controlla il tasto 48 V.'],['Compressore','Riduce la differenza tra i suoni più forti e quelli più deboli.','Rende la voce più costante senza dover muovere il fader di continuo.'],['Monitor di palco','Le casse o le cuffie con cui i musicisti si sentono.','Se sono troppo forti, entrano nei microfoni e fanno fischiare.']];
+VIEWS.gloss={html:()=>scr({nav:{title:'Glossario'},lt:'Glossario',ls:'Le parole, spiegate semplici.',body:list(GL.map((g,i)=>row({t:g[0],s:g[1],a:`data-a="gl" data-i="${i}"`,chev:1})))})};
+ACT.gl=d=>{const g=GL[+d.i];openSheet(`<h2 class="t-title2" style="margin:6px 0 8px">${g[0]}</h2><p class="t-body" style="margin-bottom:12px">${g[1]}</p><div class="banner info">${ic('bulb',22,1.9)}<span>${g[2]}</span></div><div style="height:16px"></div>${btn('Chiudi','data-a="closeSheet"','tinted')}`)};
+
+/* ---- impostazioni ---- */
+const DAYS=['Dom','Lun','Mar','Mer','Gio','Ven','Sab'];
+VIEWS.set={html:()=>scr({nav:{title:'Impostazioni'},lt:'Impostazioni',body:`
+  <div><div class="hdr">Aspetto</div>${seg([['Automatico',DB.set.theme==='auto','data-a="theme" data-v="auto"'],['Chiaro',DB.set.theme==='light','data-a="theme" data-v="light"'],['Scuro',DB.set.theme==='dark','data-a="theme" data-v="dark"']])}</div>
+  <div><div class="hdr">Dimensione del testo</div>${seg([['Normale',DB.set.text!=='large','data-a="textsz" data-v="normal"'],['Grande',DB.set.text==='large','data-a="textsz" data-v="large"']])}</div>
+  <div><div class="hdr">Quanto sei pratico</div>${seg([['Alle prime armi',DB.set.role!=='exp','data-a="rolesw" data-v="new"'],['Me la cavo',DB.set.role==='exp','data-a="rolesw" data-v="exp"']])}</div>
+  <div class="vsl" style="gap:10px"><div class="hdr" style="padding-bottom:0">La tua chiesa</div><input class="input" id="sName" value="${esc(DB.set.name)}" placeholder="Nome della chiesa" autocomplete="off"><input class="input" id="sSala" value="${esc(DB.set.sala)}" placeholder="Nome della sala" autocomplete="off"></div>
+  <div><div class="hdr">Giorni del culto</div><div class="chips">${DAYS.map((d,i)=>`<button class="chip ${(DB.set.days||[0]).includes(i)?'on':''}" data-a="dayt" data-i="${i}">${d}</button>`).join('')}</div><p class="t-foot" style="padding:8px 4px 0">Il giorno prima e il giorno stesso ti ricordiamo il controllo.</p></div>
+  ${list([row({tile:'sliders',tc:'gray',t:'Il mio mixer',val:mixName(DB.q.mixType),a:'data-a="mixsheet"',chev:1}),row({tile:'bulb',tc:'gray',t:'Racconta la sala',s:DB.qDone?'Compilata':'Non ancora',a:'data-a="roomStart2"',chev:1}),row({tile:'mic',tc:'gray',t:'Prova il microfono',a:'data-a="go" data-v="diag"',chev:1}),row({tile:'file',tc:'gray',t:'Esporta i dati',a:'data-a="export"',chev:1})],'Altro','Tutti i dati sono salvati solo su questo telefono.','ic')}
+  <button class="btn danger" data-a="wipe">Cancella tutto</button><p class="t-foot" style="text-align:center">Accordo · prototipo 0.5</p>`,dock:btn('Salva','data-a="sset"')})};
+ACT.theme=d=>{DB.set.theme=d.v;save();applyTheme();render(true)};
+ACT.textsz=d=>{DB.set.text=d.v;save();applyTheme();render(true)};
+ACT.rolesw=d=>{DB.set.role=d.v;save();render(true)};
+ACT.dayt=d=>{const a=DB.set.days||[0],i=+d.i,k=a.indexOf(i);k<0?a.push(i):a.splice(k,1);DB.set.days=a;save();render(true)};
+ACT.mixsheet=()=>openSheet(`<h2 class="t-title2" style="margin:6px 0 14px">Il tuo mixer</h2>${list(MIXHELP.map(m=>row({tile:m.i,tc:DB.q.mixType===m.k?'':'gray',t:m.t,s:m.s,a:`data-a="mixpick" data-k="${m.k}"`,chk:DB.q.mixType===m.k})),'','','ic')}<div style="height:12px"></div>${btn('Chiudi','data-a="closeSheet"','tinted')}`);
+ACT.mixpick=d=>{applyMix(d.k);save();closeSheet();render(true)};
+ACT.sset=()=>{DB.set.name=$('#sName').value.trim();DB.set.sala=$('#sSala').value.trim();save();back()};
+ACT.roomStart2=()=>go('room',{s:0,then:'home'});
+ACT.export=async()=>{const t=JSON.stringify(DB,null,1);try{await navigator.clipboard.writeText(t);toast('Dati copiati')}catch(e){prompt('Copia',t)}};
+let wipeArm=false;ACT.wipe=t=>{if(!wipeArm){wipeArm=true;t.textContent='Tocca ancora per confermare';return}try{localStorage.removeItem('accordo.v2')}catch(e){}location.reload()};
+
+/* ---- prova il microfono ---- */
+VIEWS.diag={html:()=>scr({nav:{title:'Prova il microfono'},lt:'Prova il microfono',ls:'Controlla che il telefono senta bene e che i filtri automatici siano spenti.',body:`
+  ${list([row({t:'Pagina sicura (https)',val:window.isSecureContext?'Sì':'No'}),row({t:'App installata',val:standalone?'Sì':'No'}),row({t:'Campionamento',val:'<span id="dSR">—</span>'}),row({t:'Cancellazione eco',right:'<span id="dEC">—</span>'}),row({t:'Riduzione rumore',right:'<span id="dNS">—</span>'}),row({t:'Controllo guadagno',right:'<span id="dAG">—</span>'}),row({t:'Livello',val:'<span id="dLv">—</span>'})])}
+  <div id="dWarn"></div><div class="card">${specHTML(1)}</div>
+  <div class="list">${row({tile:'vol',tc:'gray',t:'Rumore rosa di prova',right:`<input type="range" id="dVol" min="5" max="100" value="25" style="width:140px">`})}</div>`,
+  dock:`${btn(Eng.ready()?'Microfono attivo':'Attiva il microfono','data-a="dmic"',Eng.ready()?'gray':'')}${btn(Eng.noiseOn?'Ferma il rumore':'Prova il rumore rosa','data-a="dnoise"','tinted')}`}),
+ after:()=>{
+  const s=Eng.settings||{};const sr=$('#dSR');if(sr)sr.textContent=Eng.ctx?Eng.ctx.sampleRate+' Hz':'—';
+  const f=(k,id)=>{const e=$(id);if(e)e.innerHTML=s[k]===undefined?'<span class="sec">non dichiarato</span>':s[k]?pill('bad','Attivo'):pill('good','Spento')};f('echoCancellation','#dEC');f('noiseSuppression','#dNS');f('autoGainControl','#dAG');
+  const w=$('#dWarn');if(w)w.innerHTML=(s.echoCancellation||s.noiseSuppression||s.autoGainControl)?banner('bad','alert','<b>Il telefono sta filtrando il microfono.</b> Le misure risulteranno meno fedeli. Prova ad aprire Accordo in Safari invece che dall\'icona.'):'';
+  tmr(()=>{if(!Eng.ready())return;paintSpec(Eng.bandPow());const l=Eng.level(),db=20*Math.log10(Math.max(l.rms,1e-6));const e=$('#dLv');if(e)e.textContent=db.toFixed(0)+' dBFS'},120);
+  const v=$('#dVol');if(v)v.addEventListener('input',()=>Eng.setNoise(v.value/100))}};
+ACT.dmic=async()=>{try{await Eng.openMic();render(true)}catch(e){toast('Microfono non disponibile')}};
+ACT.dnoise=async()=>{try{if(Eng.noiseOn)Eng.stopNoise();else await Eng.startNoise(+($('#dVol')&&$('#dVol').value||25)/100)}catch(e){}render(true)};
+
+
+/* =============================================================
+   PER IL CULTO: controllo, aiuto al volo, volume, eco
+   (nati dalla ricerca sulle chiese: volontari senza formazione, fischi, riverbero, volume)
+   ============================================================= */
+const today=()=>new Date().toISOString().slice(0,10);
+const chkDone=()=>{if(!DB.chk||DB.chk.date!==today()){DB.chk={date:today(),done:{}};save()}return DB.chk.done};
+function checkItems(){
+  const q=DB.q,L=[
+    ['Prima di accendere','Batterie dei microfoni senza fili','Cariche o appena cambiate. Tieni sempre le batterie di scorta.'],
+    ['Prima di accendere','Fader e master bassi','Accendi prima il mixer e solo dopo gli amplificatori. Si spegne al contrario.'],
+    ['Controlla i canali','Prova ogni microfono','Parla in ognuno e guarda il meter del canale. Se non si muove: fader, mute, gain, batteria.'],
+    ['Controlla i canali','Livelli d\'ingresso','Chi parla o suona al massimo: i picchi tra −18 e −12 dB sul meter.'],
+    ['Controlla i canali','Ring-out del microfono di chi predica','Alza piano il volume finché fischia, poi taglia. Usa «Ring-out» qui sotto.'],
+    ['Ascolta la sala','Siediti in tre posti','Davanti, a metà e in fondo. Ascolta la parola, non la musica.'],
+    ['Ascolta la sala','Controlla il fondo','Si capiscono le parole? Se no, non alzare tutto: apri «Aiuto al volo».'],
+    ['Ascolta la sala','Volume sul palco','Chiedi a batteria e chitarre di partire piano.']];
+  if(q.src.jolly)L.push(['Prima di cominciare','Un microfono jolly pronto','Per testimonianze e preghiera: palmare con il fader basso, pronto da alzare.']);
+  if(q.src.interp)L.push(['Prima di cominciare','Traduzione pronta','Microfono dell\'interprete e cuffie provati.']);
+  L.push(['Prima di cominciare','Mano libera sul master','Nella preghiera di tutti abbassalo di 3 dB e chiudi i microfoni che non servono.']);
+  L.push(['Prima di cominciare','Volume della lode','Controllalo con «Volume della sala»: non deve coprire la parola.']);
+  return L.map(x=>({g:x[0],id:x[1],t:x[1],s:x[2]}));
+}
+VIEWS.check={html:()=>{
+  const items=checkItems(),done=chkDone(),n=items.filter(i=>done[i.id]).length,groups=[...new Set(items.map(i=>i.g))],all=n===items.length;
+  const rows=groups.map(g=>list(items.filter(i=>i.g===g).map(i=>row({lead:`<span class="tile ${done[i.id]?'green':'gray'}">${done[i.id]?ic('check',18,2.8):''}</span>`,t:i.t,s:i.s,a:`data-a="chk" data-id="${esc(i.id)}"`})),g,'','ic'));
+  return scr({nav:{title:'Prima del culto'},lt:'Prima del culto',ls:'Quindici minuti, in quest\'ordine. Si azzera ogni giorno.',
+    body:`<div class="card hero" style="display:flex;gap:18px;align-items:center"><div class="ringg" style="width:84px;height:84px">${ringSVG(n/items.length,84,9)}<span class="n num" style="font-size:26px">${n}/${items.length}</span></div><div style="flex:1"><div class="t-title2">${all?'Tutto pronto':'Preparazione'}</div><p class="t-sub" style="margin-top:4px">${all?'Buon culto.':'Tocca ogni voce quando l\'hai fatta.'}</p></div></div>${rows.join('')}
+    ${list([row({tile:'mic',tc:'gray',t:'Ring-out del microfono',a:'data-a="go" data-v="ring"',chev:1}),row({tile:'help',tc:'gray',t:'Aiuto al volo',a:'data-a="go" data-v="sos"',chev:1}),row({tile:'vol',tc:'gray',t:'Volume della sala',a:'data-a="go" data-v="vol"',chev:1})],'Strumenti utili','','ic')}`,
+    dock:DB.hist.length?`${btn(ic('refresh',20,2)+'Misura veloce, un punto','data-a="quick"')}`:''})}};
+ACT.chk=d=>{const dn=chkDone();if(dn[d.id])delete dn[d.id];else dn[d.id]=true;save();render(true)};
+ACT.quick=()=>{const e=getE();M.reset(true);M.total=1;if(e&&e.src)M.src=e.src;go('meas')};
+
+/* ---------- aiuto al volo ---------- */
+const SOS=[
+ {id:'nomic',i:'mic',t:'Il microfono non si sente',s:'Il «microfono fantasma»',steps:['Il microfono radio è acceso? Controlla l\'interruttore e il tasto mute sul microfono.','Le batterie sono cariche? Cambiale.','Sul mixer, il canale non è in mute e il fader è su.','Gira piano il gain del canale: il meter deve muoversi quando parli.','Il canale è mandato al master (L/R)?','Se è un microfono a condensatore, serve l\'alimentazione 48 V.'],tools:[]},
+ {id:'fischio',i:'speaker',t:'Fischia',s:'Il suono si rinforza da solo',steps:['Abbassa subito il fader del microfono che fischia.','Avvicina il microfono alla bocca: dimezzare la distanza dà circa 6 dB.','Non puntare i microfoni verso le casse o i monitor.','Chiudi i microfoni che nessuno sta usando.','Taglia la frequenza che fischia (3–6 dB, stretto). Con il ring-out l\'app la trova.'],tools:[['Apri il ring-out','ring']]},
+ {id:'ovattata',i:'person',t:'La voce suona ovattata',s:'Poco chiara, come in una scatola',steps:['Taglia i medi-bassi: 250–350 Hz, circa −3 dB.','Taglia i bassi della voce con il filtro a 100–120 Hz.','Controlla la distanza dal microfono: troppo lontano è la causa più comune.','Poi alza di poco la presenza a 3 kHz, solo se non fischia.'],tools:[]},
+ {id:'dura',i:'person',t:'La voce è dura, le S pungono',s:'Fa male alle orecchie',steps:['Abbassa il volume complessivo di un po\': spesso è questo.','Taglia 3–4 kHz di 2–3 dB, largo.','Controlla che il microfono non sia troppo vicino ai denti.'],tools:[]},
+ {id:'basso',i:'speaker',t:'Il basso rimbomba',s:'Gonfio, copre tutto',steps:['Metti il filtro dei bassi su ogni canale, tranne basso e grancassa.','Stacca il sub dal muro e dagli angoli di mezzo metro.','Taglia 80–100 Hz sul master di 3 dB.','Chiedi al bassista di abbassare il volume sul palco.'],tools:[]},
+ {id:'fondo',i:'group',t:'In fondo non si capisce',s:'Davanti va bene',steps:['Non alzare tutto: alza la voce rispetto alla musica.','Controlla che le casse puntino al fondo, non al soffitto.','Spegni ventilatori e aria condizionata durante la predicazione.','Misura il riverbero: sopra 1,5 secondi le parole si sovrappongono.'],tools:[['Test dell\'eco','eco']]},
+ {id:'davanti',i:'speaker',t:'Davanti troppo forte, dietro poco',s:'Copertura irregolare',steps:['Inclina le casse in basso verso il pubblico, o alzale.','Allontana le casse dal palco, in avanti, se puoi.','Abbassa il volume sul palco: copre la prima fila.','Rifai la misura in tre punti per vedere la differenza.'],tools:[['Nuova taratura','start']]},
+ {id:'batteria',i:'drum',t:'La batteria copre tutto',s:'Anche le voci',steps:['Chiedi al batterista di suonare più piano nei momenti di parola.','Metti uno schermo e un cuscino nella grancassa.','Se hai le cuffie in-ear, usale: il batterista si sente senza picchiare.','Non alzare le voci per coprirla: peggiori solo i fischi.'],tools:[]},
+ {id:'preghiera',i:'group',t:'Nella preghiera comune parte il fischio',s:'Tanti microfoni aperti',steps:['Abbassa il master di 3 dB.','Chiudi tutti i microfoni che non servono.','Chiedi di tenere i palmari vicini alla bocca e lontani dalle casse.','Tieni un solo microfono principale per chi guida la preghiera.'],tools:[]},
+ {id:'testimonianza',i:'mic',t:'Testimonianze con il palmare passato di mano',s:'Cambia la distanza ogni volta',steps:['Tieni il fader del microfono basso e alzalo solo quando parla.','Chiedi di tenerlo a due dita dalla bocca.','Dopo il ring-out, non toccare il guadagno: muovi solo il fader.','Se fischia, abbassa il fader prima di tutto.'],tools:[]},
+ {id:'ronzio',i:'plug',t:'Ronzio o rumore di fondo',s:'Un suono continuo',steps:['Stacca i cavi uno alla volta per trovare quale lo causa.','Allontana i cavi audio dai cavi di alimentazione.','Usa prese sulla stessa ciabatta per tutto l\'impianto.','Sul DI prova il tasto «ground lift».'],tools:[]},
+ {id:'troppoforte',i:'vol',t:'Dicono che è troppo forte',s:'Lamentele sul volume',steps:['Misura la differenza tra lode e predicazione.','Ascolta dalla prima fila e dai posti degli anziani, non dalla regia.','Oltre 90 dB la gente smette di cantare: non si sente più vicina.','Chiedi ai musicisti di abbassare il palco, non solo il master.'],tools:[['Volume della sala','vol']]}
+];
+VIEWS.sos={html:()=>scr({nav:{title:'Aiuto al volo'},lt:'Aiuto al volo',ls:'Qualcosa non va durante il culto? Scegli cosa senti.',body:list(SOS.map(s=>row({tile:s.i,t:s.t,s:s.s,a:`data-a="sosd" data-id="${s.id}"`,chev:1})),'','','ic')})};
+ACT.sosd=d=>go('sosd',{id:d.id});
+VIEWS.sosd={html:p=>{const s=SOS.find(x=>x.id===p.id)||SOS[0];
+  return scr({nav:{title:s.t},lt:s.t,ls:s.s,body:list(s.steps.map((t,i)=>row({lead:`<span class="tile gray"><b style="font:700 15px var(--round)">${i+1}</b></span>`,t:`<span style="font-weight:400">${t}</span>`})),'Prova in quest\'ordine','Si ferma al primo che risolve.','ic'),
+    dock:(s.tools||[]).map(([l,v])=>v==='start'?btn(l,'data-a="start"'):btn(l,`data-a="go" data-v="${v}"`,'tinted')).join('')})}};
+
+/* ---------- volume della sala ---------- */
+const V={buf:[],ref:null,lode:null};
+function vAvg(sec){const n=Date.now()-sec*1000,a=V.buf.filter(x=>x.t>=n);return a.length?dBp(mean(a.map(x=>Math.pow(10,x.a/10)))):null}
+const vZone=db=>db<70?['Piano','']:db<80?['Parola','good']:db<85?['Medio','']:db<=95?['Lode','good']:db<=100?['Alto','ac']:['Troppo alto','bad'];
+VIEWS.vol={html:()=>{
+  const cal=DB.vol&&DB.vol.cal!=null,ready=Eng.ready();
+  const cmp=(DB.vol&&DB.vol.ref!=null&&DB.vol.lode!=null)?DB.vol.lode-DB.vol.ref:null;
+  const cmpTxt=cmp===null?'':cmp<6?'La lode è quasi alla pari della parola.':cmp<=18?'Il contrasto tra lode e parola è nella norma.':'La lode è molto più forte della parola: chi è anziano e chi arriva per la prima volta fatica.';
+  return scr({nav:{title:'Volume della sala'},lt:'Volume della sala',ls:'Tieni il telefono dove siede il pubblico. Segna come suona la predicazione e come suona la lode.',
+    body:`<div class="card hero" style="text-align:center;padding:28px 20px"><div class="bignum" id="vNum">${ready?'…':'—'}</div><div id="vZone" style="margin-top:12px"></div><p class="t-foot" style="margin-top:12px" id="vLeq">${cal?'Valore stimato, con tolleranza di circa ±3 dB.':'Non calibrato: confronta, non misurare.'}</p></div>
+    ${ready?`<div class="vsl" style="gap:10px">${btn('Questa è la predicazione','data-a="vref"','tinted')}${btn('Questa è la lode','data-a="vlode"','tinted')}</div>`:''}
+    ${cmp!==null?`<div class="card"><div class="t-cap">Lode meno predicazione</div><div class="bignum" style="font-size:48px;margin:8px 0">${nf(cmp)}<small>dB</small></div><p class="t-sub">${cmpTxt}</p></div>`:''}
+    ${list([row({tile:'gear',tc:'gray',t:'Calibra con un altro misuratore',s:cal?'Calibrato':'Facoltativo, dà i dB reali',a:'data-a="vcal"',chev:1})],'','Indicazioni comuni nelle chiese: parola 70–80 dB(A), lode 85–95 dB(A). Sopra i 90 la gente canta meno.','ic')}`,
+    dock:ready?'':btn('Attiva il microfono','data-a="vmic"')})},
+ after:()=>{
+  if(!Eng.ready())return;
+  tmr(()=>{const bp=Eng.bandPow(),a=aLevel(bp);V.buf.push({t:Date.now(),a});if(V.buf.length>2500)V.buf.shift();
+    const cal=DB.vol&&DB.vol.cal,num=$('#vNum'),z=$('#vZone'),lq=$('#vLeq');if(!num)return;
+    const cur=vAvg(1.5);
+    if(cal!=null){const v=cur+cal;num.innerHTML=Math.round(v)+'<small>dB(A)</small>';const zz=vZone(v);z.innerHTML=pill(zz[1],zz[0]);const lq5=vAvg(300);if(lq)lq.textContent='Media degli ultimi minuti: '+Math.round(lq5+cal)+' dB(A) · tolleranza circa ±3 dB'}
+    else if(DB.vol&&DB.vol.ref!=null){const d=cur-DB.vol.ref;num.innerHTML=nf(d)+'<small>dB</small>';z.innerHTML=pill('','rispetto alla predicazione')}
+    else{num.innerHTML='<span style="font-size:34px">In ascolto</span>';z.innerHTML=''}
+  },150)}};
+ACT.vmic=async()=>{try{await Eng.openMic();render(true)}catch(e){toast('Microfono non disponibile')}};
+ACT.vref=()=>{const a=vAvg(6);if(a===null)return;DB.vol=DB.vol||{};DB.vol.ref=a;save();render(true);toast('Predicazione salvata')};
+ACT.vlode=()=>{const a=vAvg(6);if(a===null)return;DB.vol=DB.vol||{};DB.vol.lode=a;save();render(true);toast('Lode salvata')};
+ACT.vcal=()=>openSheet(`<h2 class="t-title2" style="margin:6px 0 8px">Calibra il volume</h2><p class="t-body" style="margin-bottom:14px">Il telefono non sa quanto è forte il suono in dB. Se hai un altro misuratore (anche un'app sul telefono di qualcuno), puoi dirgli il valore.</p>${list([row({t:'1',s:'Fai suonare il rumore rosa a volume normale.'}),row({t:'2',s:'Tieni i due telefoni vicini.'}),row({t:'3',s:'Scrivi qui il valore dB(A) dell\'altro misuratore.'})])}<div style="height:12px"></div><input class="input" id="calIn" type="number" inputmode="decimal" placeholder="Es. 85"><div style="height:12px"></div>${btn('Calibra ora','data-a="vcalgo"')}`);
+ACT.vcalgo=()=>{const v=parseFloat(($('#calIn')||{}).value),a=vAvg(3);if(!isFinite(v)||a===null){toast('Inserisci un valore');return}DB.vol=DB.vol||{};DB.vol.cal=v-a;save();closeSheet();render(true);toast('Calibrato')};
+
+/* ---------- test dell'eco ---------- */
+const E={stage:'intro',claps:0,cap:null,res:null,t0:0,lastT:0,base:[]};
+function ecoAbort(){if(E.cap){try{E.cap.stop()}catch(e){}E.cap=null}E.stage='intro'}
+VIEWS.eco={html:()=>{
+  if(E.stage==='intro')return scr({nav:{title:'Test dell\'eco'},lt:'Test dell\'eco',ls:'Il riverbero è il problema numero uno delle chiese, e l\'equalizzatore non lo risolve. Lo misuriamo con tre battiti di mani.',
+    body:`${list([row({lead:'<span class="tile gray"><b style="font:700 15px var(--round)">1</b></span>',t:'Mettiti al centro della sala',s:'Con il telefono in mano, davanti a te.'}),row({lead:'<span class="tile gray"><b style="font:700 15px var(--round)">2</b></span>',t:'Batti le mani forte, tre volte',s:'Una ogni 4 secondi. Va bene anche un palloncino che scoppia.'}),row({lead:'<span class="tile gray"><b style="font:700 15px var(--round)">3</b></span>',t:'Aspetta in silenzio',s:'Ascoltiamo come si spegne il suono.'})],'','','ic')}${DB.rt?banner('info','info',`Ultima misura: <b>${DB.rt.t.toFixed(1).replace('.',',')} s</b>.`):''}`,dock:btn('Inizia','data-a="ecoStart"')});
+  if(E.stage==='listen')return scr({nav:{title:'In ascolto',back:false,right:`<button class="gbtn txt" data-a="ecoStop">Annulla</button>`,compact:true},cls:'pad',body:`<div class="head" style="text-align:center"><h1 class="lt">Batti le mani</h1><p class="ls">Forte, e poi silenzio.</p></div><div style="display:grid;place-items:center;padding:6px 0"><div class="ringg" style="width:170px;height:170px">${ringSVG(E.claps/3,170,12)}<span class="n num" id="ecoN">${E.claps} di 3</span></div></div><div class="meter-wrap"><div class="spec live" id="spec" style="height:70px">${F.map(()=>'<i></i>').join('')}</div></div><p class="t-sub" style="text-align:center">Una ogni 4 secondi circa.</p>`});
+  if(E.stage==='result'){const r=E.res;
+    if(!r||!r.rt)return scr({nav:{title:'Test dell\'eco'},lt:'Non ci siamo riusciti',ls:'Non abbiamo sentito abbastanza.',body:`${banner('bad','alert','<b>Servono battiti forti e silenzio dopo ogni battito.</b> Riprova mettendoti al centro e battendo più forte, oppure scoppia un palloncino.')}`,dock:btn('Riprova','data-a="ecoAgain"')});
+    const lab=rtRate(r.rt),s=r.rt.toFixed(1).replace('.',','),b=r.bands;
+    return scr({nav:{title:'Riverbero',back:false,right:`<button class="gbtn txt" data-a="go" data-v="home">Fine</button>`},lt:'Riverbero',ls:r.rt>1.5?'Le parole iniziano a sovrapporsi. L\'equalizzatore non lo risolve: aiutano i materiali.':'Il suono si spegne abbastanza in fretta per la parola.',
+      body:`<div class="card hero" style="text-align:center;padding:28px 20px"><div class="bignum">${s}<small>s</small></div><div style="margin-top:14px">${pill(lab[1],lab[0])}</div></div>
+      ${list([500,1000,2000].map(f=>row({t:hz(f),val:b[f]?b[f].toFixed(1).replace('.',',')+' s':'—'})),'Per zona')}
+      <div class="banner info">${ic('bulb',22,1.9)}<span>Per chi predica molto la parola, le chiese evangeliche e pentecostali stanno meglio tra <b>0,8 e 1,2 secondi</b>. Sopra 1,5 la comprensione cala.</span></div>${r.approx?`<p class="t-foot">Misura approssimata: il fondo rumoroso ha accorciato la parte utile.</p>`:''}`,
+      dock:`${btn('Vedi cosa aiuta','data-a="go" data-v="tips"')}${btn('Rimisura','data-a="ecoAgain"','tinted')}`})}
+  return '';
+},after:()=>{
+  if(E.stage!=='listen')return;
+  tmr(()=>{
+    if(!Eng.ready())return;const now=performance.now(),l=Eng.level();paintSpec(Eng.bandPow());
+    E.min=Math.min(E.min===undefined?1:E.min,Math.max(l.rms,1e-5));
+    const thr=Math.max(.04,E.min*15);
+    if(l.peak>thr&&now-E.lastT>1700&&now-E.t0>800){E.claps++;E.lastT=now;const n=$('#ecoN');if(n)n.textContent=E.claps+' di 3';const rg=$('.ringg .rg');if(rg)rg.style.strokeDashoffset=(+rg.dataset.c*(1-Math.min(E.claps,3)/3)).toFixed(1)}
+    if((E.claps>=3&&now-E.lastT>4200)||now-E.t0>(FAST?22000:40000))ecoFinish();
+  },100)}};
+ACT.ecoStart=async()=>{try{await Eng.openMic();E.cap=await Eng.capture();Object.assign(E,{stage:'listen',claps:0,t0:performance.now(),lastT:0,min:undefined,res:null});R.dir='fade';render()}catch(e){toast('Microfono non disponibile')}};
+function ecoFinish(){if(!E.cap)return;const{x,sr}=E.cap.stop();E.cap=null;E.res=rtAnalyze(x,sr);E.stage='result';if(E.res.rt){DB.rt={t:E.res.rt,bands:E.res.bands,date:Date.now()};save()}R.dir='fade';render()}
+ACT.ecoStop=()=>{ecoAbort();R.dir='fade';render()};
+ACT.ecoAgain=()=>{E.stage='intro';R.dir='fade';render()};
+
+
+/* ---------- lezioni da 5 minuti (un concetto alla volta, per chi serve in regia) ---------- */
+const LES=[
+ {t:'Il gain: da qui parte tutto',s:'Prima di toccare l\'equalizzatore',p:['Chi parla o suona al massimo del suo volume: i picchi stanno tra −18 e −12 dB sul meter del canale.','Se il gain è troppo basso devi alzare il fader e il rumore sale. Se è troppo alto distorce.','Il gain si regola una volta, a inizio culto. Poi si muove solo il fader.'],go:['Apri la checklist','check']},
+ {t:'Il filtro dei bassi su tutto',s:'Il gesto che pulisce di più',p:['Su ogni canale, tranne basso e grancassa, attiva il filtro dei bassi (low-cut).','Voce di chi predica: 100–120 Hz. Voci soliste: 90 Hz. Chitarra acustica: 80 Hz.','Tanti piccoli rimbombi sommati sono la causa più comune del suono impastato.'],go:['Vedi le ricette','rec']},
+ {t:'Meglio tagliare che alzare',s:'L\'equalizzatore, la regola d\'oro',p:['Se una zona è troppo forte, abbassala. Se manca, prima abbassa ciò che la copre.','Tagli piccoli: 3–6 dB bastano. Più di così cambia il timbro.','Alzare fa salire il volume e fa tornare i fischi.'],go:['Misura la sala','start']},
+ {t:'Il ring-out',s:'Più volume prima del fischio',p:['Metti il microfono dove lo usa chi predica e alza piano il volume finché fischia.','Taglia quella frequenza di 3–6 dB, stretto. Ripeti per due o tre fischi, non di più.','Dopo il ring-out non toccare il gain: muovi solo il fader.'],go:['Apri il ring-out','ring']},
+ {t:'Cammina la sala',s:'Ascolta dove siede il pubblico',p:['Siediti davanti, a metà e in fondo. Ascolta soprattutto la parola.','Se in fondo non si capisce, non alzare tutto: alza la voce rispetto alla musica.','Il posto della regia è quasi sempre il peggiore per giudicare.'],go:['Misura i tre punti','start']},
+ {t:'Il volume sul palco',s:'Il fattore che non vedi dal mixer',p:['Batteria, ampli e monitor che arrivano in sala tolgono controllo all\'impianto.','Schermo per la batteria, chitarre dirette, in-ear: un palco più silenzioso rende tutto più semplice.','Non coprire il palco con le voci: alzi solo i fischi.'],go:['Aiuto al volo','sos']},
+ {t:'Lode e parola: due volumi',s:'Perché la gente dice «troppo forte»',p:['Indicazioni comuni: parola 70–80 dB(A), lode 85–95 dB(A).','Sopra circa 90 dB molti smettono di cantare: non si sentono più vicini.','Il contrasto tra lode e predicazione conta più del valore assoluto.'],go:['Volume della sala','vol']},
+ {t:'Quando l\'EQ non basta',s:'Il riverbero',p:['Sopra circa 1,5 secondi le parole iniziano a sovrapporsi.','L\'equalizzatore non toglie il riverbero: servono materiali che assorbono.','Tende, tappeti e pannelli, in quest\'ordine di costo.'],go:['Test dell\'eco','eco']}
+];
+VIEWS.les={html:()=>scr({nav:{title:'Lezioni'},lt:'Lezioni da 5 minuti',ls:'Un concetto per volta. Per chi serve in regia e vuole capire, non solo copiare.',body:list(LES.map((l,i)=>row({tile:'school',tc:'gray',t:l.t,s:l.s,a:`data-a="lesd" data-i="${i}"`,chev:1})),'','Una a settimana basta: chi è alle prime armi diventa autonomo in qualche mese.','ic')})};
+ACT.lesd=d=>go('lesd',{i:+d.i});
+VIEWS.lesd={html:p=>{const l=LES[p.i]||LES[0];return scr({nav:{title:l.t},lt:l.t,ls:l.s,body:list(l.p.map((t,i)=>row({lead:`<span class="tile gray"><b style="font:700 15px var(--round)">${i+1}</b></span>`,t:`<span style="font-weight:400">${t}</span>`})),'','','ic'),dock:l.go[1]==='start'?btn(l.go[0],'data-a="start"'):btn(l.go[0],`data-a="go" data-v="${l.go[1]}"`)})}};
+function teamText(){
+  const L=['PROMEMORIA PER IL CULTO',DB.set.name?DB.set.name+(DB.set.sala?' · '+DB.set.sala:''):'',''];
+  let g='';checkItems().forEach(i=>{if(i.g!==g){g=i.g;L.push(g.toUpperCase())}L.push('☐ '+i.t)});
+  L.push('');L.push('SE QUALCOSA NON VA');SOS.slice(0,6).forEach(s=>{L.push('• '+s.t+': '+s.steps[0])});
+  return L.filter((x,i)=>x!==''||L[i-1]!=='').join('\n');
+}
+ACT.shareTeam=async()=>{const t=teamText();try{if(navigator.share)await navigator.share({text:t});else{await navigator.clipboard.writeText(t);toast('Copiato')}}catch(e){}};
+
+
+/* =============================================================
+   LIBRERIE E GUIDA: mixer, suoni, acustica, microfoni, momenti del culto
+   ============================================================= */
+const MIXHELP=[
+ {k:'digital',t:'Digitale, con schermo o app',s:'Per esempio X32, XR18, QU, SQ, TF',i:'sliders',steps:['Seleziona il canale (o l\'uscita Main / Master) e apri la pagina dell\'equalizzatore: di solito si chiama EQ.','Ogni banda ha tre controlli: FREQ (dove), GAIN (quanto) e Q (quanto largo).','Controlla che l\'EQ sia acceso: c\'è un tasto «EQ» o «On».','Sul master scegli la pagina del master, non quella di un canale.']},
+ {k:'analog',t:'Analogico, con manopole',s:'Per esempio Yamaha MG, Mackie, Behringer Xenyx',i:'gear',steps:['Su ogni canale trovi tre manopole: HIGH (alti), MID (medi) e LOW (bassi). Al centro è zero.','Per tagliare i bassi inutili cerca il tasto «Low Cut» o «80 Hz».','Di solito non c\'è un equalizzatore sul master: si sistema soprattutto sui canali e con la posizione delle casse.','Se c\'è un equalizzatore a barre separato, di solito sta tra il mixer e gli amplificatori.']},
+ {k:'powered',t:'Nell\'amplificatore o nelle casse',s:'Casse amplificate con ingressi e manopole',i:'speaker',steps:['Di solito hai pochi controlli: volume per canale e bassi e alti sul canale o sul master.','Per un taglio di medi-bassi abbassa un poco i bassi e tieni gli alti normali.','Più contano la posizione delle casse e la distanza dai microfoni.','Se le casse hanno un\'uscita per altre casse, non cambia nulla per le misure.']},
+ {k:'unknown',t:'Non lo so',s:'Va bene lo stesso',i:'help',steps:['Ti diamo i consigli che valgono per ogni impianto: posizione delle casse, distanza dei microfoni, ring-out e volume.','Per i valori dell\'equalizzatore ti serve conoscere il mixer: puoi cambiarlo quando vuoi dalle impostazioni.','Scrivi o fotografa il nome sul mixer: di solito sta sopra o sul davanti.']}
+];
+function applyMix(t){const q=DB.q;q.mixType=t;
+  if(t==='digital'){q.eqM='peq';q.eqC='peq4'}else if(t==='analog'||t==='powered'){q.eqM='none';q.eqC='knob'}else{q.eqM='none';q.eqC='lowcut'}}
+const mixName=t=>(MIXHELP.find(x=>x.k===t)||{t:'Non scelto'}).t;
+
+const EAR=[
+ {id:'rimbombo',t:'Rimbombo',f:100,g:9,q:1,hear:'Tutto sembra in una botte: i bassi gonfi coprono la parola.',fix:'Filtro dei bassi sui canali. Sul master, taglia 80–100 Hz di 3 dB.'},
+ {id:'fango',t:'Fango',f:250,g:9,q:1.2,hear:'Ovattato, impastato, come con una coperta sopra la voce.',fix:'Taglia 250 Hz di 3–4 dB, largo. Poi stacca il microfono dal muro o dalle casse.'},
+ {id:'scatolato',t:'Scatolato',f:500,g:9,q:1.2,hear:'Come parlare dentro una scatola o un tubo.',fix:'Taglia 400–500 Hz di 2–3 dB sul canale.'},
+ {id:'nasale',t:'Nasale',f:1000,g:9,q:1.2,hear:'Il suono sembra uscire dal naso o dal telefono.',fix:'Taglia 1 kHz di 2–3 dB, stretto.'},
+ {id:'durezza',t:'Durezza',f:3150,g:9,q:1.4,hear:'Duro, pungente, stanca le orecchie dopo un po\'.',fix:'Taglia 3–4 kHz di 2–3 dB. Spesso basta abbassare il volume.'},
+ {id:'sibilanti',t:'Sibilanti',f:6300,g:9,q:1.5,hear:'Le S sibilano e feriscono le orecchie.',fix:'Taglia 5–8 kHz di 2–3 dB o allontana un poco il microfono.'},
+ {id:'spento',t:'Voce spenta',f:3150,g:-9,q:1.2,hear:'La voce si sente ma si capisce poco: mancano le consonanti.',fix:'Alza di 2 dB intorno a 3 kHz sul canale di chi parla, solo se non fischia. Avvicina il microfono.'}
+];
+const ACU=[
+ {id:'casse',t:'Sposta e inclina le casse',s:'Il suono uguale in tutta la sala',cost:'Gratis',diff:'Facile',eff:3,steps:['Metti le casse davanti ai microfoni, in linea con il palco o più avanti. Mai dietro.','Puntale verso il pubblico, non verso le pareti laterali.','Se sono alte, inclinale un po\' in basso: il suono arriva anche nelle file di mezzo.','Se il fondo è debole, inclinale di poco verso il fondo.','Rifai la misura in tre punti: la differenza tra punti deve scendere sotto 4 dB.']},
+ {id:'sub',t:'Stacca il sub dal muro',s:'Bassi meno gonfi',cost:'Gratis',diff:'Facile',eff:2,steps:['Allontana il sub dal muro di almeno mezzo metro.','Evita gli angoli: raddoppiano i bassi.','Prova sul palco o a lato, mai dietro le casse.','Poi riascolta la voce: i bassi devono lasciare spazio alla parola.']},
+ {id:'tende',t:'Tende pesanti',s:'Meno riverbero e meno eco',cost:'€ 80–150',diff:'Facile',eff:3,steps:['Scegli un tessuto pesante: velluto, panno, tende da teatro. Le tende leggere servono poco.','Più hanno pieghe, meglio assorbono: la stoffa deve essere larga circa il doppio della parete.','Appendile prima sulla parete di fondo, poi su una laterale.','Se puoi, lasciale a 5–10 cm dal muro.','Chiudile durante il culto e rifai il test dell\'eco.']},
+ {id:'tappeti',t:'Tappeti',s:'Il pavimento duro rimbalza',cost:'€ 50–120',diff:'Facile',eff:1,steps:['Un tappeto lungo nel corridoio centrale e davanti al palco.','Meglio spessi e con il sotto morbido.','Mettili dove la gente cammina e dove si ferma.','L\'effetto è modesto: funziona meglio insieme alle tende.']},
+ {id:'pannelli',t:'Pannelli fai da te',s:'Riverbero e eco di ritorno',cost:'€ 150–300',diff:'Media',eff:3,steps:['Lana di roccia o minerale spessa 5 cm, densità circa 40–60 kg/m³.','Cornice di legno con il fondo aperto, e tessuto che lascia passare l\'aria. No plastica.','Appendi a 5–10 cm dal muro: assorbe meglio i medi-bassi.','Mettili sulla parete di fondo e sulle laterali, all\'altezza delle teste.','Sicurezza: guanti, maniche lunghe e mascherina FFP2 mentre tagli. Con il tessuto sopra non rilascia fibre.']},
+ {id:'angoli',t:'Pannelli negli angoli',s:'Meno rimbombo dei bassi',cost:'€ 100–250',diff:'Media',eff:2,steps:['Stessa lana dei pannelli, ma a doppio spessore (10 cm).','Nei quattro angoli dietro al palco e dietro al pubblico.','Da terra fino al soffitto, se riesci.','Riascolta: i bassi devono suonare più asciutti.']},
+ {id:'flutter',t:'Eco a ping tra le pareti',s:'Un «ping» ripetuto',cost:'Gratis o poco',diff:'Facile',eff:2,steps:['Batti le mani tra due pareti uguali, una di fronte all\'altra.','Se senti un «ping» ripetuto veloce, hai l\'eco tra le pareti.','Copri una delle due con una tenda, un quadro grande o una libreria.','Ripeti il test: il «ping» deve sparire.']},
+ {id:'vetrate',t:'Vetrate e finestre',s:'Il vetro riflette quasi tutto',cost:'€ 80–150',diff:'Facile',eff:2,steps:['Tende pesanti, anche solo durante il culto.','O pannelli mobili, appoggiati e spostati quando serve.','Se dà sulla strada, chiudi anche per il rumore.']},
+ {id:'nuvole',t:'Pannelli sospesi (nuvole)',s:'Soffitti alti e duri',cost:'Da valutare',diff:'Difficile',eff:3,steps:['Pannelli appesi in orizzontale sopra il pubblico.','Funzionano bene con soffitti alti e duri.','Falli montare da chi ha ponteggio e attrezzatura: non lavorare in altezza senza.','Chiedi un preventivo: dipende dal soffitto.']},
+ {id:'schermo',t:'Schermo e cuscino per la batteria',s:'La batteria copre tutto',cost:'€ 40–80',diff:'Facile',eff:2,steps:['Schermo in plexiglass davanti alla batteria.','Un cuscino o una coperta dentro la grancassa.','Chiedi di suonare più piano nei momenti di parola.','Se hai le cuffie in-ear, il batterista non ha bisogno di picchiare per sentirsi.']},
+ {id:'sedie',t:'Sedie e cuscini',s:'Le persone e i cuscini assorbono',cost:'Varia',diff:'Facile',eff:1,steps:['Una sala piena suona più asciutta di una vuota: misura anche con la gente.','Cuscini sulle panche o sulle sedie dure aiutano un poco.','Le sedie imbottite assorbono più di quelle di plastica.']},
+ {id:'ventole',t:'Rumore di fondo',s:'Ventilatori e strada',cost:'Gratis',diff:'Facile',eff:2,steps:['Spegni ventilatori e aria condizionata durante la predicazione.','Chiudi finestre e porte che danno sulla strada.','Misura il rumore di fondo con il test dell\'eco o la taratura: più è basso, più la parola si capisce.']}
+];
+const MICP=[
+ {id:'headset',t:'Headset',s:'All\'angolo della bocca',steps:['La capsula all\'angolo della bocca, a 1–2 cm, mai davanti alle labbra: si sentono i soffi.','L\'archetto deve stare fermo: la distanza non cambia, quindi il volume resta costante.','Il cavo sotto il vestito, con un po\' di gioco.','Dopo ogni cambio di persona, controlla di nuovo la capsula.']},
+ {id:'lavalier',t:'Lavalier',s:'Al centro dello sterno',steps:['Al centro dello sterno, circa 15–20 cm sotto la bocca.','Non troppo vicino alla gola: la voce suona gonfia.','Tessuto teso, senza collane, barba o pieghe che strusciano.','Fissa bene il cavo: ogni fruscio si sente in sala.','È il più lontano dalla bocca: fai bene il ring-out.']},
+ {id:'palmare',t:'Palmare',s:'A due dita dalla bocca',steps:['A 2–5 cm dalla bocca, circa due dita.','Non coprire la rete con la mano: fa fischiare.','Mantieni la stessa distanza: avvicinare alza il volume.','Non puntarlo verso le casse o i monitor.']},
+ {id:'coro',t:'Coro',s:'Sopra le teste, lontano dalle casse',steps:['Microfoni direzionali sopra le teste del coro, a circa 1,5–2 m.','Regola dei tre a uno: ogni microfono dista dal vicino almeno tre volte la distanza dalla sua fonte.','Non vicino alle casse: il coro è il microfono che fischia di più.','Meno microfoni è meglio: due o tre bastano.']},
+ {id:'agtr',t:'Chitarra acustica',s:'Meglio diretta',steps:['Se ha il cavo diretto (DI), usalo: è più sicuro.','Se ci vuole il microfono, a 15–20 cm verso il dodicesimo tasto.','Non davanti alla buca: il suono diventa gonfio.']},
+ {id:'egtr',t:'Chitarra elettrica',s:'Sul cono dell\'ampli',steps:['Microfono dinamico a 2–5 cm dal cono, un poco fuori centro.','Ampli rialzato da terra e inclinato verso l\'orecchio di chi suona.','Meglio tenere il volume dell\'ampli basso e far fare al mixer il resto.']},
+ {id:'keys',t:'Tastiera e basso',s:'Sempre diretti',steps:['Cavo diretto (DI) al mixer: nessun microfono.','Il suono resta pulito e non entra negli altri microfoni.','Ricorda il filtro dei bassi sulla tastiera, ma non sul basso.']},
+ {id:'batteria',t:'Batteria',s:'Meno microfoni di quanto pensi',steps:['In sala piccola bastano grancassa e un microfono sopra.','Il microfono sopra, circa un metro, rivolto verso piatti e rullante.','Con uno schermo davanti, il suono in sala diminuisce.','Prima di mettere più microfoni, prova ad abbassare chi suona.']}
+];
+const MOM=[
+ {id:'accoglienza',t:'Accoglienza',s:'Musica bassa, microfoni chiusi',steps:['Musica più bassa di una conversazione.','Microfoni spenti, tranne chi accoglie.','Controlla le batterie e fai il ring-out di chi predica.','Siediti in un posto del pubblico e ascolta.']},
+ {id:'lode',t:'Lode cantata',s:'Voci sopra gli strumenti',steps:['Le voci devono stare sopra gli strumenti: la gente canta con loro.','La batteria parte piano.','Non usare le scene salvate: il culto è spontaneo, tieni i fader a mano.','Resta sotto circa 90 dB(A): più forte e la gente smette di cantare.','Abbassa gli strumenti, non alzare tutto.']},
+ {id:'preghiera',t:'Preghiera di tutti',s:'Tanti microfoni aperti',steps:['Abbassa il master di circa 3 dB.','Chiudi tutti i microfoni tranne chi guida.','Musica sotto la voce, non sopra.','Non cercare di coprire la preghiera spontanea: lascia che si senta.']},
+ {id:'lettura',t:'Lettura della Parola',s:'Voce chiara e vicina',steps:['Microfono del leggio o palmare: ricorda il ring-out.','Chiedi di avvicinarsi al microfono.','Controlla che si capisca anche in fondo.']},
+ {id:'predicazione',t:'Predicazione',s:'La parola prima di tutto',steps:['Headset o lavalier: la distanza dalla bocca non cambia.','Il volume della lode non deve partire più forte della parola.','Solo il fader di chi parla: non toccare il gain.','Parola tra 70 e 80 dB(A) in sala.','Spegni ventilatori e aria condizionata.']},
+ {id:'appello',t:'Appello e ministero all\'altare',s:'Il momento dei fischi',steps:['Un solo palmare aperto alla volta, con il fader basso.','Mano sul master pronta ad abbassarlo.','Musica sotto la voce.','Chi prega al microfono lo tenga vicino alla bocca e lontano dalle casse.']},
+ {id:'testimonianze',t:'Testimonianze',s:'Il palmare passa di mano',steps:['Fader basso, lo alzi solo quando parla.','Chiedi di tenerlo a due dita dalla bocca.','Dopo il ring-out non toccare il gain: muovi solo il fader.','Se è timido o anziano, lascia il microfono più vicino.']},
+ {id:'annunci',t:'Annunci e offerte',s:'Parola e musica leggera',steps:['Voce chiara, musica di sottofondo molto bassa.','Controlla che si capisca anche in fondo.','Tieni pronto il microfono jolly.']},
+ {id:'speciali',t:'Eventi speciali',s:'Matrimoni, funerali, conferenze',steps:['Prova i microfoni il giorno prima, con la sala vuota.','Controlla le batterie e porta microfoni in più.','Chiedi il programma: chi parla, quanti microfoni, la musica.','Controlla interferenze sui microfoni radio.']}
+];
+const DOCS={acu:ACU,mic:MICP,mom:MOM};
+const DLIST={acu:['Acustica a basso costo','Dal gratuito al più utile. Cosa fare, come, quanto costa.'],mic:['Posizionare i microfoni','Dove mettere ogni microfono, e a che distanza.'],mom:['Momenti del culto','Cosa tenere d\'occhio in ogni momento.']};
+VIEWS.dlist={html:p=>{const [t,s]=DLIST[p.src],L=DOCS[p.src];return scr({nav:{title:t},lt:t,ls:s,body:list(L.map(d=>row({tile:p.src==='acu'?'cube':p.src==='mic'?'mic':'group',tc:'gray',t:d.t,s:d.s,right:p.src==='acu'?`<span class="val">${d.cost}</span>`:'',a:`data-a="doc" data-src="${p.src}" data-id="${d.id}"`,chev:1})),'',p.src==='acu'?'Costi indicativi: variano da città a città.':'','ic')})}};
+ACT.dlist=d=>go('dlist',{src:d.src});ACT.doc=d=>go('doc',{src:d.src,id:d.id});ACT.acu=d=>go('doc',{src:'acu',id:d.id});
+VIEWS.doc={html:p=>{const d=DOCS[p.src].find(x=>x.id===p.id)||DOCS[p.src][0];
+  const meta=p.src==='acu'?list([row({t:'Costo',val:d.cost}),row({t:'Difficoltà',val:d.diff}),row({t:'Quanto aiuta',right:sev(d.eff)})]):'';
+  return scr({nav:{title:d.t},lt:d.t,ls:d.s,body:`${meta}${list(d.steps.map((t,i)=>row({lead:`<span class="tile gray"><b style="font:700 15px var(--round)">${i+1}</b></span>`,t:`<span style="font-weight:400">${t}</span>`})),p.src==='acu'?'Come si fa':'Cosa fare','','ic')}`,dock:p.src==='acu'?btn('Misura di nuovo l\'eco','data-a="go" data-v="eco"','tinted'):''})}};
+VIEWS.mixh={html:()=>scr({nav:{title:'Dove trovo l\'EQ?'},lt:'Dove trovo l\'EQ?',ls:'Scegli il tuo tipo di mixer.',body:list(MIXHELP.map(m=>row({tile:m.i,tc:'gray',t:m.t,s:m.s,a:`data-a="mixd" data-k="${m.k}"`,chev:1})),'','','ic')})};
+ACT.mixd=d=>{const m=MIXHELP.find(x=>x.k===d.k);openSheet(`<div style="display:flex;gap:14px;align-items:center;margin:6px 0 16px">${tile(m.i,'lg')}<h2 class="t-title2">${m.t}</h2></div>${list(m.steps.map((t,i)=>row({lead:`<span class="tile gray"><b style="font:700 15px var(--round)">${i+1}</b></span>`,t:`<span style="font-weight:400">${t}</span>`})))}<div style="height:14px"></div>${btn('Chiudi','data-a="closeSheet"','tinted')}`)};
+
+/* ---------- impara a sentire ---------- */
+VIEWS.earl={html:()=>scr({nav:{title:'Impara a sentire'},lt:'Impara a sentire',ls:'Ascolta come suona ogni problema. Dopo lo riconosci in sala.',body:`${banner('info','headset','Meglio con le cuffie. Il volume parte basso: alzalo tu.')}${list(EAR.map(e=>row({tile:'wave',tc:'gray',t:e.t,s:e.hear,a:`data-a="earn" data-id="${e.id}"`,chev:1})),'','','ic')}`})};
+ACT.earn=d=>go('earn',{id:d.id});
+VIEWS.earn={html:p=>{const e=EAR.find(x=>x.id===p.id)||EAR[0],act=Player.mode==='wet'?1:0;
+  return scr({nav:{title:e.t},lt:e.t,ls:e.hear,body:`<div class="ab" id="ab"><button class="${act?'':'on'}" data-a="emode" data-m="dry"><b>Normale</b><small>senza problema</small></button><button class="${act?'on after':''}" data-a="emode" data-m="wet"><b>Con il problema</b><small>${hz(e.f)}</small></button></div>
+    <div style="display:grid;place-items:center"><button class="gbtn" id="lplay" data-a="eplay" data-id="${e.id}" aria-label="Riproduci" style="width:84px;height:84px;border-radius:42px;background:var(--tint);color:var(--tint-ink);box-shadow:0 8px 28px rgba(245,184,61,.4)">${ic(Player.playing?'pause':'play',36,2)}</button><p class="t-foot" id="lstate" style="margin-top:12px;text-align:center">Tocca per ascoltare</p></div>
+    ${list([row({tile:'sliders',tc:'gray',t:'Come lo togli',s:e.fix})],'','','ic')}`,dock:btn('Provane un altro','data-a="back"','tinted')})}};
+ACT.eplay=async d=>{const e=EAR.find(x=>x.id===d.id);if(Player.playing){Player.stop();render(true);return}
+  try{Player.vol=Math.min(Player.vol,.25);if(!Player.buf||Player.kind!=='demo')await Player.prepare('demo');await Player.play([{f:e.f,g:e.g,q:e.q}]);render(true)}catch(err){toast('Non riesco a riprodurre')}};
+ACT.emode=d=>{Player.setMode(d.m);const act=d.m==='wet'?1:0;[...$('#ab').children].forEach((b,i)=>{b.classList.toggle('on',i===act);b.classList.toggle('after',i===1&&act===1)});const s=$('#lstate');if(s&&Player.playing)s.textContent='In riproduzione · '+(act?'Con il problema':'Normale')};
+
+/* ---------- libreria (con ricerca) ---------- */
+const norm=s=>String(s).toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,'');
+function searchIndex(){
+  const I=[];
+  SOS.forEach(s=>I.push({k:'sosd',id:s.id,t:s.t,s:'Aiuto al volo',i:s.i,kw:s.t+' '+s.s+' '+s.steps.join(' ')+(s.id==='fischio'?' larsen feedback ritorno acufene':'')}));
+  LES.forEach((l,i)=>I.push({k:'lesd',id:i,t:l.t,s:'Lezione',i:'school',kw:l.t+' '+l.s+' '+l.p.join(' ')}));
+  ACU.forEach(a=>I.push({k:'doc',src:'acu',id:a.id,t:a.t,s:'Acustica · '+a.cost,i:'cube',kw:a.t+' '+a.s+' '+a.steps.join(' ')}));
+  MICP.forEach(a=>I.push({k:'doc',src:'mic',id:a.id,t:a.t,s:'Microfono',i:'mic',kw:a.t+' '+a.s+' '+a.steps.join(' ')}));
+  MOM.forEach(a=>I.push({k:'doc',src:'mom',id:a.id,t:a.t,s:'Momento del culto',i:'group',kw:a.t+' '+a.s+' '+a.steps.join(' ')}));
+  EAR.forEach(e=>I.push({k:'earn',id:e.id,t:e.t,s:'Impara a sentire',i:'wave',kw:e.t+' '+e.hear+' '+e.fix}));
+  Object.keys(REC).forEach(id=>I.push({k:'recipe',id,t:REC[id].n,s:'Ricetta',i:REC[id].ic,kw:REC[id].n+' '+(REC[id].note||'')}));
+  GL.forEach((g,i)=>I.push({k:'gl',id:i,t:g[0],s:'Glossario',i:'book',kw:g[0]+' '+g[1]+' '+g[2]}));
+  return I;
+}
+function runSearch(q){
+  const w=norm(q).split(/\s+/).filter(Boolean);if(!w.length)return[];
+  return searchIndex().map(x=>{const h=norm(x.t),k=norm(x.kw);let sc=0;for(const t of w){if(h.includes(t))sc+=3;else if(k.includes(t))sc+=1;else return null}return{...x,sc}}).filter(Boolean).sort((a,b)=>b.sc-a.sc).slice(0,12);
+}
+ACT.sres=d=>{const k=d.k;if(k==='sosd')go('sosd',{id:d.id});else if(k==='lesd')go('lesd',{i:+d.id});else if(k==='doc')go('doc',{src:d.src,id:d.id});else if(k==='earn')go('earn',{id:d.id});else if(k==='recipe')recipeSheet(d.id);else if(k==='gl')ACT.gl({i:d.id})};
+VIEWS.lib={html:()=>{
+  const g=(h,rows)=>list(rows,h,'','ic');
+  return scr({nav:{title:'Libreria'},lt:'Libreria',ls:'Tutto quello che serve, quando serve.',
+   body:`<input class="input" id="sIn" type="search" placeholder="Cerca: fischio, tende, microfono…" autocomplete="off" inputmode="search" aria-label="Cerca nella libreria"><div id="sRes"></div>
+   <div id="libMain" class="vsl" style="gap:24px">
+   ${g('Impara',[row({tile:'school',t:'Lezioni da 5 minuti',s:'Un concetto per volta',a:'data-a="go" data-v="les"',chev:1}),row({tile:'wave',t:'Impara a sentire',s:'Ascolta come suona ogni problema',a:'data-a="go" data-v="earl"',chev:1}),row({tile:'book',t:'Glossario',s:'Le parole, spiegate semplici',a:'data-a="go" data-v="gloss"',chev:1})])}
+   ${g('In pratica',[row({tile:'group',t:'Momenti del culto',s:'Lode, preghiera, predicazione, ministero',a:'data-a="dlist" data-src="mom"',chev:1}),row({tile:'mic',t:'Posizionare i microfoni',s:'Dove, e a che distanza',a:'data-a="dlist" data-src="mic"',chev:1}),row({tile:'sliders',t:'Ricette per strumento',s:'Valori di partenza',a:'data-a="go" data-v="rec"',chev:1}),row({tile:'help',t:'Dove trovo l\'EQ?',s:'Per tipo di mixer',a:'data-a="go" data-v="mixh"',chev:1})])}
+   ${g('Acustica',[row({tile:'cube',t:'Acustica a basso costo',s:'Tende, pannelli, casse: cosa fare e quanto costa',a:'data-a="dlist" data-src="acu"',chev:1})])}
+   ${g('Strumenti',[row({tile:'wave',t:'Test dell\'eco',s:DB.rt?'Riverbero '+DB.rt.t.toFixed(1).replace('.',',')+' s':'Misura il riverbero con le mani',a:'data-a="go" data-v="eco"',chev:1}),row({tile:'mic',t:'Ring-out del microfono',s:'Trova il fischio',a:'data-a="go" data-v="ring"',chev:1}),row({tile:'vol',t:'Volume della sala',s:'Lode e parola a confronto',a:'data-a="go" data-v="vol"',chev:1}),row({tile:'speaker',t:'Prova il microfono',s:'Spettro in tempo reale',a:'data-a="go" data-v="diag"',chev:1})])}
+   </div>`})},
+ after:()=>{const i=$('#sIn');if(!i)return;i.addEventListener('input',()=>{const q=i.value.trim(),main=$('#libMain'),res=$('#sRes');if(!q){res.innerHTML='';main.style.display='';return}
+   main.style.display='none';const r=runSearch(q);res.innerHTML=r.length?list(r.map(x=>row({tile:x.i,tc:'gray',t:x.t,s:x.s,a:`data-a="sres" data-k="${x.k}" data-id="${x.id}" ${x.src?`data-src="${x.src}"`:''}`,chev:1})),'Risultati','','ic'):`<p class="t-body sec" style="padding:8px 4px">Niente per «${esc(q)}». Prova con un\'altra parola, per esempio «fischio» o «tende».</p>`})}};
+
+/* ---------- prossimo passo e percorso ---------- */
+function cultoSoon(){const d=DB.set.days||[0],dow=new Date().getDay();return d.includes(dow)?'oggi':d.includes((dow+1)%7)?'domani':null}
+function nextStep(){
+  const e=DB.hist[0],items=checkItems(),dn=chkDone(),nd=items.filter(i=>dn[i.id]).length,soon=cultoSoon(),eq=e&&(e.q||DB.q).eqM!=='none';
+  if(soon&&e&&nd<items.length)return{t:soon==='oggi'?'Il culto è oggi':'Il culto è domani',s:nd?`Hai fatto ${nd} di ${items.length} controlli.`:'Quindici minuti di controllo prima del culto.',b:'Prima del culto',a:'data-a="go" data-v="check"',i:'check'};
+  if(!e)return{t:'Misura la sala',s:'Tre minuti con il telefono: poi senti la differenza.',b:'Inizia',a:'data-a="start"',i:'wave'};
+  if(!e.after&&e.filters.length&&eq&&!e.listened)return{t:'Ascolta la differenza',s:'Senti come suonerebbe con la correzione.',b:'Ascolta',a:'data-a="homeListen"',i:'vol'};
+  if(!e.after&&e.filters.length&&!(e.prog&&e.prog.eq))return{t:'Sistemalo sul mixer',s:'Una banda alla volta, nell\'ordine giusto.',b:'Comincia',a:'data-a="homePlan"',i:'sliders'};
+  if(!e.after&&e.filters.length)return{t:'Controlla il risultato',s:'Rimisura gli stessi punti e vedi la differenza.',b:'Rimisura',a:'data-a="remeasure"',i:'refresh'};
+  if(!DB.rt)return{t:'Misura il riverbero',s:'L\'equalizzatore non lo risolve: sapere quanto è lungo aiuta.',b:'Test dell\'eco',a:'data-a="go" data-v="eco"',i:'wave'};
+  if(!DB.qDone)return{t:'Racconta la sala',s:'Due minuti: poi i consigli sono su misura.',b:'Racconta',a:'data-a="roomStart"',i:'bulb'};
+  const wk=Math.floor(Date.now()/604800000)%LES.length;return{t:'Lezione della settimana',s:LES[wk].t,b:'Leggi',a:`data-a="lesd" data-i="${wk}"`,i:'school'};
+}
+function pathTracker(e){
+  const done=[true,!!(e.listened||e.after||(e.q||DB.q).eqM==='none'),!!(e.prog&&e.prog.eq)||!!e.after||!e.filters.length,!!e.after];
+  const cur=done.findIndex(v=>!v);
+  return `<div class="path" role="img" aria-label="Il tuo percorso">${['Misura','Ascolta','Sistema','Verifica'].map((l,i)=>`<div class="${done[i]?'done':i===cur?'cur':''}"><i>${done[i]?ic('check',15,3):`<b style="font:700 13px var(--round)">${i+1}</b>`}</i>${l}</div>`).join('')}</div>`;
+}
+ACT.homePlan=()=>{DB.cur=DB.hist[0].id;save();go('plan')};
+
+/* ---- home ---- */
+VIEWS.home={html:()=>{
+  const last=DB.hist[0],sc=last?(last.after?last.after.score:last.score):0,lab=last?scoreLabel(sc):null,ns=nextStep();
+  const next=`<div class="card hero"><div style="display:flex;gap:16px;align-items:center">${last?scoreRing(sc,88):`<span class="tile lg">${ic(ns.i,22,2)}</span>`}<div style="flex:1;min-width:0"><div class="t-cap">${last?'Ultima taratura · '+new Date(last.t).toLocaleDateString('it-IT',{day:'numeric',month:'short'}):'Per cominciare'}</div><div class="t-title2" style="margin:6px 0 4px">${last?lab[0]:ns.t}</div>${last&&last.after?`<p class="t-sub">Da ${last.score} a ${last.after.score}.</p>`:''}</div></div>
+    ${last?pathTracker(last):''}
+    <div class="vsl" style="gap:6px;margin-top:${last?'18px':'16px'}"><div>${last?`<div class="t-head" style="font-weight:600">Prossimo passo: ${ns.t}</div>`:''}<p class="t-sub" style="margin-top:2px">${ns.s}</p></div><div style="height:6px"></div>${btn(ns.b,ns.a)}${last?`<button class="btn plain" data-a="start">Nuova taratura</button>`:''}</div></div>`;
+  const items=checkItems(),dn=chkDone(),nd=items.filter(i=>dn[i.id]).length,soon=cultoSoon();
+  const week=[row({tile:'check',t:'Prima del culto',s:nd?`${nd} di ${items.length} fatte oggi`:soon?(soon==='oggi'?'Il culto è oggi':'Il culto è domani'):'Il controllo in 15 minuti',a:'data-a="go" data-v="check"',chev:1}),row({tile:'help',t:'Aiuto al volo',s:'Qualcosa non va? Cosa fare, passo per passo',a:'data-a="go" data-v="sos"',chev:1}),row({tile:'vol',t:'Volume della sala',s:'La lode non deve coprire la parola',a:'data-a="go" data-v="vol"',chev:1})];
+  const more=[row({tile:'book',t:'Libreria',s:'Lezioni, suoni, acustica, microfoni, ricette',a:'data-a="go" data-v="lib"',chev:1}),...(DB.hist.length?[row({tile:'clock',t:'Storico',val:DB.hist.length,a:'data-a="go" data-v="hist"',chev:1})]:[])];
+  return scr({nav:{back:false,right:gb('gear','go','Impostazioni','data-v="set"')},lt:esc(DB.set.name||'Accordo'),ls:DB.set.sala?esc(DB.set.sala):'La tua sala, accordata.',body:next+list(week,'Per il culto','','ic')+list(more,'','','ic')})}};
+
+/* ---- chi sei ---- */
+VIEWS.role={html:()=>scr({nav:{back:false},lt:'Quanto sei pratico di audio?',ls:'Cambia solo il tono. Si può cambiare quando vuoi.',body:list([['new','Alle prime armi','Ti accompagniamo con parole semplici','person'],['exp','Me la cavo','Meno spiegazioni, più numeri','sliders']].map(([k,t,s,i])=>row({tile:i,tc:DB.set.role===k?'':'gray',t,s,a:`data-a="role" data-v="${k}"`,chk:DB.set.role===k})),'','','ic')})};
+ACT.role=d=>{DB.set.role=d.v;save();render(true);later(()=>go('home',{},{replace:true,dir:'fade'}),240)};
+
+/* ---- avvio ---- */
+window.Accordo={DB:()=>DB,Eng,M,F,Player,E,V,rtAnalyze,aLevel,analyze,planEq,targetCurve,go,R,VIEWS,ACT,render};
+applyTheme();
+if('serviceWorker' in navigator&&location.protocol.startsWith('http'))addEventListener('load',()=>navigator.serviceWorker.register('sw.js').catch(()=>{}));
+go(DB.seen?'home':'welcome',{},{replace:true,dir:'fade'});
+</script>
+</body>
+</html>
