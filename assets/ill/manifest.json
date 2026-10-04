@@ -1,0 +1,19 @@
+{
+  "format": "webp",
+  "quality": 82,
+  "targetKB": 150,
+  "maxKB": 220,
+  "images": [
+    { "name": "welcome-hero",     "w": 1600, "h": 900, "screen": "Benvenuto",                    "where": "Sotto il logo, prima delle tre funzioni" },
+    { "name": "role-hero",        "w": 1600, "h": 800, "screen": "Quanto sei pratico di audio?", "where": "Sotto il titolo, prima della scelta" },
+    { "name": "measure-silence",  "w": 1600, "h": 800, "screen": "Un attimo di silenzio",        "where": "Sotto il titolo, prima dell'anello" },
+    { "name": "measure-position", "w": 1600, "h": 800, "screen": "Dove misuriamo?",              "where": "Sotto il titolo, prima della piantina" },
+    { "name": "result-good",      "w": 1600, "h": 800, "screen": "Il tuo suono (punteggio 75 o più)", "where": "Sotto il titolo, prima del punteggio" },
+    { "name": "result-work",      "w": 1600, "h": 800, "screen": "Il tuo suono (punteggio sotto 75)", "where": "Sotto il titolo, prima del punteggio" },
+    { "name": "verify-done",      "w": 1600, "h": 800, "screen": "Fatto (dopo l'EQ)",            "where": "Sotto «Fatto.», prima del bottone" },
+    { "name": "culto-check",      "w": 1600, "h": 800, "screen": "Prima del culto",              "where": "Sotto il titolo, prima del riepilogo" },
+    { "name": "sos-hero",         "w": 1600, "h": 800, "screen": "Aiuto al volo",                "where": "Sotto il titolo, prima dell'elenco" },
+    { "name": "lib-hero",         "w": 1600, "h": 800, "screen": "Libreria",                     "where": "Sotto il titolo, prima della ricerca" },
+    { "name": "history-empty",    "w": 1600, "h": 800, "screen": "Storico (vuoto)",              "where": "Sotto il titolo, quando non ci sono tarature" }
+  ]
+}

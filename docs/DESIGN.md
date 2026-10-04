@@ -1,4 +1,4 @@
-# Accordo · design system per iOS
+# Intona · design system per iOS
 
 Principi: chiarezza, deferenza, profondità. Una cosa per schermata, un bottone principale.
 
@@ -25,3 +25,12 @@ Dock azioni in basso con sfumatura. Fogli modali con maniglia, angolo 32.
 ## Movimento
 Push/pop con curva (0,32 · 0,72 · 0 · 1) in 0,36 s. Anelli e numeri che si riempiono all'apertura.
 Con "riduci movimento" attivo, niente animazioni.
+
+## 0.6 · identità e momenti
+- **Simbolo e logotipo** disegnati a tratti (vedi `brand/BRAND.md`). Il corista vibra solo in benvenuto, home al primo avvio e analisi.
+- **Colori per area**, come le Impostazioni di iOS: ogni sezione ha il suo colore sull'icona; l'ambra resta solo per l'azione principale.
+- **Passo EQ visivo**: grafico del taglio (la curva che si abbassa) e manopole che riproducono i controlli del mixer (frequenza, guadagno, Q), con la riga «Imposta 250 Hz, porta il guadagno a −2,5 dB».
+- **Ascolto**: spettro vivo dentro la scheda del grafico (grigio «prima», ambra «dopo»), tasto che pulsa durante la riproduzione, grafico che si disegna all'apertura dei risultati.
+- **Disegni di istruzione** in SVG per il volume (fader che sale, rumore rosa, canzone in sala), la piantina dei punti e le manopole.
+- **Illustrazioni a scena** facoltative in `assets/ill/`: compaiono solo se il file c'è (vedi `docs/CODEX-ILLUSTRAZIONI.md`). In scuro sono attenuate al 93%.
+- **Immagine da condividere** (prima e dopo) generata sul telefono, 1080 × 1350, per WhatsApp.

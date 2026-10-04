@@ -1,8 +1,8 @@
-# Accordo
+# Intona
 
-**La tua sala, accordata.** Un'app per iPhone che misura la sala con il microfono del telefono e dice a chi serve in regia, nelle chiese, quali manopole girare sul mixer per migliorare il suono.
+**Intona la tua sala.** Un'app per iPhone che misura la sala con il microfono del telefono e dice a chi serve in regia, nelle chiese, quali manopole girare sul mixer per migliorare il suono.
 
-Prototipo funzionante. Nessun account, nessun server: tutto resta sul telefono.
+Prototipo funzionante (versione 0.6). Nessun account, nessun server: tutto resta sul telefono.
 
 ## Cosa fa
 - **Misura la sala** con il rumore rosa e il microfono del telefono, in tre punti.
@@ -27,8 +27,11 @@ Repository, Settings, Pages. In «Build and deployment» scegli «Deploy from a 
 ## Struttura
 - `index.html`: tutta l'app (HTML, CSS e JavaScript, senza librerie esterne)
 - `manifest.webmanifest`, `sw.js`: installazione e uso senza rete
-- `icon-*.png`, `splash-*.png`: icone e schermate di avvio per iPhone
-- `docs/`: design system e note di ricerca con le fonti
+- `icon-*.png`, `splash-*.png`, `favicon.svg`: icone e schermate di avvio
+- `brand/`: simbolo, logotipo e guida all'identità (`BRAND.md`)
+- `assets/ill/`: illustrazioni (facoltative: compaiono solo se il file c'è) e anteprima `preview.html`
+- `tools/check-illustrations.mjs`: controllo delle illustrazioni
+- `docs/`: design system, note di ricerca con le fonti e `CODEX-ILLUSTRAZIONI.md`
 
 ## Limiti noti
 - Non ancora provata su iPhone reali: i collaudi sono con un microfono simulato.
