@@ -188,7 +188,7 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:28px;heigh
 .hero-ic{width:96px;height:96px;border-radius:26px;display:grid;place-items:center;background:var(--tint-wash);color:var(--tint-text);margin:0 auto}
 .appicon{width:96px;height:96px;border-radius:22%;background:#0B0B0C;display:grid;place-items:center;color:#fff;--mkbg:#0B0B0C;box-shadow:0 0 0 .5px rgba(255,255,255,.12),0 10px 30px rgba(0,0,0,.25);margin:0 auto}
 .ringg{position:relative;display:grid;place-items:center}
-.ringg svg{position:absolute;inset:0;transform:rotate(-90deg)}
+.ringg>svg{position:absolute;inset:0;transform:rotate(-90deg)}
 .ringg .n{font:700 44px/1 var(--round);letter-spacing:-.04em}
 .ringg.sm .n{font-size:30px}
 .rg{transition:stroke-dashoffset 1.1s cubic-bezier(.2,.8,.2,1)}
@@ -336,6 +336,81 @@ input[type=search]{-webkit-appearance:none;appearance:none}
 .spec.live i.pk{background:var(--red)}
 .scoredelta{display:inline-flex;align-items:center;gap:6px}
 @media (prefers-reduced-motion:reduce){.fk-anim .fk-pl,.fk-anim .fk-pr,.fk-anim .fk-r path,.fk-anim .fk-f,.illsvg .up,.illsvg .cap,#lplay.pulse::before,#lplay.pulse::after,.cw.d1 .ln-0 path:first-child,.cw.d2 .ln-1 path:first-child{animation:none;stroke-dasharray:none;stroke-dashoffset:0}}
+
+/* =====================================================================
+   INTONA 0.7 路 iOS 26: vetro, barra a schede flottante, meno luci
+   Il contenuto viene prima. I controlli sono di vetro e galleggiano.
+   Niente aloni, niente gradienti decorativi.
+   ===================================================================== */
+:root{
+  --r-card:28px; --r-list:26px;
+  --g-bg:rgba(255,255,255,.62); --g-hi:rgba(255,255,255,.9); --g-line:rgba(255,255,255,.7);
+  --g-shadow:0 8px 26px rgba(0,0,0,.10),0 1px 2px rgba(0,0,0,.05);
+  --g-tab:rgba(255,255,255,.8); --sheet:rgba(248,248,251,.86); --blur:saturate(200%) blur(28px);
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --g-bg:rgba(60,60,64,.5); --g-hi:rgba(255,255,255,.16); --g-line:rgba(255,255,255,.12);
+  --g-shadow:0 10px 30px rgba(0,0,0,.5); --g-tab:rgba(40,40,44,.78); --sheet:rgba(34,34,38,.86)}}
+:root[data-theme="dark"]{
+  --g-bg:rgba(60,60,64,.5); --g-hi:rgba(255,255,255,.16); --g-line:rgba(255,255,255,.12);
+  --g-shadow:0 10px 30px rgba(0,0,0,.5); --g-tab:rgba(40,40,44,.78); --sheet:rgba(34,34,38,.86)}
+
+/* controlli di vetro */
+.gbtn{min-width:46px;height:46px;border-radius:23px;background:var(--g-bg);-webkit-backdrop-filter:var(--blur);backdrop-filter:var(--blur);box-shadow:inset 0 0 0 .5px var(--g-line),inset 0 1px 0 var(--g-hi),var(--g-shadow)}
+.gbtn:active{transform:scale(.92)}
+.btn{height:56px;border-radius:28px;box-shadow:inset 0 1px 0 rgba(255,255,255,.55),inset 0 0 0 .5px rgba(255,255,255,.3),0 6px 18px rgba(0,0,0,.14)}
+.btn.tinted,.btn.gray{background:var(--g-bg);-webkit-backdrop-filter:var(--blur);backdrop-filter:var(--blur);color:var(--tint-text);box-shadow:inset 0 0 0 .5px var(--g-line),inset 0 1px 0 var(--g-hi),var(--g-shadow)}
+.btn.gray{color:var(--l1)}
+.btn.danger{height:52px}
+.btn.plain{height:46px}
+
+/* barra in alto e azioni in basso: sfumatura con sfocatura, senza linee */
+.nav{isolation:isolate}
+.nav.compact{background:none;-webkit-backdrop-filter:none;backdrop-filter:none;box-shadow:none}
+.nav::before{content:"";position:absolute;inset:0 0 -22px;z-index:-1;opacity:0;transition:opacity .25s;pointer-events:none;-webkit-backdrop-filter:blur(16px) saturate(160%);backdrop-filter:blur(16px) saturate(160%);background:linear-gradient(var(--bg) 40%,transparent);-webkit-mask-image:linear-gradient(#000 55%,transparent);mask-image:linear-gradient(#000 55%,transparent)}
+.nav.compact::before{opacity:1}
+.dock{background:none;isolation:isolate;padding-top:34px}
+.dock::before{content:"";position:absolute;inset:0;z-index:-1;pointer-events:none;-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px);background:linear-gradient(to top,var(--bg) 35%,transparent);-webkit-mask-image:linear-gradient(to top,#000 60%,transparent);mask-image:linear-gradient(to top,#000 60%,transparent)}
+
+/* barra a schede flottante */
+.tabbar{position:fixed;z-index:30;left:50%;transform:translateX(-50%);bottom:calc(10px + env(safe-area-inset-bottom,0px));width:min(calc(100% - 28px),430px);height:68px;padding:5px;display:flex;gap:2px;border-radius:34px;background:var(--g-tab);-webkit-backdrop-filter:var(--blur);backdrop-filter:var(--blur);box-shadow:inset 0 0 0 .5px var(--g-line),inset 0 1px 0 var(--g-hi),var(--g-shadow)}
+.tab{flex:1;min-width:0;border:0;background:none;border-radius:29px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;color:var(--l2);font:600 10.5px/1 var(--font);letter-spacing:.1px;transition:background .2s,color .2s}
+.tab span{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%}
+.tab.on{color:var(--tint-text);background:var(--fill)}
+.tab:active{transform:scale(.94)}
+.scr.has-tab .content{padding-bottom:116px}
+.tab-lib .nav .l,.tab-sos .nav .l,.tab-set .nav .l{display:none}
+
+/* carte, liste, icone */
+.card.hero,.card.brandhero{background:var(--cell)}
+.row{min-height:60px}
+.list.ic .row+.row::before{left:62px}
+.tile{width:32px;height:32px;border-radius:9px;position:relative}
+.tile::after{content:"";position:absolute;inset:0;border-radius:inherit;background:linear-gradient(180deg,rgba(255,255,255,.24),rgba(255,255,255,0) 58%);pointer-events:none}
+.tile.lg{width:48px;height:48px;border-radius:14px}
+.ill{border-radius:var(--r-card)}
+.input{height:52px;border-radius:18px}
+
+/* controlli: segmenti, interruttori, fogli */
+.segc{border-radius:99px;padding:3px}
+.segc button{height:34px;border-radius:99px}
+.ab{border-radius:999px;padding:4px}
+.ab button{height:56px;border-radius:999px}
+.tgl{width:64px;height:34px;border-radius:17px}
+.tgl::after{width:42px;height:28px;top:3px;left:3px;border-radius:14px}
+.tgl.on::after{transform:translateX(16px)}
+.scrim{background:rgba(0,0,0,.28)}
+.sheet{left:8px;right:8px;bottom:calc(8px + env(safe-area-inset-bottom,0px));border-radius:40px;background:var(--sheet);-webkit-backdrop-filter:var(--blur);backdrop-filter:var(--blur);box-shadow:inset 0 0 0 .5px var(--g-line),inset 0 1px 0 var(--g-hi),0 20px 60px rgba(0,0,0,.28);padding:10px 16px 16px}
+.toast{bottom:calc(104px + env(safe-area-inset-bottom,0px))}
+
+/* via gli aloni */
+.stagefork::before{display:none}
+.viz.wet{box-shadow:none}
+#lplay{box-shadow:0 6px 18px rgba(0,0,0,.18)!important}
+.spec.live i,.viz.wet .spec i{background:var(--tint)}
+.ringg .n svg{position:static;inset:auto;transform:none}
+.scr.has-tab::after{content:"";position:fixed;left:0;right:0;bottom:0;height:128px;background:linear-gradient(to top,var(--bg) 38%,transparent);pointer-events:none;z-index:25}
+.row .val{flex:none;max-width:52%;white-space:normal;text-align:right}
 </style>
 </head>
 <body>
@@ -763,7 +838,7 @@ let back=function(){
 };
 function render(keepScroll){
   const y=window.scrollY;if(keepScroll)R.dir='none';cleanup();const V=VIEWS[R.v];
-  $('#app').innerHTML=V.html(R.p);decorate();hookCharts($('#app'));animateIn();if(V.after)V.after(R.p);
+  $('#app').innerHTML=V.html(R.p);decorate();tabs();hookCharts($('#app'));animateIn();if(V.after)V.after(R.p);
   if(keepScroll)window.scrollTo(0,y);
   onScroll();
 }
@@ -1148,7 +1223,7 @@ VIEWS.set={html:()=>scr({nav:{title:'Impostazioni'},lt:'Impostazioni',body:`
   <div><div class="hdr">Giorni del culto</div><div class="chips">${DAYS.map((d,i)=>`<button class="chip ${(DB.set.days||[0]).includes(i)?'on':''}" data-a="dayt" data-i="${i}">${d}</button>`).join('')}</div><p class="t-foot" style="padding:8px 4px 0">Il giorno prima e il giorno stesso ti ricordiamo il controllo.</p></div>
   ${list([row({tile:'sliders',tc:'gray',t:'Il mio mixer',val:mixName(DB.q.mixType),a:'data-a="mixsheet"',chev:1}),row({tile:'bulb',tc:'gray',t:'Racconta la sala',s:DB.qDone?'Compilata':'Non ancora',a:'data-a="roomStart2"',chev:1}),row({tile:'mic',tc:'gray',t:'Prova il microfono',a:'data-a="go" data-v="diag"',chev:1}),row({tile:'file',tc:'gray',t:'Esporta i dati',a:'data-a="export"',chev:1})],'Altro','Tutti i dati sono salvati solo su questo telefono.','ic')}
   ${list([row({tile:'vol',tc:'gray',t:'Il La di Intona',s:'Una nota a fine taratura. Se il telefono 猫 collegato al mixer, la sentono tutti in sala.',right:`<button class="tgl ${DB.set.chime?'on':''}" data-a="chimeT" aria-label="Il La di Intona" aria-pressed="${!!DB.set.chime}"></button>`})],'Suono','','ic')}
-  <button class="btn danger" data-a="wipe">Cancella tutto</button><p class="t-foot" style="text-align:center">Intona 路 versione 0.6</p>`,dock:btn('Salva','data-a="sset"')})};
+  <button class="btn danger" data-a="wipe">Cancella tutto</button><p class="t-foot" style="text-align:center">Intona 路 versione 0.7</p>`})};
 ACT.theme=d=>{DB.set.theme=d.v;save();applyTheme();render(true)};
 ACT.textsz=d=>{DB.set.text=d.v;save();applyTheme();render(true)};
 ACT.rolesw=d=>{DB.set.role=d.v;save();render(true)};
@@ -1490,7 +1565,8 @@ function slotFor(){const v=R.v;
   if(v==='res'){const e=getE(R.p.id);return e&&e.score>=75?'result-good':'result-work'}
   if(v==='meas')return M.stage==='floor'?'measure-silence':M.stage==='pos'?'measure-position':null;
   return null}
-function decorate(){const n=slotFor();if(!n)return;const h=$('#app .content .head'),html=ill(n);if(!html)return;
+const ILL_SHOW=new Set(['history-empty']);
+function decorate(){const n=slotFor();if(!n||!ILL_SHOW.has(n))return;const h=$('#app .content .head'),html=ill(n);if(!html)return;
   if(h)h.insertAdjacentHTML('afterend',html);else{const c=$('#app .content');if(c)c.insertAdjacentHTML('afterbegin',html)}}
 
 /* ---------- il La (440 Hz): suono facoltativo a fine taratura ---------- */
@@ -1567,7 +1643,7 @@ VIEWS.home={html:()=>{
   const items=checkItems(),dn=chkDone(),nd=items.filter(i=>dn[i.id]).length,soon=cultoSoon(),wk=Math.floor(Date.now()/604800000)%LES.length;
   const week=[row({tile:'check',tc:'c-green',t:'Prima del culto',s:nd?`${nd} di ${items.length} fatte oggi`:soon?(soon==='oggi'?'Il culto 猫 oggi':'Il culto 猫 domani'):'Il controllo in 15 minuti',a:'data-a="go" data-v="check"',chev:1}),row({tile:'help',tc:'c-red',t:'Aiuto al volo',s:'Qualcosa non va? Cosa fare, passo per passo',a:'data-a="go" data-v="sos"',chev:1}),row({tile:'vol',tc:'c-teal',t:'Volume della sala',s:'La lode non deve coprire la parola',a:'data-a="go" data-v="vol"',chev:1})];
   const more=[row({tile:'book',tc:'c-indigo',t:'Libreria',s:'Lezioni, suoni, acustica, microfoni, ricette',a:'data-a="go" data-v="lib"',chev:1}),row({tile:'school',tc:'c-purple',t:'Lezione della settimana',s:LES[wk].t,a:`data-a="lesd" data-i="${wk}"`,chev:1}),...(DB.hist.length?[row({tile:'clock',tc:'gray',t:'Storico',val:DB.hist.length,a:'data-a="go" data-v="hist"',chev:1})]:[])];
-  return scr({nav:{back:false,left:`<span class="navmark">${MARK(30)}</span>`,right:gb('gear','go','Impostazioni','data-v="set"')},lt:DB.set.name?esc(DB.set.name):WORD(),ls:DB.set.sala?esc(DB.set.sala):'Intona la tua sala.',body:hero+trend+list(week,'Per il culto','','ic')+list(more,'','','ic')})}};
+  return scr({nav:{back:false,left:`<span class="navmark">${MARK(30)}</span>`,right:''},lt:DB.set.name?esc(DB.set.name):WORD(),ls:DB.set.sala?esc(DB.set.sala):'Intona la tua sala.',body:hero+trend+list(week,'Per il culto','','ic')+list(more,'','','ic')})}};
 
 /* ---------- ascolto: spettro vivo ---------- */
 /* lo spettro vive dentro la scheda del grafico (vedi patch6) */
@@ -1615,6 +1691,18 @@ ACT.shareCard=async()=>{const e=getE();if(!e)return;toast('Preparo l\'immagine鈥
 
 VIEWS.res.after=()=>{if(DB.set.chime&&R.dir!=='none')later(playLa,900)};
 const _ca=VIEWS.cmp.after;VIEWS.cmp.after=p=>{_ca(p);const e=getE();if(DB.set.chime&&R.dir!=='none'&&e&&e.after&&e.after.score-e.score>=3)later(playLa,1200)};
+
+/* =============================================================
+   INTONA 0.7 路 barra a schede, impostazioni che si salvano da sole
+   ============================================================= */
+IC.life='<circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="3.6"/><path d="M5.6 5.6l3.9 3.9M14.5 14.5l3.9 3.9M18.4 5.6l-3.9 3.9M9.5 14.5l-3.9 3.9"/>';
+const TABS=[['home','home','Home'],['sos','life','Aiuto'],['lib','book','Libreria'],['set','gear','Opzioni']];
+const tabbar=v=>`<nav class="tabbar" aria-label="Sezioni">${TABS.map(([k,i,l])=>`<button class="tab ${k===v?'on':''}" data-a="tab" data-v="${k}" ${k===v?'aria-current="page"':''}>${ic(i,24,1.9)}<span>${l}</span></button>`).join('')}</nav>`;
+function tabs(){if(!TABS.some(t=>t[0]===R.v))return;const s=$('#app .scr');if(!s)return;s.classList.add('has-tab','tab-'+R.v);$('#app').insertAdjacentHTML('beforeend',tabbar(R.v))}
+ACT.tab=d=>{if(R.v===d.v)return;R.stack=[];go(d.v,{},{replace:true,dir:'fade'})};
+const _setAfter=VIEWS.set.after;
+VIEWS.set.after=p=>{if(_setAfter)_setAfter(p);['sName','sSala'].forEach(id=>{const i=$('#'+id);if(i)i.addEventListener('input',()=>{DB.set.name=$('#sName').value.trim();DB.set.sala=$('#sSala').value.trim();save()})})};
+
 /* ---- avvio ---- */
 window.Intona=window.Accordo={shareImage,MARK,WORD,ill,eqGraph,DB:()=>DB,Eng,M,F,Player,E,V,rtAnalyze,aLevel,analyze,planEq,targetCurve,go,R,VIEWS,ACT,render};
 applyTheme();

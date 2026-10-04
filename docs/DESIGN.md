@@ -34,3 +34,13 @@ Con "riduci movimento" attivo, niente animazioni.
 - **Disegni di istruzione** in SVG per il volume (fader che sale, rumore rosa, canzone in sala), la piantina dei punti e le manopole.
 - **Illustrazioni a scena** facoltative in `assets/ill/`: compaiono solo se il file c'è (vedi `docs/CODEX-ILLUSTRAZIONI.md`). In scuro sono attenuate al 93%.
 - **Immagine da condividere** (prima e dopo) generata sul telefono, 1080 × 1350, per WhatsApp.
+
+## 0.7 · iOS 26
+- **Vetro**: i controlli (pulsanti nella barra, barra a schede, fogli, bottoni secondari) sono di vetro: sfondo traslucido, sfocatura con saturazione, bordo chiaro interno e ombra morbida. Se il browser non supporta la sfocatura restano leggibili perché lo sfondo non è mai del tutto trasparente.
+- **Barra a schede flottante** (Home, Aiuto, Libreria, Opzioni) sulle quattro schermate principali; «Aiuto» è sempre a un tocco, anche durante il culto. Sotto la barra il contenuto sfuma, senza linee.
+- **Barra in alto e azioni in basso** con sfumatura e sfocatura progressive, non più una riga o una banda piena.
+- **Fogli** staccati dai bordi, angolo 40, in vetro.
+- **Curve concentriche**: carte 28, elenchi 26, bottoni a capsula 56 pt, interruttori con pomello largo.
+- **Via gli effetti**: nessun alone ambra dietro simbolo e bottoni, nessun gradiente di sfondo sulle carte, spettro in tinta piena.
+- **Scene illustrate**: di default si mostra solo lo stato vuoto dello storico (`history-empty`). Le altre scene restano nel progetto e si riattivano aggiungendo il loro nome a `ILL_SHOW` in `index.html`.
+- Impostazioni senza bottone «Salva»: nome e sala si salvano mentre si scrive.

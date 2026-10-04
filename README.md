@@ -2,7 +2,7 @@
 
 **Intona la tua sala.** Un'app per iPhone che misura la sala con il microfono del telefono e dice a chi serve in regia, nelle chiese, quali manopole girare sul mixer per migliorare il suono.
 
-Prototipo funzionante (versione 0.6). Nessun account, nessun server: tutto resta sul telefono.
+Prototipo funzionante (versione 0.7). Nessun account, nessun server: tutto resta sul telefono.
 
 ## Cosa fa
 - **Misura la sala** con il rumore rosa e il microfono del telefono, in tre punti.
