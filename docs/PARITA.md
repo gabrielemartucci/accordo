@@ -15,7 +15,7 @@ Scene e snapshot, preset di canale, RTA sulle equalizzazioni, rilevamento dei fi
 
 ## 2. Tabella di parità
 
-| Funzione | Gli altri | Intona 0.8 |
+| Funzione | Gli altri | Intona 0.9 |
 |---|---|---|
 | Pesature A, C, Z | Tutti | ✓ filtri IEC verificati: a 4 kHz entro 0,03 dB dalla formula, a 8 kHz entro 0,5 dB |
 | Fast e Slow | Tutti | ✓ |
@@ -42,6 +42,9 @@ Scene e snapshot, preset di canale, RTA sulle equalizzazioni, rilevamento dei fi
 | Memoria dei culti | Scene dei mixer | ✓ taccuino e rapporti del culto, senza collegarsi al mixer |
 | Calcolo del ritardo delle casse | Smaart (misura), calcolatori | ✓ calcolatore con temperatura |
 | Formazione | Church Sound Guide, Sound Guy Essentials | ✓ lezioni, impara a sentire, guida per tipo di mixer, ricette |
+| Equilibrio tra gli strumenti, mappa della sala, simulatore | — (non trovati negli altri) | ✓ equilibrio del mix, mappa, simulatore con Sabine |
+| Passaggio di consegne tra volontari | Planning Center (scalette) | ✓ link con sala, mixer, taratura e note, senza account |
+| Controllo del microfono (AGC, NS, eco) | — | ✓ test del microfono |
 | Scene del mixer, controllo a distanza | X Air Edit, Ui, Mixing Station | — richiede il collegamento al mixer: vedi sotto |
 | Funzione di trasferimento, coerenza, ritardo misurato | Smaart, REW | — serve un ingresso di riferimento: sul telefono non è praticabile |
 | STI | Smaart, REW (stima) | — non c'è un metodo affidabile con il microfono di un telefono |
@@ -60,7 +63,7 @@ Scene e snapshot, preset di canale, RTA sulle equalizzazioni, rilevamento dei fi
 - **Controllo del mixer.** Applicare i tagli da soli richiede il collegamento: X Air e X32 parlano OSC su UDP, che un browser non può usare senza un ponte; Soundcraft Ui usa un WebSocket sulla rete locale. Da un iPhone, una pagina `https` che apre un `ws://` locale viene probabilmente bloccata (non verificato su un telefono vero). È la strada per una app nativa, non per questa pagina.
 - **Precisione assoluta.** Il microfono del telefono, senza calibrazione, può sbagliare di diversi dB: lo studio NIOSH del 2014 ha trovato errori molto diversi tra le app anche sullo stesso telefono, e con microfono esterno si scende a circa ±1 dB. Per questo l'app mostra sempre se è calibrata. Safari potrebbe anche ignorare la richiesta di spegnere i filtri automatici del microfono: la schermata «Prova il microfono» lo controlla.
 - **Dose di rumore** e statistiche L10/L95.
-- **Guide per modello** (X32, XR18, TF, Qu, SQ, Ui…) con la schermata esatta da aprire.
+- **Guide per modello**: ora ci sono per 14 famiglie, ma sono ricavate dai manuali online e **non provate** su console vere.
 - **Altre lingue.**
 - Non provata su iPhone reali.
 

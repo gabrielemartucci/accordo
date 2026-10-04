@@ -50,3 +50,15 @@ Con "riduci movimento" attivo, niente animazioni.
 - **Analizzatore**: il grafico resta fisso in alto mentre si scorrono i comandi; barre, curva, cascata; colori per scostamento dal bersaglio (verde ±3 dB, rosso sopra, grigio sotto).
 - **Fonometro e monitor del culto**: un grande numero, il colore dello stato (verde, arancio, rosso) e il rapporto. Mentre il monitor lavora compare in alto una pillola di vetro «Monitor · 88 dB(A)» su ogni schermata.
 - Sempre visibile se il valore è **calibrato** o no, con la tolleranza (±3 dB o ±8 dB).
+
+## 0.9 · funzioni nuove
+- **Strumenti** raggruppati per uso (Misura, La sala, Prova e calcola); in cima la **Scansione rapida**.
+- **Equilibrio del mix**: ogni gruppo suona da solo per qualche secondo, il confronto con le voci dà una riga per strumento («troppo forte», «giusto», «non si sente»).
+- **Mappa della sala**: i punti misurati sulla piantina, colorati per distanza dal punto 1 (verde fino a 3 dB, arancio 3–6, rosso oltre).
+- **Simulatore acustico**: stima del riverbero con pannelli, tende e tappeti (formula di Sabine, assorbimenti tipici); è una stima, il riscontro è la misura vera.
+- **Test del microfono**: controlla che eco, riduzione rumore e controllo guadagno siano spenti e prova la compressione (rumore a due livelli, +12 dB attesi).
+- **Monitor per momenti** (lode, predicazione…) con limite proprio e rapporto per momento.
+- **Link di passaggio**: sala, mixer, ultima taratura e note codificati nell'indirizzo (`#s=`); niente server né account.
+- **Copia dei dati** in un file e ripristino.
+- **Guide mixer**: dati in `MIXG` (modello, dove sono EQ canale, EQ master, filtro bassi, gain, RTA, come tagliare, attenzione, fiducia). Etichette oneste: «Dai manuali ufficiali», «Da controllare sul manuale», «Indicazioni generali».
+- **Misura non riuscita**: se oltre metà delle bande è coperta dal rumore di fondo non si dà un punteggio (prima poteva comparire un 100 finto); l'elaborazione si scarta o si ripete.

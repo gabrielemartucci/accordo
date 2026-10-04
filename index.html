@@ -435,6 +435,21 @@ textarea.input{height:240px;padding:14px 16px;resize:none;line-height:1.45;margi
 
 .rta{position:sticky;top:calc(env(safe-area-inset-top,0px) + 56px);z-index:6;box-shadow:0 10px 24px rgba(0,0,0,.18)}
 .tab span{font-size:10px;letter-spacing:-.15px}
+
+/* ===== 0.9 ===== */
+.mbbar{position:relative;display:inline-block;width:120px;height:8px;border-radius:4px;background:var(--fill2);flex:none}
+.mbbar .rg{position:absolute;top:0;bottom:0;background:rgba(52,199,89,.5);border-radius:4px}
+.mbbar b{position:absolute;top:-3px;width:14px;height:14px;border-radius:50%;margin-left:-7px;background:var(--tint);box-shadow:0 0 0 2px var(--cell)}
+.simbar{position:relative;height:10px;border-radius:5px;background:var(--fill2);margin:18px 6px 0}
+.simbar .rg{position:absolute;top:0;bottom:0;background:rgba(52,199,89,.5);border-radius:5px}
+.simbar b{position:absolute;top:-4px;width:18px;height:18px;border-radius:50%;margin-left:-9px;background:var(--tint);box-shadow:0 0 0 3px var(--cell)}
+/* ===== 0.9 ===== */
+.mbbar{position:relative;display:inline-block;width:120px;height:8px;border-radius:4px;background:var(--fill2);flex:none}
+.mbbar .rg{position:absolute;top:0;bottom:0;background:rgba(52,199,89,.5);border-radius:4px}
+.mbbar b{position:absolute;top:-3px;width:14px;height:14px;border-radius:50%;margin-left:-7px;background:var(--tint);box-shadow:0 0 0 2px var(--cell)}
+.simbar{position:relative;height:10px;border-radius:5px;background:var(--fill2);margin:18px 6px 0}
+.simbar .rg{position:absolute;top:0;bottom:0;background:rgba(52,199,89,.5);border-radius:5px}
+.simbar b{position:absolute;top:-4px;width:18px;height:18px;border-radius:50%;margin-left:-9px;background:var(--tint);box-shadow:0 0 0 3px var(--cell)}
 </style>
 </head>
 <body>
@@ -1065,6 +1080,7 @@ function finishAnalysis(){
 /* ---- il tuo suono ---- */
 VIEWS.res={html:p=>{
   const e=getE(p.id);if(!e)return scr({nav:{},lt:'Nessuna taratura',body:''});
+  if(e.valid&&e.valid.filter(v=>!v).length>=12)return scr({nav:{back:false,right:`<button class="gbtn txt" data-a="badDrop" data-id="${e.id}" data-go="home">Scarta</button>`,title:'Misura non riuscita'},lt:'Misura non riuscita',ls:'Il suono in sala era troppo debole rispetto al rumore di fondo: non possiamo dirti niente di affidabile.',body:`${banner('bad','alert','<b>Nessun punteggio.</b> Meglio non darti un numero finto.')}${list([row({tile:'vol',tc:'gray',t:'Alza la musica',s:'Deve coprire bene il rumore della sala: alza il volume finché la barra è nella zona verde.'}),row({tile:'mic',tc:'gray',t:'Avvicina il telefono',s:'Tienilo in alto, lontano dal corpo e da pareti, col microfono verso le casse.'}),row({tile:'info',tc:'gray',t:'Prima il test del microfono',s:'Controlla che il telefono non filtri il suono.',a:'data-a="go" data-v="micp"',chev:1})],'Come riprovare','','ic')}`,dock:btn('Rifai la misura','data-a="badDrop" data-id="'+e.id+'" data-go="start"')});
   const lab=scoreLabel(e.score),top=[...e.filters].sort((a,b)=>b.d-a.d),hasEq=(e.q||DB.q).eqM!=='none';
   const cov=e.cov||[],cs=cov.length>1?Math.max(...cov)-Math.min(...cov):0,clar=e.clar!==undefined&&e.clar<=-3;
   const issues=top.slice(0,2).map(f=>ZONE_TXT[f.name]);
@@ -1073,7 +1089,7 @@ VIEWS.res={html:p=>{
   const sentence=issues.length?issues.slice(0,2).join(' '):'Suona bene: non serve toccare l\'equalizzatore.';
   const rows=top.map(f=>row({tile:'target',tc:'gray',t:f.name,s:`${hz(f.f)} · ${ZONE_TXT[f.name]}`,right:sev(f.d>=6?3:f.d>=4?2:1)}));
   if(clar)rows.push(row({tile:'person',tc:'gray',t:'Consonanti deboli',s:'2–4 kHz sotto il livello giusto. Si risolve sul canale di chi predica.',right:pill('ac','Chiarezza')}));
-  if(cov.length>1)rows.push(row({tile:'group',tc:'gray',t:'Copertura della sala',s:cov.map((v,i)=>PT_NAMES[i].split(',')[0]+' '+(i===0?'0':nf(v))).join(' · ')+' dB',right:pill(cs<=4?'good':cs<=6?'ac':'bad',cs<=4?'Regolare':cs<=6?'Accettabile':'Irregolare')}));
+  if(cov.length>1)rows.push(row({tile:'group',tc:'gray',t:'Copertura della sala',s:cov.map((v,i)=>PT_NAMES[i].split(',')[0]+' '+(i===0?'0':nf(v))).join(' · ')+' dB',right:pill(cs<=4?'good':cs<=6?'ac':'bad',cs<=4?'Regolare':cs<=6?'Accettabile':'Irregolare'),a:'data-a="go" data-v="cover"',chev:1}));
   if(e.lf.length)rows.push(row({tile:'speaker',tc:'gray',t:'Bassi sotto 100 Hz',s:'Più forti del previsto. Il telefono lì è meno preciso.',right:pill('','Indicativo')}));
   if(e.varia.length)rows.push(row({tile:'group',tc:'gray',t:'Cambia da posto a posto',s:e.varia.map(v=>hz(v.f)).join(', ')+'. Non si risolve con l\'EQ.'}));
   if(DB.rt)rows.push(row({tile:'wave',tc:'gray',t:'Riverbero',s:DB.rt.t.toFixed(1).replace('.',',')+' s · l\'EQ non lo risolve',right:pill(rtRate(DB.rt.t)[1],rtRate(DB.rt.t)[0]),a:'data-a="go" data-v="eco"',chev:1}));
@@ -1247,9 +1263,9 @@ VIEWS.set={html:()=>scr({nav:{title:'Impostazioni'},lt:'Impostazioni',body:`
   <div><div class="hdr">Quanto sei pratico</div>${seg([['Alle prime armi',DB.set.role!=='exp','data-a="rolesw" data-v="new"'],['Me la cavo',DB.set.role==='exp','data-a="rolesw" data-v="exp"']])}</div>
   <div class="vsl" style="gap:10px"><div class="hdr" style="padding-bottom:0">La tua chiesa</div><input class="input" id="sName" value="${esc(DB.set.name)}" placeholder="Nome della chiesa" autocomplete="off"><input class="input" id="sSala" value="${esc(DB.set.sala)}" placeholder="Nome della sala" autocomplete="off"></div>
   <div><div class="hdr">Giorni del culto</div><div class="chips">${DAYS.map((d,i)=>`<button class="chip ${(DB.set.days||[0]).includes(i)?'on':''}" data-a="dayt" data-i="${i}">${d}</button>`).join('')}</div><p class="t-foot" style="padding:8px 4px 0">Il giorno prima e il giorno stesso ti ricordiamo il controllo.</p></div>
-  ${list([row({tile:'sliders',tc:'gray',t:'Il mio mixer',val:mixName(DB.q.mixType),a:'data-a="mixsheet"',chev:1}),row({tile:'bulb',tc:'gray',t:'Racconta la sala',s:DB.qDone?'Compilata':'Non ancora',a:'data-a="roomStart2"',chev:1}),row({tile:'mic',tc:'gray',t:'Prova il microfono',a:'data-a="go" data-v="diag"',chev:1}),row({tile:'file',tc:'gray',t:'Esporta i dati',a:'data-a="export"',chev:1})],'Altro','Tutti i dati sono salvati solo su questo telefono.','ic')}
+  ${list([row({tile:'info',tc:'gray',t:'Come funziona e quanto è precisa',a:'data-a="go" data-v="about"',chev:1}),row({tile:'sliders',tc:'gray',t:'Il mio mixer',val:mixName(DB.q.mixType),a:'data-a="mixsheet"',chev:1}),row({tile:'bulb',tc:'gray',t:'Racconta la sala',s:DB.qDone?'Compilata':'Non ancora',a:'data-a="roomStart2"',chev:1}),row({tile:'mic',tc:'gray',t:'Prova il microfono',a:'data-a="go" data-v="diag"',chev:1}),row({tile:'file',tc:'gray',t:'Salva una copia dei dati',s:'Un file da tenere al sicuro',a:'data-a="bkSave"',chev:1}),row({tile:'restore',tc:'gray',t:'Ripristina da una copia',a:'data-a="bkPick"',chev:1})],'Altro','Tutti i dati sono salvati solo su questo telefono. Salva una copia ogni tanto.<input type="file" id="bkIn" accept=".json,application/json" hidden>','ic')}
   ${list([row({tile:'vol',tc:'gray',t:'Il La di Intona',s:'Una nota a fine taratura. Se il telefono è collegato al mixer, la sentono tutti in sala.',right:`<button class="tgl ${DB.set.chime?'on':''}" data-a="chimeT" aria-label="Il La di Intona" aria-pressed="${!!DB.set.chime}"></button>`})],'Suono','','ic')}
-  <button class="btn danger" data-a="wipe">Cancella tutto</button><p class="t-foot" style="text-align:center">Intona · versione 0.8</p>`})};
+  <button class="btn danger" data-a="wipe">Cancella tutto</button><p class="t-foot" style="text-align:center">Intona · versione 0.9</p>`})};
 ACT.theme=d=>{DB.set.theme=d.v;save();applyTheme();render(true)};
 ACT.textsz=d=>{DB.set.text=d.v;save();applyTheme();render(true)};
 ACT.rolesw=d=>{DB.set.role=d.v;save();render(true)};
@@ -1663,7 +1679,7 @@ VIEWS.home={html:()=>{
   const hero=last?`<div class="card hero"><div style="display:flex;gap:16px;align-items:center">${scoreRing(sc,88)}<div style="flex:1;min-width:0"><div class="t-cap">Ultima taratura · ${new Date(last.t).toLocaleDateString('it-IT',{day:'numeric',month:'short'})}</div><div class="t-title2" style="margin:6px 0 4px">${lab[0]}</div>${last.after?`<p class="t-sub">Da ${last.score} a ${last.after.score}.</p>`:''}</div></div>
     ${pathTracker(last)}
     <div class="vsl" style="gap:6px;margin-top:18px"><div><div class="t-head" style="font-weight:600">Prossimo passo: ${ns.t}</div><p class="t-sub" style="margin-top:2px">${ns.s}</p></div><div style="height:6px"></div>${btn(ns.b,ns.a)}<button class="btn plain" data-a="start">Nuova taratura</button></div></div>`
-   :`<div class="card brandhero"><div class="stagefork" style="width:180px;height:150px">${MARK(100,{anim:1,rings:1})}</div><div class="t-title2">${ns.t}</div><p class="t-sub" style="max-width:290px">${ns.s}</p>${btn(ns.b,ns.a)}</div>`;
+   :`<div class="card brandhero"><div class="stagefork" style="width:180px;height:150px">${MARK(100,{anim:1,rings:1})}</div><div class="t-title2">${ns.t}</div><p class="t-sub" style="max-width:290px">${ns.s}</p>${btn(ns.b,ns.a)}<button class="btn plain" data-a="quick">Scansione rapida · 1 minuto</button></div>`;
   const hs=DB.hist.slice(0,8).reverse().map(h=>h.after?h.after.score:h.score);
   const trend=hs.length>=2?`<div class="card tight"><div style="display:flex;justify-content:space-between;align-items:baseline"><div class="t-head">Andamento</div><span class="t-foot">Da ${hs[0]} a ${hs[hs.length-1]}</span></div><div style="margin-top:10px">${spark(hs)}</div></div>`:'';
   const items=checkItems(),dn=chkDone(),nd=items.filter(i=>dn[i.id]).length,soon=cultoSoon(),wk=Math.floor(Date.now()/604800000)%LES.length;
@@ -1778,6 +1794,7 @@ const SPLE={on:false,node:null,src:null,t0:0,n:0,
     this.recent.push(pa);if(this.recent.length>120)this.recent.shift();
     const s=this.sec;s.n++;s.a+=pa;s.c+=pc;s.z+=pz;if(t.AF>s.fm)s.fm=t.AF;
     if(s.n>=20){this.hist.push({t:Date.now(),a:s.a/s.n,c:s.c/s.n,z:s.z/s.n,fm:s.fm});if(this.hist.length>14400)this.hist.shift();this.sec={n:0,a:0,c:0,z:0,fm:0}}
+    if(this.onBlock)this.onBlock(m);
   },
   async start(){
     if(this.on)return;await Eng.openMic();const c=Eng.ctx;this.reset();
@@ -2018,44 +2035,56 @@ ACT.splCsv=()=>{if(!SPLE.hist.length){toast('Avvia prima la misura');return}cons
    microfono di misura, taccuino, confronto tra tarature
    ============================================================= */
 
-/* ---------- monitor del culto ---------- */
-const SENT={on:false,limit:95,t0:0,above:0,events:[],level:0,state:'ok',until:0,ring:[],evLast:0,lastTick:0,iv:null,wl:null};
+/* ---------- monitor del culto (con i momenti) ---------- */
+const MOMENTS=[['lode','Lode',95],['preghiera','Preghiera',85],['parola','Predicazione',80],['ministero','Ministero',85]];
+const MOM_DEF={gen:95,lode:95,preghiera:85,parola:80,ministero:85};
+const momName=m=>m?(MOMENTS.find(x=>x[0]===m)||[0,m])[1]:'Generale';
+const sentLimit=()=>(DB.set.lim&&DB.set.lim[SENT.moment||'gen'])||MOM_DEF[SENT.moment||'gen'];
+const SENT={on:false,limit:95,moment:null,segs:[],seg:null,t0:0,above:0,events:[],level:0,state:'ok',until:0,ring:[],evLast:0,lastTick:0,iv:null,wl:null};
+function sentSeg(m){
+  if(SENT.seg)SENT.seg.t1=Date.now();
+  SENT.moment=m;const s={m,limit:sentLimit(),t0:Date.now(),t1:null,sum:0,n:0,max:0,above:0,ev:0};SENT.seg=s;SENT.segs.push(s);SENT.limit=s.limit}
 async function sentStart(){
   await SPLE.start();SPLE.reset();
-  Object.assign(SENT,{on:true,t0:Date.now(),above:0,events:[],state:'ok',ring:[],evLast:0,lastTick:Date.now(),level:0});
+  Object.assign(SENT,{on:true,t0:Date.now(),above:0,events:[],state:'ok',ring:[],evLast:0,lastTick:Date.now(),level:0,segs:[],seg:null});sentSeg(SENT.moment);
+  SPLE.onBlock=m=>{const s=SENT.seg;if(!s)return;s.sum+=m.pa;s.n++;if(SPLE.t.AF>s.max)s.max=SPLE.t.AF};
   clearInterval(SENT.iv);SENT.iv=setInterval(sentTick,250);
   try{if(navigator.wakeLock)SENT.wl=await navigator.wakeLock.request('screen')}catch(e){}
 }
 document.addEventListener('visibilitychange',async()=>{if(document.visibilityState==='visible'&&SENT.on&&navigator.wakeLock){try{SENT.wl=await navigator.wakeLock.request('screen')}catch(e){}}});
 function sentTick(){
-  const now=Date.now(),dt=(now-SENT.lastTick)/1000;SENT.lastTick=now;const L=SPLE.cur('A','F');SENT.level=L;if(L>SENT.limit)SENT.above+=dt;
+  const now=Date.now(),dt=(now-SENT.lastTick)/1000;SENT.lastTick=now;const L=SPLE.cur('A','F'),lim=sentLimit();SENT.level=L;SENT.limit=lim;if(L>lim){SENT.above+=dt;if(SENT.seg)SENT.seg.above+=dt}
   const rp=ringPeak();
   if(rp){SENT.ring.push(rp);if(SENT.ring.length>6)SENT.ring.shift();const f=rp.f;
     const stable=SENT.ring.length>=5&&SENT.ring.every(h=>h.prom>16&&Math.abs(h.f-f)/f<.03&&h.pk>-85);
-    if(stable&&now-SENT.evLast>6000){const r=Math.round(f/(f<1000?5:25))*(f<1000?5:25);SENT.events.push({t:now,f:r,L});SENT.evLast=now;SENT.state='fischio';SENT.until=now+8000}}
+    if(stable&&now-SENT.evLast>6000){const r=Math.round(f/(f<1000?5:25))*(f<1000?5:25);SENT.events.push({t:now,f:r,L,m:SENT.moment});if(SENT.seg)SENT.seg.ev++;SENT.evLast=now;SENT.state='fischio';SENT.until=now+8000}}
   if(SENT.state==='fischio'&&now>SENT.until)SENT.state='ok';
-  if(SENT.state!=='fischio')SENT.state=L>SENT.limit?'alto':'ok';
+  if(SENT.state!=='fischio')SENT.state=L>lim?'alto':'ok';
 }
 function sentStop(){
-  clearInterval(SENT.iv);SENT.on=false;try{if(SENT.wl)SENT.wl.release()}catch(e){}SENT.wl=null;
+  clearInterval(SENT.iv);SENT.on=false;SPLE.onBlock=null;try{if(SENT.wl)SENT.wl.release()}catch(e){}SENT.wl=null;if(SENT.seg)SENT.seg.t1=Date.now();
   const dur=Math.round((Date.now()-SENT.t0)/1000),h=SPLE.hist,step=Math.max(1,Math.ceil(h.length/180)),series=[];
   for(let i=0;i<h.length;i+=step){const b=h.slice(i,i+step);series.push(Math.round((pdb(mean(b.map(x=>x.a)))+splOff())*10)/10)}
-  const rep={id:Date.now(),t0:SENT.t0,dur,leq:SPLE.leq('A'),max:SPLE.max('A','F'),maxS:SPLE.max('A','S'),above:Math.round(SENT.above),limit:SENT.limit,events:SENT.events.map(e=>({t:e.t,f:e.f})),cal:splCal(),series,step};
+  const segs=SENT.segs.filter(s=>s.n*.05>=5).map(s=>({m:s.m,limit:s.limit,dur:Math.round(s.n*.05),leq:pdb(s.sum/s.n)+splOff(),max:s.max?pdb(s.max)+splOff():null,above:Math.round(s.above),ev:s.ev}));
+  const rep={id:Date.now(),t0:SENT.t0,dur,leq:SPLE.leq('A'),max:SPLE.max('A','F'),maxS:SPLE.max('A','S'),above:Math.round(SENT.above),limit:SENT.limit,events:SENT.events.map(e=>({t:e.t,f:e.f,m:e.m})),cal:splCal(),series,step,segs};
   if(!SPLE.n||dur<10){SPLE.stop();return null}
   DB.reports=[rep,...(DB.reports||[])].slice(0,20);save();SPLE.stop();return rep}
 function sentText(r){
   const f=v=>v==null?'—':Math.round(v),L=['RAPPORTO DEL CULTO · Intona'+(DB.set.name?' · '+DB.set.name:''),stamp(r.t0)+' · '+mmss(r.dur),''];
-  L.push('Volume medio (LAeq): '+f(r.leq)+' dB(A)','Massimo (LAFmax): '+f(r.max)+' dB(A)','Tempo sopra '+r.limit+' dB(A): '+Math.round(r.above/60*10)/10+' minuti');
+  L.push('Volume medio (LAeq): '+f(r.leq)+' dB(A)','Massimo (LAFmax): '+f(r.max)+' dB(A)','Tempo sopra il limite: '+Math.round(r.above/60*10)/10+' minuti');
   L.push('Fischi rilevati: '+(r.events.length?r.events.length+' ('+r.events.map(e=>hz(e.f)).join(', ')+')':'nessuno'),'');
+  if(r.segs&&r.segs.some(s=>s.m)){L.push('PER MOMENTO');r.segs.forEach(s=>L.push(`• ${momName(s.m)} (${mmss(s.dur)}): ${f(s.leq)} dB(A) di media, massimo ${f(s.max)}, limite ${s.limit}${s.above?', sopra il limite '+Math.round(s.above/6)/10+' min':''}${s.ev?', '+s.ev+' fischi':''}`));L.push('')}
   L.push('Riferimenti comuni: parola 70–80 dB(A), lode 85–95 dB(A).',r.cal?'Calibrato (tolleranza circa ±3 dB).':'NON calibrato: valori indicativi, tolleranza circa ±8 dB.');return L.join('\n')}
-const limChips=()=>`<div class="chips">${[[80,'Parola'],[90,''],[95,'Lode'],[100,'']].map(([v,l])=>`<button class="chip ${SENT.limit===v?'on':''}" data-a="sentLimSet" data-v="${v}">${v}${l?' · '+l:''}</button>`).join('')}</div>`;
+const limChips=()=>`<div class="chips">${[[80,'Parola'],[90,''],[95,'Lode'],[100,'']].map(([v,l])=>`<button class="chip ${sentLimit()===v?'on':''}" data-a="sentLimSet" data-v="${v}">${v}${l?' · '+l:''}</button>`).join('')}</div>`;
+const momChips=()=>`<div class="chips">${[[null,'Generale'],...MOMENTS.map(m=>[m[0],m[1]])].map(([v,l])=>`<button class="chip ${SENT.moment===v?'on':''}" data-a="sentMom" data-v="${v||''}">${l}</button>`).join('')}</div>`;
 VIEWS.sent={html:()=>{
   const on=SENT.on,reps=DB.reports||[];
   return scr({nav:{title:'Monitor del culto'},lt:'Monitor del culto',ls:on?'In ascolto. Lascia il telefono in sala, meglio se in carica.':'Metti il telefono dove siede il pubblico e lascialo acceso. Intona tiene il conto del volume e ti avvisa se fischia.',
     body:`<div class="card status ok" id="stCard"><div class="t-cap" id="stT">${on?'Tutto bene':'Pronto'}</div><div class="bignum" id="stL" style="margin:6px 0 2px">${on?'…':'—'}</div><div class="t-sub">dB(A) · Fast</div><p class="t-body" id="stM" style="margin-top:10px">${on?'':'Premi «Avvia» quando inizia il culto.'}</p></div>
     <div class="big3"><div><div class="lab">Leq</div><b id="stLeq">—</b><small>dB(A)</small></div><div><div class="lab">Massimo</div><b id="stMax">—</b><small>dB(A)</small></div><div><div class="lab">Sopra il limite</div><b id="stAb">0</b><small>minuti</small></div></div>
-    <div class="vsl" style="gap:10px"><div class="hdr" style="padding-bottom:0">Limite di avviso, in dB(A)</div>${limChips()}</div>
-    <div class="card tight"><div class="t-head">Ultimi 30 minuti</div><div id="stChart" style="margin-top:8px">${tsChart([],'a',{win:1800,limit:SENT.limit,left:'−30 min'})}</div></div>
+    <div class="vsl" style="gap:10px"><div class="hdr" style="padding-bottom:0">Momento del culto${on?' · tocca quando cambia':''}</div>${momChips()}</div>
+    <div class="vsl" style="gap:10px"><div class="hdr" style="padding-bottom:0">Limite di avviso per «${momName(SENT.moment)}», in dB(A)</div>${limChips()}</div>
+    <div class="card tight"><div class="t-head">Ultimi 30 minuti</div><div id="stChart" style="margin-top:8px">${tsChart([],'a',{win:1800,limit:sentLimit(),left:'−30 min'})}</div></div>
     <div id="stEv"></div>
     ${splCal()?'':banner('bad','alert','<b>Non calibrato: ±8 dB.</b> I valori vanno bene per confrontare un culto con l\'altro. Per i dB reali calibra nel fonometro.')}
     ${!on&&reps.length?list(reps.slice(0,5).map(r=>row({t:stamp(r.t0),s:`Leq ${Math.round(r.leq)} dB(A) · ${mmss(r.dur)}${r.events.length?' · '+r.events.length+' fischi':''}`,a:`data-a="sentRep" data-id="${r.id}"`,chev:1})),'Rapporti precedenti','','ic'):''}`,
@@ -2064,25 +2093,27 @@ VIEWS.sent={html:()=>{
   if(!SENT.on)return;
   const paint=()=>{const c=$('#stCard');if(!c)return;const L=SENT.level||SPLE.cur('A','F'),st=SENT.state,last=SENT.events[SENT.events.length-1];
     c.className='card status '+st;$('#stT').textContent=st==='fischio'?'Possibile fischio':st==='alto'?'Volume alto':'Tutto bene';$('#stL').textContent=Math.round(L);
-    $('#stM').textContent=st==='fischio'&&last?`Intorno a ${hz(last.f)}. Abbassa il microfono che fischia, poi taglia 3–6 dB lì, stretto.`:st==='alto'?`Sopra il limite di ${SENT.limit} dB(A). Abbassa il master di 1–2 dB.`:'Sotto il limite.';
+    $('#stM').textContent=st==='fischio'&&last?`Intorno a ${hz(last.f)}. Abbassa il microfono che fischia, poi taglia 3–6 dB lì, stretto.`:st==='alto'?`Sopra il limite di ${sentLimit()} dB(A). Abbassa il master di 1–2 dB.`:'Sotto il limite.';
     $('#stLeq').textContent=SPLE.leq('A')==null?'—':Math.round(SPLE.leq('A'));$('#stMax').textContent=SPLE.max('A','F')==null?'—':Math.round(SPLE.max('A','F'));$('#stAb').textContent=decFmt(SENT.above/60);
-    const ev=$('#stEv');if(ev)ev.innerHTML=SENT.events.length?list(SENT.events.slice(-4).reverse().map(e=>row({tile:'alert',tc:'c-red',t:'Fischio a '+hz(e.f),s:new Date(e.t).toLocaleTimeString('it-IT',{hour:'2-digit',minute:'2-digit'})})),'Fischi · '+SENT.events.length,'','ic'):''};
-  paint();tmr(paint,250);const ch=()=>{const c=$('#stChart');if(c)c.innerHTML=tsChart(SPLE.hist,'a',{win:1800,limit:SENT.limit,left:'−30 min'})};ch();tmr(ch,2000)}};
+    const ev=$('#stEv');if(ev)ev.innerHTML=SENT.events.length?list(SENT.events.slice(-4).reverse().map(e=>row({tile:'alert',tc:'c-red',t:'Fischio a '+hz(e.f),s:new Date(e.t).toLocaleTimeString('it-IT',{hour:'2-digit',minute:'2-digit'})+(e.m?' · '+momName(e.m):'')})),'Fischi · '+SENT.events.length,'','ic'):''};
+  paint();tmr(paint,250);const ch=()=>{const c=$('#stChart');if(c)c.innerHTML=tsChart(SPLE.hist,'a',{win:1800,limit:sentLimit(),left:'−30 min'})};ch();tmr(ch,2000)}};
 ACT.sentStart=async()=>{try{await sentStart();render(true)}catch(e){toast('Microfono non disponibile')}};
 ACT.sentStop=()=>{const r=sentStop();if(r)go('sentrep',{id:r.id},{replace:true,dir:'fade'});else{toast('Troppo corto per un rapporto');render(true)}};
-ACT.sentLimSet=d=>{SENT.limit=+d.v;render(true)};
+ACT.sentLimSet=d=>{DB.set.lim=DB.set.lim||{};DB.set.lim[SENT.moment||'gen']=+d.v;save();SENT.limit=+d.v;render(true)};
+ACT.sentMom=d=>{const m=d.v||null;if(SENT.on)sentSeg(m);else SENT.moment=m;render(true)};
 ACT.sentRep=d=>go('sentrep',{id:+d.id});
 VIEWS.sentrep={html:p=>{
   const r=(DB.reports||[]).find(x=>x.id===p.id);if(!r)return scr({nav:{title:'Rapporto'},lt:'Nessun rapporto',body:''});
-  const f=v=>v==null?'—':Math.round(v),hist=r.series.map(v=>({v,m:v}));
+  const f=v=>v==null?'—':Math.round(v),hist=r.series.map(v=>({v,m:v})),mom=(r.segs||[]).filter(s=>s.m);
   return scr({nav:{title:'Rapporto del culto',right:gb('share','sentShare','Condividi',`data-id="${r.id}"`)},lt:'Rapporto del culto',ls:stamp(r.t0)+' · '+mmss(r.dur),
-    body:`<div class="big3"><div><div class="lab">Leq</div><b>${f(r.leq)}</b><small>dB(A)</small></div><div><div class="lab">Massimo</div><b>${f(r.max)}</b><small>dB(A)</small></div><div><div class="lab">Sopra ${r.limit}</div><b>${decFmt(r.above/60)}</b><small>minuti</small></div></div>
+    body:`<div class="big3"><div><div class="lab">Leq</div><b>${f(r.leq)}</b><small>dB(A)</small></div><div><div class="lab">Massimo</div><b>${f(r.max)}</b><small>dB(A)</small></div><div><div class="lab">Sopra il limite</div><b>${decFmt(r.above/60)}</b><small>minuti</small></div></div>
     <div class="card tight"><div class="t-head">Il volume nel tempo</div><div style="margin-top:8px">${tsChart(hist,'a',{raw:true,limit:r.limit,left:'inizio'})}</div></div>
-    ${r.events.length?list(r.events.map(e=>row({tile:'alert',tc:'c-red',t:'Fischio a '+hz(e.f),s:new Date(e.t).toLocaleTimeString('it-IT',{hour:'2-digit',minute:'2-digit'})})),'Fischi','','ic'):banner('good','check','<b>Nessun fischio</b> in tutto il culto.')}
+    ${mom.length?list(mom.map(s=>row({t:momName(s.m),s:`${mmss(s.dur)} · limite ${s.limit} dB(A)${s.above?' · sopra '+decFmt(s.above/60)+' min':''}${s.ev?' · '+s.ev+' fischi':''}`,val:f(s.leq)+' dB(A)'})),'Per momento','Il valore è la media del momento.','ic'):''}
+    ${r.events.length?list(r.events.map(e=>row({tile:'alert',tc:'c-red',t:'Fischio a '+hz(e.f),s:new Date(e.t).toLocaleTimeString('it-IT',{hour:'2-digit',minute:'2-digit'})+(e.m?' · '+momName(e.m):'')})),'Fischi','','ic'):banner('good','check','<b>Nessun fischio</b> in tutto il culto.')}
     ${r.cal?'':banner('bad','alert','Questo rapporto non è calibrato: tolleranza circa ±8 dB. Utile per confrontare un culto con l\'altro.')}`,
     dock:`${btn(ic('share',20,2)+'Condividi il rapporto',`data-a="sentShare" data-id="${r.id}"`)}${btn('Fine','data-a="go" data-v="sent"','tinted')}`})}};
 ACT.sentShare=d=>{const r=(DB.reports||[]).find(x=>x.id===+d.id);if(r)shareFile(sentText(r),'rapporto-culto.txt','text/plain','Rapporto del culto')};
-function livepill(){if(!SENT.on||R.v==='sent')return;$('#app').insertAdjacentHTML('beforeend',`<button class="livepill" data-a="go" data-v="sent" aria-label="Monitor del culto attivo"><i></i><b>Monitor</b><span id="lpL">${Math.round(SENT.level||0)} dB(A)</span></button>`)}
+function livepill(){if(!SENT.on||R.v==='sent')return;$('#app').insertAdjacentHTML('beforeend',`<button class="livepill" data-a="go" data-v="sent" aria-label="Monitor del culto attivo"><i></i><b>${SENT.moment?momName(SENT.moment):'Monitor'}</b><span id="lpL">${Math.round(SENT.level||0)} dB(A)</span></button>`)}
 setInterval(()=>{const e=$('#lpL');if(e&&SENT.on)e.textContent=Math.round(SENT.level||0)+' dB(A)'},1000);
 
 /* ---------- generatore ---------- */
@@ -2203,11 +2234,294 @@ SOS.push({id:'troppoforte',i:'vol',t:'Qualcuno dice «troppo forte»',s:'Con i n
 ACT.formats=()=>openSheet(`<h2 class="t-title2" style="margin:6px 0 14px">Altri formati</h2>${list([row({tile:'snap',tc:'c-pink',t:'Immagine prima e dopo',s:'Per WhatsApp',a:'data-a="shareCard"',chev:1}),row({tile:'sliders',tc:'c-blue',t:'Filtri per Equalizer APO e REW',s:'Testo, un filtro per riga',a:'data-a="fmtApo"',chev:1}),row({tile:'file',tc:'c-green',t:'Dati della misura in CSV',s:'Frequenza, misurata, obiettivo, differenza',a:'data-a="fmtCsv"',chev:1})],'','','ic')}<div style="height:12px"></div>${btn('Chiudi','data-a="closeSheet"','tinted')}`);
 ACT.fmtApo=()=>{const e=getE();if(e)shareFile(exportAPO(e),'intona-filtri.txt','text/plain','Filtri Intona')};
 ACT.fmtCsv=()=>{const e=getE();if(e)shareFile(exportCSV(e),'intona-misura.csv','text/csv','Misura Intona')};
+/* Guide per modello: sintesi dai manuali dei costruttori (ricerca di ottobre 2026).
+   Le indicazioni vengono da risultati di ricerca sui manuali, non da prove sui mixer: «fiducia» lo dice. */
+const MIXG=[
+{"id":"x32","name":"Behringer X32 / Midas M32 (anche Compact, Rack, Producer)","family":"digitale","eq_canale":"Premi SELECT sul canale, poi VIEW nella sezione EQUALIZER (o scheda EQ in Home). 4 bande parametriche (Low, Lo Mid, Hi Mid, High) con Frequenza, Gain e Q. Il tasto EQ deve essere acceso.","eq_master":"Premi SELECT sul canale Main LR, poi VIEW nella sezione EQUALIZER. EQ parametrico a 6 bande. Il tasto EQ deve essere acceso.","filtro_bassi":"Tasto LOW CUT nella sezione Config/Preamp, con manopola Freq. Regolabile circa 20-400 Hz, pendenza 12 dB/ottava. Per le voci di solito 80-120 Hz.","gain":"Manopola GAIN nella sezione Config/Preamp del canale selezionato (da -12 a +60 dB su XLR). Punta a picchi tra -12 e -6 dB sul meter. Su X32 Rack: schermo o app.","geq_rta":"RTA (firmware 2.0 o successivo): tasto METERS, pagina 'rta'. GEQ a 31 bande come effetto inserito su bus/Main; l'RTA si vede sopra il GEQ. Dipende dal firmware.","taglio":["Premi SELECT sul canale Main LR.","Premi VIEW nella sezione EQUALIZER e controlla che EQ sia acceso.","Scegli una banda (es. Lo Mid) e porta Frequency su 250 Hz.","Porta Gain su -3.0 dB.","Porta Q (Width) circa a 1.4 e guarda la curva sullo schermo."],"attenzione":["Se il tasto EQ è spento la curva si vede ma non cambia il suono.","Controlla di aver selezionato Main LR e non un bus Mix.","Il Low Cut è per canale: va acceso su ogni voce o strumento."],"fiducia":"alta","fonti":["https://collaborateworship.com/tune-eq-room-x32/","https://behringerwiki.musictribe.com/index.php?title=X32_COMPACT:_Home_Screen","https://www.sweetwater.com/insync/how-to-eq-your-venue-the-easy-way/"]},
+{"id":"xair","name":"Behringer X Air XR12 / XR16 / XR18 e Midas MR12 / MR18 (app X AIR EDIT)","family":"digitale","eq_canale":"In X AIR EDIT tocca il canale e apri la scheda EQ. 4 bande parametriche (Low, Lo Mid, Hi Mid, High) con Frequenza, Gain e Width (Q), più Low Cut. Accendi con il tasto EQ.","eq_master":"In X AIR EDIT apri Main LR, scheda EQ. EQ parametrico a 6 bande (PEQ) oppure grafico a 31 bande (GEQ/TEQ), con i tasti PEQ / GEQ / TEQ a destra.","filtro_bassi":"Tasto Low Cut sul canale, frequenza regolabile. Intervallo esatto non verificato per XR12/16/18 (sull'X32 è 20-400 Hz). Voce: circa 80-120 Hz.","gain":"Nella pagina Preamp/Config del canale in X AIR EDIT (il nome esatto può cambiare con la versione dell'app). Questi mixer non hanno manopole fisiche di gain: si usa l'app.","geq_rta":"GEQ a 31 bande su Main LR e Aux (TEQ = versione più precisa). L'RTA si può mostrare sopra il GEQ e scegliere pre o post EQ. Dipende dalla versione di firmware e app.","taglio":["Apri X AIR EDIT e seleziona Main LR.","Apri la scheda EQ e scegli PEQ.","Accendi il tasto EQ.","Scegli una banda: Frequenza 250 Hz, Gain -3 dB, Width/Q circa 1.4.","Alternativa con il grafico (GEQ): abbassa il cursore 250 Hz di 3 dB."],"attenzione":["Se il tasto EQ è spento la curva non agisce.","Controlla di essere su Main LR e non su un Aux.","Se più telefoni o tablet sono collegati, un altro può cambiare l'EQ."],"fiducia":"media","fonti":["https://behringer.world/viewtopic.php?t=1546","https://behringerwiki.musictribe.com/index.php?title=5._X_AIR_for_iPad","https://www.midasconsoles.com/en/products/0605-AAF"]},
+{"id":"flow8","name":"Behringer Flow 8","family":"digitale","eq_canale":"Dall'app FLOW Mix: scegli il canale e apri l'EQ. 4 bande per ingresso (Low, Low Mid, High Mid, High). Sul pannello c'è anche una manopola EQ per canale: la funzione esatta non è verificata.","eq_master":"Solo da app: Main e Monitor hanno EQ a 9 bande più limiter (scheda prodotto). Se le bande siano parametriche o grafiche non è confermato.","filtro_bassi":"Low Cut per canale, regolabile 20-600 Hz (manuale). Non c'è sul canale USB/BT. Si imposta dall'app.","gain":"Manopola GAIN su ogni ingresso mic/line del mixer. Non c'è sui canali USB/BT.","geq_rta":"GEQ a 31 bande e RTA: non verificati.","taglio":["Apri l'app FLOW Mix e seleziona Main.","Apri la pagina EQ del Main (9 bande).","Scegli una banda vicino a 250 Hz.","Imposta Frequenza 250 Hz e Gain -3 dB.","Imposta Q circa 1.4 se la banda lo permette."],"attenzione":["Il canale USB/BT non ha Low Cut.","La manopola MAIN agisce sul bus selezionato (FX, MON o MAIN): controlla quale.","L'EQ si regola bene solo da app: serve la connessione."],"fiducia":"bassa","fonti":["https://www.manualslib.com/manual/3249177/Behringer-Flow-8.html","https://apps.apple.com/us/app/flow-mix/id1473097916"]},
+{"id":"yamaha_mg","name":"Yamaha MG10XU / MG12XU / MG16XU","family":"analogico","eq_canale":"Tre manopole per canale: HIGH (10 kHz), MID (2,5 kHz), LOW (100 Hz), ±15 dB; al centro = neutro. MG16XU: il MID è regolabile 250 Hz-5 kHz sui canali mono (verifica quali). Canali stereo: meno controlli.","eq_master":"Non c'è. Nessun EQ sulle uscite master. Per correggere la sala serve un EQ esterno.","filtro_bassi":"Tasto HPF sui canali con ingresso MIC: fisso a 80 Hz, 12 dB/ottava. Non regolabile. Non agisce sugli ingressi linea.","gain":"Manopola GAIN in alto su ogni canale. Tasto PAD (-26 dB) sui canali mono se il segnale è troppo forte.","geq_rta":"Non c'è (né GEQ né RTA).","taglio":["Il master non ha EQ: il taglio si fa sul singolo canale.","MG16XU, canale mono: porta MID FREQ su 250 Hz.","Gira MID a sinistra di circa un quinto di corsa (circa -3 dB).","MG10XU e MG12XU: il MID è fisso a 2,5 kHz, non arrivi a 250 Hz. Serve un EQ esterno.","La Q non è regolabile."],"attenzione":["HPF solo sugli ingressi MIC.","Se un canale non suona, controlla che il tasto ON sia premuto.","Senza EQ master, alzare le frequenze sui canali aumenta il rischio di fischio."],"fiducia":"media","fonti":["https://usa.yamaha.com/files/download/other_assets/2/1507032/MG10XU_technical_specifications_En_B0.pdf","https://usa.yamaha.com/files/download/other_assets/8/1506928/mg16x_en_om_a0.pdf"]},
+{"id":"yamaha_tf","name":"Yamaha TF1 / TF3 / TF5 / TF-Rack","family":"digitale","eq_canale":"Premi SEL sul canale e apri la schermata EQ (Selected Channel). EQ parametrico a 4 bande su CH 1-32 (2 bande su CH 33-40, ST IN, FX). Q, F e G si leggono a schermo e si regolano con Touch and Turn.","eq_master":"Premi SEL su STEREO e apri la schermata EQ: parametrico a 4 bande. In più c'è un GEQ a 31 bande, già inserito di default sullo STEREO dopo l'EQ.","filtro_bassi":"Nella schermata EQ del canale c'è il tasto HPF (CH 1-40). Frequenza regolabile, circa 20-600 Hz. Può dipendere dal firmware.","gain":"Schermata Overview: tocca 'Input' e usa la manopola Touch and Turn per il gain. Per i dettagli apri Selected Channel.","geq_rta":"GEQ a 31 bande su AUX 1-8 e STEREO, ma si modificano al massimo 12 bande alla volta. Si apre dalla schermata GEQ. RTA: non verificato per TF.","taglio":["Premi SEL sul canale STEREO.","Apri la schermata EQ e controlla che l'EQ sia attivo.","Tocca una banda e porta F su 250 Hz.","Porta G su -3.0 dB e Q circa 1.4.","Usa la manopola Touch and Turn per i valori fini."],"attenzione":["Tocca prima il parametro a schermo, altrimenti Touch and Turn muove altro.","Controlla anche il GEQ dello STEREO: se è acceso con vecchi tagli, si sommano all'EQ.","TF-Rack non ha fader: si usa l'app TF Editor / TouchFlow."],"fiducia":"media","fonti":["https://www.manualslib.com/manual/938084/Yamaha-Tf5.html?page=41","https://www.manualslib.com/manual/1178887/Yamaha-Rack.html?page=72"]},
+{"id":"yamaha_dm3","name":"Yamaha DM3 / DM3 Standard","family":"digitale","eq_canale":"Premi SEL sul canale. Nella sezione SELECTED CHANNEL imposti HPF e vedi l'EQ a 4 bande. Dettagli e curva sul touchscreen. Vale per CH 1-16, ST IN, FX RTN, MIX, STEREO, MATRIX.","eq_master":"Premi SEL su STEREO: EQ parametrico a 4 bande. In più GEQ a 31 bande (fino a 15 bande modificabili) montato nel GEQ Rack sul canale STEREO.","filtro_bassi":"Sezione SELECTED CHANNEL: HPF sui CH 1-16. Frequenza regolabile, circa 20-600 Hz (manuale di riferimento).","gain":"Gain d'ingresso del canale selezionato, dalla sezione SELECTED CHANNEL o dalla schermata del canale. La posizione esatta della manopola: da verificare sul pannello.","geq_rta":"GEQ 31 bande su MIX 1-6 e STEREO. La schermata GEQ mostra anche l'RTA. Con 'Fader Assign' attivo i fader muovono le bande.","taglio":["Premi SEL sul canale STEREO.","Apri la schermata EQ e controlla che l'EQ sia attivo.","Scegli una banda: F 250 Hz, G -3.0 dB, Q 1.4.","Controlla il GEQ dello STEREO: deve essere piatto o non sommare tagli."],"attenzione":["Il GEQ funziona solo se è montato nel GEQ Rack e assegnato al canale (da manuale).","Controlla che i tasti EQ e HPF del canale siano accesi."],"fiducia":"media","fonti":["https://manual.yamaha.com/pa/mixers/dm3/rm/en-US/6346207115.html","https://www.sweetwater.com/sweetcare/articles/yamaha-dm3-digital-mixer-quickstart-guide/"]},
+{"id":"ah_qu","name":"Allen & Heath Qu-16 / Qu-24 / Qu-32","family":"digitale","eq_canale":"Premi Sel sul canale. Il SuperStrip ha manopole dedicate per gain, HPF, PEQ a 4 bande, gate e compressore. Il touchscreen (Processing) mostra la curva: trascina i punti per frequenza e gain.","eq_master":"Premi Sel su LR e apri Processing. Ci sono GEQ a 1/3 d'ottava, compressore e delay. Una fonte indica anche PEQ a 4 bande sul Main, un'altra no: controlla sul tuo firmware.","filtro_bassi":"Manopola HPF dedicata nel SuperStrip. 12 dB/ottava, 20 Hz-2 kHz (dato Qu-16). Si può anche trascinare dal touchscreen.","gain":"Manopola GAIN (trim) nel SuperStrip del canale selezionato.","geq_rta":"GEQ a 1/3 d'ottava su Mix e LR; il tasto GEQ Fader Flip porta le bande sui fader. RTA: non verificato nelle fonti trovate.","taglio":["Premi Sel sul fader LR.","Tocca Processing e apri la pagina PEQ.","Tocca una banda: frequenza 250 Hz, gain -3 dB.","Larghezza circa 1 ottava (circa Q 1.4).","Se sul Main LR non c'è il PEQ: nel GEQ abbassa 250 Hz di 3 dB e 200 e 315 Hz di circa 1,5 dB."],"attenzione":["Se è selezionato un altro canale modifichi quello: guarda quale Sel è acceso.","Con GEQ Fader Flip attivo i fader non regolano i volumi: ripremi il tasto per uscire."],"fiducia":"media","fonti":["https://www.allen-heath.com/content/uploads/2023/06/Qu-Mixer-Reference-Guide-AP9372_10.pdf","https://www.allen-heath.com/content/uploads/2023/06/Qu-16-v1.8-Chrome-Technical-Datasheet.pdf"]},
+{"id":"ah_sq","name":"Allen & Heath SQ-5 / SQ-6 / SQ-7","family":"digitale","eq_canale":"Premi Sel sul canale. Nella sezione Channel (PEQ/GEQ) del pannello: tasti banda e manopole Freq, Gain, Width. PEQ 20 Hz-20 kHz, ±15 dB, larghezza da 1,5 ottave a 1/9. Curva anche sul touchscreen.","eq_master":"Seleziona LR con Sel: le uscite hanno PEQ, GEQ, compressore e delay. Il PEQ funziona come quello dei canali; GEQ a 28 bande (scheda tecnica).","filtro_bassi":"HPF su ogni ingresso: manopola 'Freq' dedicata o rotary del touchscreen. 20 Hz-2 kHz, pendenza 12/18/24 dB/ottava.","gain":"Gain (preamp) nella sezione Channel del pannello per il canale selezionato. Nome esatto della manopola: da verificare.","geq_rta":"GEQ su Mix e LR; Fader Flip mette le bande sui fader. RTA: tasto RTA nelle schermate PEQ/GEQ, sovrapposto alla curva.","taglio":["Premi Sel su LR.","Apri Processing sul touchscreen, pagina PEQ (o usa la sezione Channel).","Seleziona una banda con i tasti banda.","Freq 250 Hz, Gain -3 dB.","Width circa 1 ottava (circa Q 1.4)."],"attenzione":["Controlla che Sel sia su LR e non su un Aux.","Con Fader Flip attivo i fader controllano il GEQ, non i volumi.","I menu possono cambiare tra versioni di firmware (guida V1.6.0)."],"fiducia":"media","fonti":["https://www.allen-heath.com/content/uploads/2025/02/SQ_ReferenceGuide_V1_6_0_iss1.pdf","https://support.allen-heath.com/hc/en-gb/articles/4402943261201-SQ-Working-with-Processing"]},
+{"id":"soundcraft_ui","name":"Soundcraft Ui12 / Ui16 / Ui24R","family":"digitale","eq_canale":"Doppio tocco o clic sul fader del canale: si apre EDIT, scheda EQ. 4 bande parametriche (20 Hz-22 kHz, Q 0,05-15, ±20 dB): trascina i punti. Ci sono anche HPF, LPF e de-esser.","eq_master":"Doppio tocco sul fader Master, EDIT, scheda EQ. Qui è un EQ grafico a 31 bande (±15 dB), non parametrico. Sul Master si possono trascinare anche HPF e LPF.","filtro_bassi":"Nella scheda EQ del canale: HPF regolabile 20 Hz-1 kHz, pendenza selezionabile. Si trascina nel grafico.","gain":"Pagina GAIN: tasto MIX/GAIN (tablet) o menu GAIN (telefono). Gain da -40 a +60 dB; qui anche +48V e fase.","geq_rta":"GEQ 31 bande su Master e Aux. Nella schermata GEQ c'è un RTA opzionale (spettro in tempo reale). Ui24R ha anche AFS (anti-feedback).","taglio":["Doppio tocco sul fader Master.","Vai in EDIT, scheda EQ (grafico).","Scorri alla banda 250 Hz.","Trascinala giù di 3 dB.","Per una larghezza simile a Q 1.4: abbassa anche 200 e 315 Hz di circa 1,5 dB."],"attenzione":["Il doppio tocco apre EDIT; un tocco singolo seleziona soltanto.","Se il suono è basso o distorto guarda la pagina GAIN, non solo il fader.","Serve un telefono, un tablet o un PC collegato al WiFi del mixer."],"fiducia":"alta","fonti":["https://www.manualslib.com/manual/1316472/Soundcraft-Ui24r.html?page=65","https://www.manualslib.com/manual/942836/Soundcraft-Ui12.html?page=52","https://www.soundcraft.com/en/product_documents/ui24r_manual_v1-0_web-pdf"]},
+{"id":"mackie_profx","name":"Mackie ProFX v3","family":"analogico","eq_canale":"Manopole sul canale: HIGH (12 kHz), MID (2,5 kHz), LOW (80 Hz), ±15 dB, centro = neutro. Il MID può essere regolabile su alcuni modelli: da verificare. La serie v4 non è verificata.","eq_master":"ProFX12v3 e maggiori: GEQ a 7 bande assegnabile a Main o Monitor (fonti discordanti). Modelli piccoli: non risulta. Controlla il tuo modello.","filtro_bassi":"Tasto LOW CUT sui canali con ingresso mic: fisso a 100 Hz, 18 dB/ottava. Non regolabile.","gain":"Manopola GAIN in alto su ogni canale.","geq_rta":"GEQ 7 bande sul Main solo su alcuni modelli (12v3 e maggiori). RTA: non c'è.","taglio":["Con GEQ: assegnalo a MAIN (non a MONITOR).","Controlla che il GEQ non sia in bypass.","Abbassa la banda più vicina a 250 Hz di circa 3 dB (le bande sono più larghe di Q 1.4).","Senza GEQ non c'è taglio sul master: serve un EQ esterno."],"attenzione":["Controlla che il GEQ sia assegnato a Main e non a Monitor.","Il LOW CUT è fisso a 100 Hz e può togliere troppo a basso e grancassa."],"fiducia":"media","fonti":["https://mackie.com/img/file_resources/PROFXV3+_MIXER_SERIES_OM.pdf","https://tmw.com.sg/wp-content/uploads/2021/12/Mackie-ProFXv3-Series-Specifications.pdf"]},
+{"id":"mackie_onyx","name":"Mackie Onyx8 / Onyx12 / Onyx16 / Onyx24","family":"analogico","eq_canale":"3 bande per canale: HIGH, MID con frequenza regolabile (manopola FREQ, 100 Hz-8 kHz) e LOW, ±15 dB. Le frequenze di HIGH e LOW non sono verificate.","eq_master":"Non c'è. Nessun EQ sul Main risulta nelle fonti.","filtro_bassi":"Tasto LOW CUT sui canali mic: taglia sotto 100 Hz, 18 dB/ottava, fisso.","gain":"Manopola GAIN su ogni canale (sensibilità mic/linea).","geq_rta":"Non c'è.","taglio":["Il Main non ha EQ: il taglio va fatto sul canale.","Porta MID FREQ su 250 Hz.","Gira MID a sinistra di circa un quinto di corsa (circa -3 dB).","La larghezza (Q) non è regolabile."],"attenzione":["Il LOW CUT taglia sotto 100 Hz: su basso e grancassa toglie corpo, non attivarlo.","Controlla il tasto del canale se non senti nulla (mute o assegnazione)."],"fiducia":"media","fonti":["https://mackie.com/img/file_resources/Onyx%20Series%20Mixers_QSG.pdf","https://mackie.com/img/file_resources/Onyx_Series_SS.pdf"]},
+{"id":"xenyx","name":"Behringer Xenyx (serie X / QX, analogico generico)","family":"analogico","eq_canale":"Canali mono: 3 bande ±15 dB. Su X1204USB: LOW 80 Hz, MID 2,5 kHz, HIGH 12 kHz. Al centro l'EQ è neutro. Alcuni modelli Xenyx hanno il MID regolabile: controlla il tuo.","eq_master":"Non c'è.","filtro_bassi":"Tasto LOW CUT sui canali mono: fisso a 75 Hz, 18 dB/ottava (dato per i modelli 1204 e 1202). Non regolabile.","gain":"Manopola GAIN in alto sul canale. Mic: da +10 a +60 dB (X1204USB).","geq_rta":"Non c'è.","taglio":["Il Main non ha EQ: puoi solo agire per canale.","Il MID fisso a 2,5 kHz non arriva a 250 Hz.","Se la voce è «fangosa» abbassa un poco LOW (80 Hz).","Per tagliare 250 Hz serve un EQ esterno tra l'uscita Main e le casse."],"attenzione":["Manopole al centro = EQ neutro, non spento.","LOW CUT solo sui canali mono con mic.","Troppo gain: se il LED PEAK si accende, abbassa."],"fiducia":"media","fonti":["https://www.manualslib.com/manual/537568/Behringer-Xenyx-X1204usb.html?page=12","https://www.manua.ls/behringer/xenyx-qx1204usb/manual"]},
+{"id":"presonus_slive3","name":"PreSonus StudioLive Series III (S16, S24, S32, Rack)","family":"digitale","eq_canale":"Premi Select sul canale: Fat Channel sullo schermo, scheda EQ. 4 bande parametriche per gli ingressi. Tre modalità EQ: standard; Tube e Vintage solo sugli ingressi.","eq_master":"Select su Main, Fat Channel, scheda EQ: parametrico a 6 bande (scheda tecnica per i bus di uscita). Il tasto GEQ sul fader Master apre un grafico a 31 bande.","filtro_bassi":"Fat Channel: HPF sugli ingressi e sugli aux. Frequenza regolabile; intervallo non verificato.","gain":"Fat Channel, pagina Input/Settings del canale. Segui la procedura ufficiale «Level Setting» di PreSonus.","geq_rta":"GEQ 31 bande sul Main: tasto GEQ sul fader Master. Nella schermata GEQ c'è il tasto RTA.","taglio":["Premi Select sul fader Main.","Apri Fat Channel, scheda EQ (6 bande).","Scegli una banda: frequenza 250 Hz, gain -3 dB.","Imposta la Q (larghezza) circa 1.4.","Accendi il tasto EQ."],"attenzione":["In «Interface Mode» l'accesso a Fat Channel e al GEQ del Main è limitato (supporto PreSonus).","Non confondere il GEQ (tasto sul Master) con l'EQ del Fat Channel: sono due EQ diversi.","Menu e nomi possono cambiare con il firmware."],"fiducia":"media","fonti":["https://support.presonus.com/hc/en-us/articles/115003513263-StudioLive-Series-III-Level-Setting-Procedure","https://support.presonus.com/hc/en-us/articles/360052084812-Series-III-Interface-Mode-WDM-Primer"]},
+{"id":"presonus_ar","name":"PreSonus StudioLive AR8c / AR12c / AR16c (e AR12 / AR16 USB)","family":"analogico","eq_canale":"Manopole sul canale: HIGH (10 kHz, ±15 dB), MID, LOW (100 Hz, ±15 dB). AR12c e AR16c: MID regolabile 140 Hz-3,5 kHz sui canali mono. AR12 e AR16 più vecchi: 3 bande semi-parametriche.","eq_master":"Non risulta nelle fonti trovate. Nessun EQ master verificato.","filtro_bassi":"Un LOW CUT è riportato nel manuale; la frequenza non è verificata. Controlla l'etichetta sul canale.","gain":"Manopola GAIN su ogni canale.","geq_rta":"Non risulta (GEQ e RTA non verificati).","taglio":["Il master non ha EQ verificato: il taglio va fatto sul canale.","AR12c e AR16c, canale mono: porta MID FREQ su 250 Hz.","Gira MID a sinistra di circa un quinto di corsa (circa -3 dB).","Q non regolabile: serve un EQ esterno per tagliare il master."],"attenzione":["Il MID regolabile c'è solo sui canali mono.","Controlla il tuo modello esatto (AR8c, AR12c, AR16c): le manopole cambiano."],"fiducia":"bassa","fonti":["https://www.manualslib.com/manual/1833422/Presonus-Studiolive-Arc-Series.html","https://www.manualslib.com/manual/1149863/Presonus-Studiolive-Ar-Series.html"]}
+];
+
+/* =============================================================
+   INTONA 0.9 · equilibrio del mix, mappa della sala, simulatore,
+   link di passaggio, test del microfono, scansione rapida, copia dei dati
+   ============================================================= */
+Object.assign(IC,{
+ balance:'<path d="M12 4v16M5 20h14M5 8h14M5 8l-2.5 6a3 3 0 0 0 5 0zM19 8l-2.5 6a3 3 0 0 0 5 0z"/>',
+ map:'<path d="M3 6l6-2 6 2 6-2v14l-6 2-6-2-6 2z"/><path d="M9 4v14M15 6v14"/>',
+ building:'<path d="M4 21V9l8-5 8 5v12z"/><path d="M9 21v-6h6v6"/>',
+ link:'<path d="M10 14a4 4 0 0 0 5.6 0l3-3a4 4 0 0 0-5.6-5.6l-1 1M14 10a4 4 0 0 0-5.6 0l-3 3a4 4 0 0 0 5.6 5.6l1-1"/>',
+ flash:'<path d="M13 3L5 13h6l-1 8 8-10h-6z"/>',
+ shield:'<path d="M12 3l7 3v5c0 4.5-3 8-7 10-4-2-7-5.5-7-10V6z"/><path d="M9 12l2 2 4-4"/>',
+ restore:'<path d="M4 12a8 8 0 1 0 3-6.2M4 4v4h4"/><path d="M12 8v4l3 2"/>'
+});
+const sMin=(f,a,b)=>Math.min(b,Math.max(a,f));
+
+/* ---------- la scheda Strumenti, più ricca ---------- */
+VIEWS.tools={html:()=>scr({nav:{back:false},lt:'Strumenti',ls:'Misura, prova e calcola.',body:
+  list([
+   row({tile:'flash',tc:'c-orange',t:'Scansione rapida',s:'Un punto, un minuto, con la musica in sala',a:'data-a="quick"',chev:1}),
+   row({tile:'bars',tc:'c-blue',t:'Analizzatore',s:'Lo spettro in tempo reale',a:'data-a="go" data-v="rta"',chev:1}),
+   row({tile:'gauge',tc:'c-teal',t:'Fonometro',s:'dB(A), Leq, massimo, picco',a:'data-a="go" data-v="spl"',chev:1}),
+   row({tile:'eye',tc:'c-green',t:'Monitor del culto',s:SENT.on?'Attivo adesso':'Volume per momento e fischi',a:'data-a="go" data-v="sent"',chev:1}),
+   row({tile:'balance',tc:'c-purple',t:'Equilibrio del mix',s:'Quanto suona ogni strumento rispetto alle voci',a:'data-a="go" data-v="mixbal"',chev:1}),
+   row({tile:'wave',tc:'c-indigo',t:'Test dell\'eco',s:DB.rt?'Riverbero '+decFmt(DB.rt.t)+' s':'Il riverbero con tre battiti di mani',a:'data-a="go" data-v="eco"',chev:1})],'Misura','','ic')+
+  list([
+   row({tile:'map',tc:'c-green',t:'Mappa della sala',s:DB.hist[0]&&DB.hist[0].cov&&DB.hist[0].cov.length>1?'Dove si sente più o meno forte':'Serve una taratura con più punti',a:'data-a="go" data-v="cover"',chev:1}),
+   row({tile:'cube',tc:'c-orange',t:'Modi della sala',s:'Le frequenze che la sala rinforza',a:'data-a="go" data-v="modes"',chev:1}),
+   row({tile:'building',tc:'c-brown',t:'Simulatore acustico',s:'Quanto migliora con tende, pannelli, tappeti',a:'data-a="go" data-v="sim"',chev:1}),
+   row({tile:'ruler',tc:'c-pink',t:'Ritardo delle casse',s:'Millisecondi per le casse di rinforzo',a:'data-a="go" data-v="delay"',chev:1})],'La sala','','ic')+
+  list([
+   row({tile:'sine',tc:'c-pink',t:'Generatore',s:'Tono, rumore rosa o bianco, sweep',a:'data-a="go" data-v="gen"',chev:1}),
+   row({tile:'mic',tc:'c-red',t:'Ring-out',s:'Trova il fischio',a:'data-a="go" data-v="ring"',chev:1}),
+   row({tile:'shield',tc:'c-blue',t:'Test del microfono',s:'Il telefono comprime o filtra il suono?',a:'data-a="go" data-v="mictest"',chev:1}),
+   row({tile:'vol',tc:'c-teal',t:'Volume della sala',s:'Lode e parola a confronto',a:'data-a="go" data-v="vol"',chev:1})],'Prova','','ic')+
+  list([
+   row({tile:'sliders',tc:'c-indigo',t:'Guida al tuo mixer',s:'Dove trovi EQ, filtro dei bassi e gain',a:'data-a="go" data-v="mixers"',chev:1}),
+   row({tile:'note',tc:'c-brown',t:'Taccuino del mixer',s:DB.notes&&DB.notes.length?DB.notes.length+' note':'Impostazioni da ricordare e passare',a:'data-a="go" data-v="notes"',chev:1}),
+   row({tile:'link',tc:'c-green',t:'Link di passaggio',s:'Manda sala, mixer e note a chi ti sostituisce',a:'data-a="go" data-v="handover"',chev:1}),
+   row({tile:'mic',tc:'gray',t:'Microfono di misura',val:DB.cal&&DB.cal.on?'Con calibrazione':'Telefono',a:'data-a="go" data-v="micp"',chev:1})],'Appunti e passaggio','','ic')})};
+
+/* ---------- scansione rapida ---------- */
+ACT.quick=()=>{DB.q.src.preacher=DB.q.src.preacher||'headset';M.reset(false);M.total=1;M.src='nocable';M.quick=true;go('meas')};
+
+/* =============================================================
+   EQUILIBRIO DEL MIX
+   Si misura, uno alla volta, quanto suona ogni strumento in sala
+   e lo si confronta con le voci. Indicazioni di partenza, non regole.
+   ============================================================= */
+const MB={mode:'lode',stage:'list',cur:null,t0:0,secs:6,floor:null,lv:{},warn:''};
+const MB_RANGE={lode:{vox:[-2,2],choir:[-8,-3],keys:[-8,-4],agtr:[-8,-4],egtr:[-8,-3],bass:[-6,-2],drum_ac:[-6,-2],drum_el:[-7,-3]},
+  parola:{keys:[-20,-10],agtr:[-24,-12],bass:[-24,-14]}};
+const MB_DEF={lode:['vox','choir','keys','agtr','egtr','bass','drum_ac'],parola:['keys','agtr','bass']};
+function mbSources(){const q=DB.q;let ids=DB.qDone?sourcesFromQ(q):['preacher_headset','vox','keys','egtr','bass','drum_ac'];
+  const pre=ids.find(i=>i.startsWith('preacher_'))||'preacher_headset';
+  if(MB.mode==='lode'){const l=ids.filter(i=>MB_RANGE.lode[i]);return{ref:l.includes('vox')?'vox':l[0],list:l}}
+  const l=ids.filter(i=>MB_RANGE.parola[i]);return{ref:pre,list:l}}
+const mbName=id=>(REC[id]&&REC[id].n)||id;
+function mbRel(id,ref){if(!MB.lv[id]||!MB.lv[ref])return null;return pdb(MB.lv[id].p)-pdb(MB.lv[ref].p)}
+function mbBar(d,r){const P=v=>(sMin(v,-20,6)+20)/26*100;return `<span class="mbbar" role="img" aria-label="${d==null?'non misurato':nf(d)+' dB'}">${r?`<i class="rg" style="left:${P(r[0])}%;width:${Math.max(3,P(r[1])-P(r[0]))}%"></i>`:''}${d==null?'':`<b style="left:${P(d)}%"></b>`}</span>`}
+VIEWS.mixbal={html:()=>{
+  const{ref,list:ids}=mbSources();
+  if(MB.stage==='prep'||MB.stage==='run'){
+    const floor=MB.cur==='_floor',name=floor?'il rumore di fondo':mbName(MB.cur),run=MB.stage==='run';
+    return scr({nav:{title:'Equilibrio del mix',back:!run,right:run?`<button class="gbtn txt" data-a="mbCancel">Annulla</button>`:''},cls:'pad',body:`<div class="head" style="text-align:center"><div class="t-cap">${floor?'Silenzio':'Da solo'}</div><h1 class="lt" style="margin-top:8px">${floor?'Silenzio in sala':esc(name)}</h1><p class="ls">${floor?'Niente musica e niente parlato. Misuriamo il rumore di fondo.':'Metti in mute o a fader giù tutto il resto. Fai suonare solo questo, come nel culto, per '+MB.secs+' secondi.'}</p></div>
+      <div style="display:grid;place-items:center;padding:6px 0"><div class="ringg" style="width:170px;height:170px">${ringSVG(0,170,12)}<span class="n num" id="mbN">${run?MB.secs:ic(floor?'mic':'sliders',46,1.6)}</span></div></div>`,
+      dock:run?'':`${btn(floor?'Misura il silenzio':'Misura '+esc(name),'data-a="mbRun"')}${btn('Indietro','data-a="mbCancel"','plain')}`})}
+  const rows=ids.map(id=>{const d=id===ref?0:mbRel(id,ref),r=MB_RANGE[MB.mode][id],m=MB.lv[id],st=!m?null:id===ref?'ok':d>r[1]+1?'alto':d<r[0]-1?'basso':'ok';
+    return row({tile:REC[id]&&REC[id].ic||'sliders',tc:st==='ok'?'c-green':st?'c-orange':'gray',t:esc(mbName(id)),s:!m?'Non misurato':id===ref?'Riferimento':`${nf(d)} dB · ${st==='ok'?'in linea':st==='alto'?'troppo forte':'troppo piano'}`,right:id===ref?'':mbBar(d,r),a:`data-a="mbGo" data-id="${id}"`})});
+  const adv=[];ids.forEach(id=>{if(id===ref)return;const d=mbRel(id,ref),r=MB_RANGE[MB.mode][id];if(d==null)return;if(d>r[1]+1)adv.push(`<b>${esc(mbName(id))}</b>: abbassa il fader di circa ${Math.max(1,Math.round(d-r[1]))} dB.`);else if(d<r[0]-1)adv.push(`<b>${esc(mbName(id))}</b>: alza il fader di circa ${Math.max(1,Math.round(r[0]-d))} dB.`)});
+  const done=ids.filter(i=>MB.lv[i]).length;
+  return scr({nav:{title:'Equilibrio del mix'},lt:'Equilibrio del mix',ls:MB.mode==='lode'?'Quanto suona ogni strumento rispetto alle voci, dove siede il pubblico.':'Durante la predicazione la musica deve restare ben sotto chi parla.',
+    body:`${seg([['Lode',MB.mode==='lode','data-a="mbMode" data-v="lode"'],['Predicazione',MB.mode==='parola','data-a="mbMode" data-v="parola"']])}
+    ${banner('info','info','Tieni il telefono dove siede il pubblico. Misura il silenzio, poi il riferimento (<b>'+esc(mbName(ref))+'</b>) e gli altri, uno alla volta.')}
+    ${list([row({tile:'mic',tc:MB.floor!=null?'c-green':'gray',t:'Rumore di fondo',s:MB.floor!=null?'Misurato':'Facoltativo, migliora la misura',a:'data-a="mbGo" data-id="_floor"'})],'Prima','','ic')}
+    ${list(rows,'Strumenti, dal riferimento (0 dB)','La fascia verde è dove di solito stanno bene: sono indicazioni di partenza, dipendono dal brano e dalla sala.','ic')}
+    ${adv.length?`<div class="card"><div class="t-head" style="margin-bottom:8px">Cosa sistemare</div><div class="vsl" style="gap:8px">${adv.map(a=>`<p class="t-body">${a}</p>`).join('')}</div></div>`:done>=2?banner('good','check','<b>Il mix è in equilibrio</b> rispetto alle indicazioni di partenza.'):''}
+    ${MB.warn?banner('bad','alert',MB.warn):''}`,
+    dock:Object.keys(MB.lv).length?btn('Ricomincia da capo','data-a="mbReset"','gray'):''})},
+ after:()=>{if(MB.stage!=='run')return;tmr(()=>{const el=Date.now()-MB.t0,left=Math.max(0,Math.ceil(MB.secs-el/1000)),n=$('#mbN');if(n)n.textContent=left;const rg=$('.ringg .rg');if(rg)rg.style.strokeDashoffset=(+rg.dataset.c*(1-Math.min(1,el/(MB.secs*1000)))).toFixed(1);if(el>=MB.secs*1000+400)mbFinish()},100)}};
+ACT.mbMode=d=>{MB.mode=d.v;render(true)};
+ACT.mbGo=async d=>{try{await SPLE.start()}catch(e){toast('Microfono non disponibile');return}MB.cur=d.id;MB.secs=d.id==='_floor'?4:6;MB.stage='prep';MB.warn='';render()};
+ACT.mbRun=()=>{SPLE.reset();MB.t0=Date.now();MB.stage='run';R.dir='fade';render()};
+ACT.mbCancel=()=>{MB.stage='list';MB.cur=null;render()};
+ACT.mbReset=()=>{MB.lv={};MB.floor=null;MB.warn='';render(true)};
+function mbFinish(){
+  const h=SPLE.hist.slice(-MB.secs);if(!h.length){MB.stage='list';render();return}
+  const p=mean(h.map(x=>x.a)),id=MB.cur;
+  if(id==='_floor')MB.floor=p;else{const f=MB.floor||0,net=Math.max(p-f,p*.02);MB.lv[id]={p:net};MB.warn=(f&&pdb(p)-pdb(f)<6)?'Il rumore di fondo è molto vicino al livello di <b>'+esc(mbName(id))+'</b>: la misura è poco affidabile. Avvicina il telefono o alza lo strumento.':''}
+  DB.mix={t:Date.now(),mode:MB.mode,lv:MB.lv,floor:MB.floor};save();MB.stage='list';MB.cur=null;R.dir='fade';render()}
+
+/* =============================================================
+   MAPPA DELLA SALA (copertura)
+   ============================================================= */
+const COV_P=[[135,86],[135,134],[135,190],[48,134],[222,134],[48,190],[222,86]];
+VIEWS.cover={html:()=>{
+  const e=DB.hist[0],cov=e&&e.cov&&e.cov.length>1?e.cov:null;
+  if(!cov)return scr({nav:{title:'Mappa della sala'},lt:'Mappa della sala',ls:'Serve una taratura con almeno due punti di misura.',body:banner('info','info','Fai una nuova taratura con tre punti: poi qui vedi dove la sala suona più forte o più piano.'),dock:btn('Nuova taratura','data-a="start"')});
+  const rel=cov.map((v,i)=>i?v-cov[0]:0),mn=Math.min(...rel),mx=Math.max(...rel),spread=mx-mn,col=v=>Math.abs(v)<=3?'var(--green)':Math.abs(v)<=6?'var(--orange)':'var(--red)';
+  let s=`<svg viewBox="0 0 270 236" width="100%" role="img" aria-label="Pianta della sala con il livello in ogni punto" style="max-width:380px;margin:0 auto;display:block"><rect x="40" y="6" width="190" height="36" rx="12" fill="var(--fill)"/><text x="135" y="29" text-anchor="middle" font-size="12" font-weight="600" fill="var(--l2)">Palco</text><rect x="48" y="14" width="14" height="20" rx="4" fill="var(--l3)"/><rect x="208" y="14" width="14" height="20" rx="4" fill="var(--l3)"/>`;
+  [62,78,94,110,126,142,158,174,190,206].forEach(y=>[70,90,110,130,150,170,190].forEach(x=>{s+=`<circle cx="${x+(x>130?8:0)}" cy="${y}" r="2.2" fill="var(--fill2)"/>`}));
+  rel.forEach((v,i)=>{const[x,y]=COV_P[i];s+=`<circle cx="${x}" cy="${y}" r="19" fill="${col(v)}" opacity=".9"/><text x="${x}" y="${y+5}" text-anchor="middle" font-size="14" font-weight="700" fill="#fff">${i?nf(v).replace('+',''):'0'}</text>`});
+  s+=`<rect x="108" y="214" width="54" height="20" rx="8" fill="var(--fill)"/><text x="135" y="228" text-anchor="middle" font-size="11" fill="var(--l2)">Regia</text></svg>`;
+  const lo=rel.indexOf(mn),hi=rel.indexOf(mx),adv=[];
+  if(spread>6){const back=[2,5].includes(lo),side=[3,4].includes(lo);
+    adv.push(back?`In fondo il suono è <b>${decFmt(Math.abs(mn),0)} dB</b> più basso di davanti. Prova a inclinare le casse verso il fondo o a mettere una cassa di rinforzo, con il ritardo giusto.`:side?`Sul lato (${PT_NAMES[lo].toLowerCase()}) il suono è <b>${decFmt(Math.abs(mn),0)} dB</b> più basso: controlla l'angolo di apertura delle casse.`:`Il punto «${PT_NAMES[lo].toLowerCase()}» è <b>${decFmt(Math.abs(mn),0)} dB</b> più basso degli altri.`);
+    if(mx>6)adv.push(`Il punto «${PT_NAMES[hi].toLowerCase()}» è molto più forte: se è vicino alle casse, abbassa o alza le casse.`)}
+  return scr({nav:{title:'Mappa della sala'},lt:'Mappa della sala',ls:spread<=4?'Il suono è regolare in tutta la sala.':spread<=6?'Piccole differenze tra un posto e l\'altro.':'Il suono cambia molto da un posto all\'altro.',
+    body:`<div class="card">${s}<div class="legend" style="justify-content:center"><span><i class="z" style="background:var(--green);opacity:1"></i>fino a 3 dB</span><span><i class="z" style="background:var(--orange);opacity:1"></i>3–6 dB</span><span><i class="z" style="background:var(--red);opacity:1"></i>oltre 6 dB</span></div></div>
+    <div class="big3"><div><div class="lab">Differenza</div><b>${decFmt(spread,0)}</b><small>dB</small></div><div><div class="lab">Più piano</div><b>${decFmt(mn,0)}</b><small>dB</small></div><div><div class="lab">Più forte</div><b>${mx>0?'+':''}${decFmt(mx,0)}</b><small>dB</small></div></div>
+    ${adv.length?`<div class="card"><div class="t-head" style="margin-bottom:8px">Cosa fare</div><div class="vsl" style="gap:8px">${adv.map(a=>`<p class="t-body">${a}</p>`).join('')}</div></div>`:banner('good','check','<b>Ottimo.</b> Con una differenza così piccola non serve toccare le casse.')}
+    ${list([row({tile:'ruler',tc:'c-pink',t:'Calcola il ritardo delle casse',a:'data-a="go" data-v="delay"',chev:1}),row({tile:'bulb',tc:'c-orange',t:'Consigli per la sala',a:'data-a="goTips"',chev:1})],'','Il livello è misurato con il rumore rosa, rispetto al primo punto.','ic')}`})}};
+
+/* =============================================================
+   SIMULATORE ACUSTICO (cosa cambia se…)
+   Stima di Sabine, corretta con il riverbero misurato se c'è.
+   ============================================================= */
+const SIM={pan:0,cur:0,rug:0,seats:false};
+const SIM_COST={pan:45,cur:15,rug:12};
+function simBase(){const q=DB.q,r=rt60(q),A=.161*r.V/r.t;return{V:r.V,A,k:DB.rt?DB.rt.t/r.t:1,t0:DB.rt?DB.rt.t:r.t,Sf:q.L*q.W}}
+function simPred(){const b=simBase(),q=DB.q,fl={hard:.02,wood:.1,carpet:.3}[q.floor]||.02;
+  const add=SIM.pan*.61+SIM.cur*.35+SIM.rug*Math.max(0,.3-fl)+(SIM.seats&&!q.ex.includes('sedie')?.15*b.Sf:0);
+  return{t:b.k*.161*b.V/(b.A+add),t0:b.t0,V:b.V,add}}
+const simTarget=V=>V<500?[.7,1.1]:V<1700?[.9,1.3]:[1.2,1.8];
+const simStep=(l,sub,k,v,u)=>`<div class="stepper"><div class="l"><b class="t-head" style="font-weight:600">${l}</b><span class="t-foot">${sub}</span></div><button data-a="simN" data-k="${k}" data-d="-1" aria-label="Meno">${ic('minus',20,2.2)}</button><div class="v">${v}<small>${u}</small></div><button data-a="simN" data-k="${k}" data-d="1" aria-label="Più">${ic('plus',20,2.2)}</button></div>`;
+VIEWS.sim={html:()=>{
+  const p=simPred(),tg=simTarget(p.V),lab=rtRate(p.t),d=p.t-p.t0,cost=SIM.pan*SIM_COST.pan+SIM.cur*SIM_COST.cur+SIM.rug*SIM_COST.rug,pos=v=>sMin((v-.4)/2*100,0,100);
+  return scr({nav:{title:'Simulatore acustico'},lt:'Simulatore acustico',ls:'Quanto si accorcia il riverbero se aggiungi qualcosa. Non devi comprare niente per provare.',
+    body:`<div class="card hero" style="text-align:center;padding:24px 20px"><div style="display:flex;align-items:center;justify-content:center;gap:16px"><span class="bignum" style="color:var(--l3);font-size:44px">${decFmt(p.t0)}</span><span class="ter">${ic('chev',24,2.4)}</span><span class="bignum">${decFmt(p.t)}<small>s</small></span></div><div style="margin-top:12px">${pill(lab[1],lab[0])}</div>
+      <div class="simbar" role="img" aria-label="Riverbero rispetto alla fascia consigliata"><i class="rg" style="left:${pos(tg[0])}%;width:${pos(tg[1])-pos(tg[0])}%"></i><b style="left:${pos(p.t0)}%;opacity:.45"></b><b style="left:${pos(p.t)}%"></b></div><p class="t-foot" style="margin-top:8px">Fascia consigliata per la parola in una sala di questa grandezza: ${decFmt(tg[0])}–${decFmt(tg[1])} s${DB.rt?'. Partenza dal tuo test dell\'eco.':'. Riverbero stimato dalle misure della sala.'}</p></div>
+    <div class="list">${simStep('Pannelli','Fonoassorbenti da 5 cm, 1,2 × 0,6 m','pan',SIM.pan,'')}</div>
+    <div class="list">${simStep('Tende pesanti','Metri quadrati di superficie','cur',SIM.cur,'m²')}</div>
+    <div class="list">${simStep('Tappeti o moquette','Metri quadrati sul pavimento','rug',SIM.rug,'m²')}</div>
+    ${list([row({tile:'group',tc:'gray',t:'Sedie imbottite',s:DB.q.ex.includes('sedie')?'Già contate nella tua sala':'Al posto di sedie rigide',right:DB.q.ex.includes('sedie')?'':`<button class="tgl ${SIM.seats?'on':''}" data-a="simSeats" aria-label="Sedie imbottite" aria-pressed="${SIM.seats}"></button>`})])}
+    ${cost?banner('info','euro',`<b>Costo indicativo: circa ${cost} €.</b> È una stima: pannelli fatti in casa costano meno.`):''}
+    ${d<-.05?banner('good','trend',`Il riverbero scende di <b>${decFmt(Math.abs(d))} s</b>${p.t<=tg[1]?': entra nella fascia giusta per la parola.':'. Per entrare nella fascia serve ancora un po\' di materiale.'}`):''}
+    ${list([row({tile:'book',tc:'c-indigo',t:'Come si fanno i pannelli',s:'Libreria · acustica a basso costo',a:'data-a="dlist" data-src="acu"',chev:1})],'','Il modello è semplificato (formula di Sabine). Il tuo orecchio e un nuovo test dell\'eco hanno l\'ultima parola.','ic')}`,
+    dock:`${btn('Rimisura il riverbero','data-a="go" data-v="eco"')}${btn('Azzera','data-a="simReset"','plain')}`})}};
+ACT.simN=d=>{const st={pan:2,cur:5,rug:5}[d.k],mx={pan:80,cur:150,rug:150}[d.k];SIM[d.k]=sMin(SIM[d.k]+st*+d.d,0,mx);render(true)};
+ACT.simSeats=()=>{SIM.seats=!SIM.seats;render(true)};
+ACT.simReset=()=>{Object.assign(SIM,{pan:0,cur:0,rug:0,seats:false});render(true)};
+
+/* =============================================================
+   LINK DI PASSAGGIO
+   La sala, il mixer e le note in un link: nessun server.
+   ============================================================= */
+const b64u={enc:u8=>{let s='';for(let i=0;i<u8.length;i+=8192)s+=String.fromCharCode.apply(null,u8.subarray(i,i+8192));return btoa(s).replace(/\+/g,'-').replace(/\//g,'_').replace(/=+$/,'')},
+  dec:s=>{s=s.replace(/-/g,'+').replace(/_/g,'/');while(s.length%4)s+='=';return Uint8Array.from(atob(s),c=>c.charCodeAt(0))}};
+async function packShare(o){const j=new TextEncoder().encode(JSON.stringify(o));
+  if(window.CompressionStream){const u=new Uint8Array(await new Response(new Blob([j]).stream().pipeThrough(new CompressionStream('deflate-raw'))).arrayBuffer());return 'z'+b64u.enc(u)}
+  return 'j'+b64u.enc(j)}
+async function unpackShare(s){const k=s[0],u=b64u.dec(s.slice(1));
+  if(k==='z')return JSON.parse(new TextDecoder().decode(await new Response(new Blob([u]).stream().pipeThrough(new DecompressionStream('deflate-raw'))).arrayBuffer()));
+  return JSON.parse(new TextDecoder().decode(u))}
+function sharePayload(){const q=DB.q,e=DB.hist[0];
+  return{v:1,n:DB.set.name||'',s:DB.set.sala||'',q:{L:q.L,W:q.W,Hh:q.Hh,floor:q.floor,walls:q.walls,ceil:q.ceil,ex:q.ex,src:q.src,obj:q.obj,mixType:q.mixType,eqM:q.eqM,eqC:q.eqC,sub:q.sub,mon:q.mon},
+    e:e?{t:e.t,score:e.after?e.after.score:e.score,filters:e.filters.map(f=>({f:f.f,g:f.g,q:f.q,name:f.name}))}:null,rt:DB.rt?DB.rt.t:null,notes:(DB.notes||[]).slice(0,10).map(n=>({t:n.t,b:n.b}))}}
+let SHARED=null;
+VIEWS.handover={html:()=>{const p=sharePayload(),n=p.notes.length;
+  return scr({nav:{title:'Link di passaggio'},lt:'Link di passaggio',ls:'Chi ti sostituisce apre il link e trova la tua sala, il tuo mixer e le tue note. Tutto dentro il link: niente account.',
+    body:`${list([row({tile:'building',tc:'c-brown',t:esc(p.n||'La tua chiesa'),s:`${p.q.L}×${p.q.W}×${p.q.Hh} m${p.s?' · '+esc(p.s):''}`}),row({tile:'sliders',tc:'c-indigo',t:'Mixer',s:{digital:'Digitale',analog:'Analogico',powered:'Nelle casse'}[p.q.mixType]||'Non indicato'}),row({tile:'target',tc:'c-green',t:'Ultima taratura',s:p.e?`Punteggio ${p.e.score}, ${p.e.filters.length} tagli da girare`:'Nessuna ancora'}),row({tile:'note',tc:'c-brown',t:'Note del taccuino',s:n?n+(n===1?' nota':' note'):'Nessuna'})],'Cosa contiene','','ic')}
+    ${banner('info','lock','Il link contiene solo queste informazioni. Non ci sono registrazioni né dati personali: lo vede chi lo riceve.')}
+    <p class="sec-note">Compila il taccuino prima di mandarlo: è la parte che aiuta di più.</p>`,
+    dock:`${btn(ic('share',20,2)+'Condividi il link','data-a="hoShare"')}${btn('Copia il link','data-a="hoCopy"','tinted')}`})}};
+async function hoUrl(){return location.href.split('#')[0]+'#s='+await packShare(sharePayload())}
+ACT.hoShare=async()=>{try{const url=await hoUrl(),t=(DB.set.name||'La mia chiesa')+' su Intona';if(navigator.share)await navigator.share({title:t,text:t,url});else{await navigator.clipboard.writeText(url);toast('Link copiato')}}catch(e){if(e&&e.name!=='AbortError')toast('Non riesco a creare il link')}};
+ACT.hoCopy=async()=>{try{await navigator.clipboard.writeText(await hoUrl());toast('Link copiato')}catch(e){toast('Non riesco a copiare')}};
+VIEWS.shared={html:()=>{const o=SHARED;if(!o)return scr({nav:{title:'Passaggio'},lt:'Link non valido',body:banner('bad','alert','Il link non si legge. Chiedi di mandarlo di nuovo.')});
+  const q=o.q||{};
+  return scr({nav:{title:'Dalla sala di '+esc(o.n||'…'),back:false,right:`<button class="gbtn txt" data-a="go" data-v="home">Chiudi</button>`},lt:esc(o.n||'Una sala'),ls:'Ti hanno mandato la loro sala su Intona.',
+    body:`${list([row({tile:'building',tc:'c-brown',t:'Sala',s:`${q.L}×${q.W}×${q.Hh} m${o.s?' · '+esc(o.s):''}`}),row({tile:'sliders',tc:'c-indigo',t:'Mixer',s:{digital:'Digitale',analog:'Analogico',powered:'Nelle casse'}[q.mixType]||'Non indicato'}),...(o.rt?[row({tile:'wave',tc:'c-indigo',t:'Riverbero',s:decFmt(o.rt)+' s'})]:[]),...(o.e?[row({tile:'target',tc:'c-green',t:'Ultima taratura',s:'Punteggio '+o.e.score})]:[])],'','','ic')}
+    ${o.e&&o.e.filters.length?list(o.e.filters.map(f=>row({t:esc(f.name||'Taglio'),s:`${hz(f.f)} · ${nf(f.g)} dB · Q ${String(f.q).replace('.',',')}`})),'Tagli sul master','','ic'):''}
+    ${(o.notes||[]).length?list(o.notes.map(n=>row({tile:'note',tc:'c-brown',t:esc(n.t||'Nota'),s:esc((n.b||'').split('\n').find(l=>l.trim())||'')})),'Note','','ic'):''}`,
+    dock:`${btn('Importa nel mio telefono','data-a="hoImport"')}${btn('Solo guardare','data-a="go" data-v="home"','plain')}`})}};
+ACT.hoImport=()=>{const o=SHARED;if(!o)return;const q=o.q||{};if(!DB.set.name&&o.n)DB.set.name=o.n;if(!DB.set.sala&&o.s)DB.set.sala=o.s;
+  Object.keys(q).forEach(k=>{if(q[k]!==undefined&&q[k]!==null)DB.q[k]=q[k]});DB.qDone=true;
+  const nn=(o.notes||[]).map((n,i)=>({id:Date.now()+i,t:'Da '+(o.n||'un amico')+' · '+(n.t||'Nota'),b:n.b||'',d:Date.now()}));
+  if(o.e&&o.e.filters&&o.e.filters.length)nn.unshift({id:Date.now()+99,t:'Da '+(o.n||'un amico')+' · tagli sul master',b:o.e.filters.map(f=>`${hz(f.f)}  ${nf(f.g)} dB  Q ${String(f.q).replace('.',',')}  (${f.name||''})`).join('\n'),d:Date.now()});
+  DB.notes=[...nn,...(DB.notes||[])];save();SHARED=null;toast('Importato');go('home',{},{replace:true,dir:'fade'})};
+
+/* =============================================================
+   TEST DEL MICROFONO: il telefono comprime il suono?
+   Si alza il rumore di 12 dB: la misura deve salire di circa 12 dB.
+   ============================================================= */
+const MT={stage:'idle',res:null,note:''};
+async function micAvgPower(ms){const t0=performance.now();let s=0,n=0;while(performance.now()-t0<ms){const l=Eng.level();s+=l.rms*l.rms;n++;await new Promise(r=>setTimeout(r,80))}return s/Math.max(1,n)}
+async function micTest(){
+  MT.stage='run';MT.res=null;render(true);
+  try{await Eng.openMic();Eng.stopNoise();await new Promise(r=>setTimeout(r,500));
+    const p0=await micAvgPower(1500);await Eng.startNoise(.18);await new Promise(r=>setTimeout(r,900));const p1=await micAvgPower(1500);
+    Eng.setNoise(.36);await new Promise(r=>setTimeout(r,900));const p2=await micAvgPower(1500);Eng.stopNoise();
+    const s1=10*Math.log10(Math.max(p1-p0,1e-14)/Math.max(p0,1e-14)),d=10*Math.log10(Math.max(p2-p0,1e-14)/Math.max(p1-p0,1e-14)),clip=Math.sqrt(p2)>.5;
+    MT.res={snr:s1,d,clip,verdict:s1<6?'basso':d>=10.5&&d<=13.8?'ok':d<10.5?'compressione':'strano'}}
+  catch(e){MT.res={verdict:'errore'}}
+  MT.stage='idle';render(true)}
+VIEWS.mictest={html:()=>{
+  const s=Eng.settings||{},flag=(k,l)=>row({t:l,right:s[k]===undefined?'<span class="sec">non dichiarato</span>':s[k]?pill('bad','Attivo'):pill('good','Spento')}),r=MT.res;
+  const vd={ok:['good','check','<b>Il microfono risponde in modo lineare.</b> Alzando il suono di 12 dB, la misura è salita di '+(r&&r.d!=null?decFmt(r.d):'')+' dB. Le misure sono affidabili.'],
+    compressione:['bad','alert','<b>Il telefono sta comprimendo il suono.</b> La misura è salita solo di '+(r&&r.d!=null?decFmt(r.d):'')+' dB su 12. Prova ad aprire Intona da Safari invece che dall\'icona, o usa un microfono esterno.'],
+    strano:['bad','alert','<b>Risultato strano.</b> La misura è salita di '+(r&&r.d!=null?decFmt(r.d):'')+' dB: ripeti in un posto più silenzioso.'],
+    basso:['info','info','<b>Non si sente abbastanza.</b> Porta il volume del telefono a metà, tieni il telefono con il microfono verso l\'altoparlante, e ripeti in silenzio.'],
+    errore:['bad','alert','Non riesco ad aprire il microfono o l\'audio.']}[r&&r.verdict];
+  return scr({nav:{title:'Test del microfono'},lt:'Test del microfono',ls:'Controlla che il telefono non filtri né comprima il suono: altrimenti le misure non valgono.',
+    body:`${list([flag('echoCancellation','Cancellazione eco'),flag('noiseSuppression','Riduzione rumore'),flag('autoGainControl','Controllo guadagno')],'Filtri automatici','Devono essere tutti spenti. Safari a volte li lascia accesi anche se li spegniamo.','ic')}
+    <div class="card"><div class="t-head">Test di compressione</div><p class="t-sub" style="margin:6px 0 0">Il telefono suona un rumore, prima piano e poi 12 dB più forte, e controlla che la misura salga di 12 dB. Fallo in un posto silenzioso, con il volume del telefono a metà. <b>Non collegare il telefono al mixer.</b></p></div>
+    ${MT.stage==='run'?banner('info','refresh','<b>Sto misurando…</b> dura circa dieci secondi.'):vd?banner(...vd):''}
+    ${list([row({tile:'bars',tc:'gray',t:'Spettro in tempo reale',s:'Guarda cosa sente il microfono',a:'data-a="go" data-v="diag"',chev:1})])}`,
+    dock:btn(MT.stage==='run'?'In corso…':'Avvia il test','data-a="mtRun"','', MT.stage==='run'?'disabled':'')})}};
+ACT.mtRun=()=>{if(MT.stage!=='run')micTest()};
+
+/* =============================================================
+   COPIA DEI DATI e ripristino
+   ============================================================= */
+ACT.bkSave=()=>shareFile(JSON.stringify(DB),'intona-copia.json','application/json','Copia di Intona');
+ACT.bkPick=()=>{const f=$('#bkIn');if(f)f.click()};
+function bkBind(){const f=$('#bkIn');if(!f)return;f.onchange=async()=>{const file=f.files[0];if(!file)return;try{const o=JSON.parse(await file.text());if(!o||typeof o!=='object'||!o.q||!Array.isArray(o.hist))throw 0;window._bk=o;
+  openSheet(`<h2 class="t-title2" style="margin:6px 0 8px">Ripristinare questa copia?</h2><p class="t-body" style="margin-bottom:14px">Contiene ${o.hist.length} tarature${(o.notes||[]).length?' e '+o.notes.length+' note':''}. I dati di adesso verranno sostituiti.</p>${btn('Ripristina','data-a="bkGo"')}<div style="height:8px"></div>${btn('Annulla','data-a="closeSheet"','gray')}`)}catch(e){toast('Il file non è una copia di Intona')}}}
+ACT.bkGo=()=>{if(!window._bk)return;DB=Object.assign({},DB,window._bk);window._bk=null;save();applyTheme();closeSheet();toast('Ripristinato');go('home',{},{replace:true,dir:'fade'})};
+const _setAfter9=VIEWS.set.after;VIEWS.set.after=p=>{if(_setAfter9)_setAfter9(p);bkBind()};
+
+/* =============================================================
+   COME FUNZIONA, E QUANTO È PRECISA
+   ============================================================= */
+VIEWS.about={html:()=>scr({nav:{title:'Come funziona'},lt:'Come funziona',ls:'Cosa fa Intona, quanto puoi fidarti dei numeri e dove restano i tuoi dati.',
+  body:`${list([
+    row({tile:'mic',tc:'c-blue',t:'Cosa misura',s:'Il microfono del telefono ascolta come suona la sala, per zone di frequenza. Il rumore rosa o la musica servono da prova.'}),
+    row({tile:'target',tc:'c-green',t:'Cosa ti dice',s:'Quali zone sono troppo forti e di quanto abbassarle sul mixer. Taglia sempre, non alza mai.'}),
+    row({tile:'sliders',tc:'c-orange',t:'Cosa non fa',s:'Non cambia il mixer da solo, non sostituisce un tecnico e non risolve il riverbero: per quello servono materiali.'})],'In breve','','ic')}
+  ${list([
+    row({tile:'bars',tc:'c-blue',t:'Forma della curva',s:'Affidabile da circa 100 Hz a 8 kHz. Fuori da lì l\'indicazione è approssimata.'}),
+    row({tile:'gauge',tc:'c-teal',t:'Livelli in dB',s:'Senza calibrazione l\'errore può arrivare a 8 dB. Calibrata con un altro misuratore, circa 3 dB. Per confrontare un culto con l\'altro vanno bene lo stesso.'}),
+    row({tile:'shield',tc:'c-indigo',t:'I filtri del telefono',s:'Se il telefono comprime o filtra il suono, le misure peggiorano. Controllalo con il Test del microfono.'}),
+    row({tile:'mic',tc:'c-pink',t:'Microfono di misura',s:'Con un microfono esterno e il suo file di calibrazione l\'errore scende molto.'})],'Quanto sono precise le misure','','ic')}
+  ${list([
+    row({tile:'lock',tc:'c-green',t:'Tutto sul telefono',s:'Tarature, note e impostazioni stanno solo nel browser di questo telefono. Nessun account, nessun server.'}),
+    row({tile:'mic',tc:'c-green',t:'L\'audio non si registra',s:'Il microfono serve a misurare i livelli. Non viene registrato né inviato a nessuno.'}),
+    row({tile:'link',tc:'c-green',t:'Il link di passaggio',s:'Contiene solo sala, mixer e note. Lo vede chi lo riceve.'})],'Privacy','','ic')}
+  ${list([
+    row({tile:'book',tc:'c-brown',t:'Indicazioni sul volume',s:'Parola 70–80 dB(A), lode 85–95 dB(A): valori comuni nelle chiese. Non sono un obbligo di legge e non sono una consulenza.'}),
+    row({tile:'building',tc:'c-brown',t:'Se la sala disturba i vicini',s:'Esistono limiti comunali per il rumore verso l\'esterno. Chiedi al tuo comune o a un tecnico competente.'})],'Norme e riferimenti','Il confronto con gli altri strumenti, le fonti e i limiti noti sono in docs/PARITA.md nel progetto.','ic')}`})};
+
+/* =============================================================
+   INTONA 0.9 · guida al tuo mixer (dati verificati con le fonti)
+   ============================================================= */
+const MIXF=['digitale','analogico'];
+VIEWS.mixers={html:()=>{
+  const mine=DB.q.mixType,fam=f=>MIXG.filter(m=>m.family===f);
+  return scr({nav:{title:'Guida al tuo mixer'},lt:'Guida al tuo mixer',ls:'Dove trovi l\'equalizzatore, il filtro dei bassi e il gain, e come fare un taglio. Scegli il tuo modello.',
+    body:MIXG.length?MIXF.map(f=>fam(f).length?list(fam(f).map(m=>row({tile:f==='digitale'?'sliders':'gear',tc:'gray',t:esc(m.name.replace(/\s*\(.*?\)/g,'')),s:m.fiducia==='alta'?'Dai manuali ufficiali':m.fiducia==='media'?'Da controllare sul manuale':'Indicazioni generali',a:`data-a="mixd" data-id="${m.id}"`,chev:1})),f==='digitale'?'Mixer digitali':'Mixer analogici','','ic'):'').join('')
+      +banner('info','info','Non vedi il tuo? Guarda «Dove trovo l\'EQ?» nella Libreria: spiega le cose comuni a tutti i mixer.'):banner('info','info','Le guide per modello arrivano a breve.')})}};
+ACT.mixd=d=>go('mixerd',{id:d.id});
+VIEWS.mixerd={html:p=>{
+  const m=MIXG.find(x=>x.id===p.id)||MIXG[0];if(!m)return '';
+  const row2=(tile,t,s)=>s?row({tile,tc:'gray',t,s:esc(s)}):'';
+  const num=(t,i)=>row({lead:`<span class="tile gray"><b style="font:700 15px var(--round)">${i+1}</b></span>`,t:`<span style="font-weight:400">${esc(t)}</span>`});
+  return scr({nav:{title:esc(m.name.replace(/\s*\(.*?\)/g,''))},lt:esc(m.name.replace(/\s*\(.*?\)/g,'')),ls:m.family==='digitale'?'Mixer digitale':'Mixer analogico',
+    body:`${m.fiducia==='alta'?banner('info','info','Indicazioni ricavate dai manuali. Non le abbiamo provate su ogni console: se qualcosa non torna, guarda il manuale.'):m.fiducia==='bassa'?banner('bad','alert','<b>Controlla sul manuale.</b> Queste indicazioni sono generali: il tuo modello o il firmware può essere diverso.'):m.fiducia==='media'?banner('info','info','Le indicazioni vengono dai manuali, ma alcune voci cambiano con il firmware. Se qualcosa non torna, guarda il manuale.'):''}
+    ${list([row2('sliders','EQ del canale',m.eq_canale),row2('speaker','EQ delle uscite principali',m.eq_master),row2('wave','Filtro dei bassi',m.filtro_bassi),row2('gear','Gain',m.gain),row2('bars','EQ grafico e analizzatore',m.geq_rta)].filter(Boolean),'Dove si trova','','ic')}
+    ${(m.taglio||[]).length?list(m.taglio.map(num),'Come fare un taglio di 3 dB a 250 Hz','Cambia la frequenza e i dB con quelli che ti dà Intona.','ic'):''}
+    ${(m.attenzione||[]).length?`<div class="card"><div class="t-head" style="margin-bottom:8px">Attenzione</div><div class="vsl" style="gap:8px">${m.attenzione.map(a=>`<p class="t-body">${ic('alert',16,2)} ${esc(a)}</p>`).join('')}</div></div>`:''}
+    ${(m.fonti||[]).length?`<p class="t-foot">Fonti: ${m.fonti.slice(0,3).map(u=>`<a href="${esc(u)}" target="_blank" rel="noopener" style="color:var(--tint-text);word-break:break-all">${esc(u.replace(/^https?:\/\/(www\.)?/,'').slice(0,42))}</a>`).join(' · ')}</p>`:''}`,
+    dock:btn('Torna all\'elenco','data-a="back"','tinted')})}};
+
+ACT.badDrop=d=>{const id=+d.id;DB.hist=DB.hist.filter(h=>h.id!==id);DB.cur=DB.hist[0]?DB.hist[0].id:null;save();if(d.go==='start')ACT.start();else go('home',{},{replace:true})};
 /* ---- avvio ---- */
-window.Intona=window.Accordo={makeSPL,calParse,roomModes,exportAPO,exportCSV,SPLE,SENT,RTA,GEN,sentStop,tsChart,shareImage,MARK,WORD,ill,eqGraph,DB:()=>DB,Eng,M,F,Player,E,V,rtAnalyze,aLevel,analyze,planEq,targetCurve,go,R,VIEWS,ACT,render};
+window.Intona=window.Accordo={MB,SIM,MT,packShare,unpackShare,sharePayload,simPred,mbFinish,get SHARED(){return SHARED},makeSPL,calParse,roomModes,exportAPO,exportCSV,SPLE,SENT,RTA,GEN,sentStop,tsChart,shareImage,MARK,WORD,ill,eqGraph,DB:()=>DB,Eng,M,F,Player,E,V,rtAnalyze,aLevel,analyze,planEq,targetCurve,go,R,VIEWS,ACT,render};
 applyTheme();
 if('serviceWorker' in navigator&&location.protocol.startsWith('http'))addEventListener('load',()=>navigator.serviceWorker.register('sw.js').catch(()=>{}));
 go(DB.seen?'home':'welcome',{},{replace:true,dir:'fade'});
+if(location.hash.startsWith('#s=')){unpackShare(location.hash.slice(3)).then(o=>{SHARED=o;history.replaceState(null,'',location.pathname+location.search);go('shared',{},{replace:true,dir:'fade'})}).catch(()=>toast('Il link non si legge'))}
 </script>
 </body>
 </html>

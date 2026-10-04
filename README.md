@@ -2,15 +2,16 @@
 
 **Intona la tua sala.** Un'app per iPhone che misura la sala con il microfono del telefono e dice a chi serve in regia, nelle chiese, quali manopole girare sul mixer per migliorare il suono.
 
-Prototipo funzionante (versione 0.8). Nessun account, nessun server: tutto resta sul telefono.
+Prototipo funzionante (versione 0.9). Nessun account, nessun server: tutto resta sul telefono.
 
 ## Cosa fa
-- **Misura la sala** con il rumore rosa e il microfono del telefono, in tre punti.
+- **Misura la sala** con il rumore rosa e il microfono del telefono, in tre punti, o **Scansione rapida** (un punto, un minuto, con la musica in sala).
 - **Ascolta la differenza**: con il telefono collegato al mixer, alterna il suono prima e dopo la correzione.
 - **Sistema il mixer** una banda alla volta, per il tipo di mixer che hai.
 - **Test dell'eco**: riverbero per ottava, EDT e chiarezza della parola (C50), con tre battiti di mani.
 - **Prima del culto**, **Aiuto al volo**, **Volume della sala**.
 - **Strumenti**: analizzatore (1/3 e 1/6 di ottava, cascata, bersaglio, traccia salvata), fonometro (A, C, Z, Fast, Slow, Leq), monitor del culto con rapporto, generatore, ritardo delle casse, modi della sala, microfono di misura con file di calibrazione, taccuino del mixer.
+- **Novità 0.9**: equilibrio del mix (quanto suona ogni strumento rispetto alle voci), mappa della sala, simulatore acustico (pannelli, tende, tappeti), test del microfono (eco, rumore, compressione), monitor del culto per momenti (lode, predicazione), link di passaggio per chi ti sostituisce, copia di sicurezza dei dati, **guide per modello di mixer** (14 famiglie, dai manuali: da controllare sulla console vera).
 - **Esporta**: immagine prima e dopo, filtri per Equalizer APO e REW, dati in CSV.
 - **Libreria**: lezioni, impara a sentire, glossario, momenti del culto, posizione dei microfoni, ricette, acustica a basso costo.
 
@@ -37,6 +38,8 @@ Repository, Settings, Pages. In «Build and deployment» scegli «Deploy from a 
 
 ## Limiti noti
 - Non ancora provata su iPhone reali: i collaudi sono con un microfono simulato.
+- Le guide per modello di mixer vengono dai manuali trovati online, non sono state provate su ogni console: i passaggi esatti possono cambiare con il firmware.
+- L'app non controlla il mixer (un browser non può parlare OSC/UDP): ti dice cosa girare, non lo gira.
 - La precisione dei microfoni dei telefoni cambia da modello a modello; sotto 100 Hz le indicazioni sono approssimate.
 - I costi nella libreria di acustica sono stime.
 - Manca la traduzione in altre lingue.
