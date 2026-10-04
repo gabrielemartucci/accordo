@@ -411,6 +411,30 @@ input[type=search]{-webkit-appearance:none;appearance:none}
 .ringg .n svg{position:static;inset:auto;transform:none}
 .scr.has-tab::after{content:"";position:fixed;left:0;right:0;bottom:0;height:128px;background:linear-gradient(to top,var(--bg) 38%,transparent);pointer-events:none;z-index:25}
 .row .val{flex:none;max-width:52%;white-space:normal;text-align:right}
+
+/* =====================================================================
+   INTONA 0.8 · strumenti
+   ===================================================================== */
+.rta canvas{display:block;width:100%;height:230px}
+.rta canvas#rtaS{border-radius:14px;background:#0B0B0C}
+.rta canvas[hidden]{display:none}
+.rta .legend{margin-top:8px}
+.status{text-align:center;padding:24px 20px;transition:background .3s,box-shadow .3s;box-shadow:inset 0 0 0 2px rgba(52,199,89,.5)}
+.status.alto{box-shadow:inset 0 0 0 2px var(--orange)}
+.status.fischio{box-shadow:inset 0 0 0 2px var(--red);background:rgba(255,59,48,.14)}
+.status .t-cap{color:var(--l1);font-weight:700;letter-spacing:.06em}
+.livepill{position:fixed;z-index:35;top:calc(env(safe-area-inset-top,0px) + 6px);left:50%;transform:translateX(-50%);display:flex;align-items:center;gap:8px;height:32px;padding:0 14px;border:0;border-radius:16px;background:var(--g-bg);-webkit-backdrop-filter:var(--blur);backdrop-filter:var(--blur);box-shadow:inset 0 0 0 .5px var(--g-line),inset 0 1px 0 var(--g-hi),var(--g-shadow);font:600 13px/1 var(--font);color:var(--l1)}
+.livepill i{width:8px;height:8px;border-radius:50%;background:var(--red);animation:pulseDot 1.6s ease-in-out infinite}
+.livepill span{color:var(--l2);font-variant-numeric:tabular-nums}
+@keyframes pulseDot{0%,100%{opacity:1}50%{opacity:.35}}
+textarea.input{height:240px;padding:14px 16px;resize:none;line-height:1.45;margin-top:10px;display:block}
+.tab-tools .nav .l{display:none}
+.tab{font-size:10px}
+.sec-note{font:400 13px/1.4 var(--font);color:var(--l2)}
+@media (prefers-reduced-motion:reduce){.livepill i{animation:none}}
+
+.rta{position:sticky;top:calc(env(safe-area-inset-top,0px) + 56px);z-index:6;box-shadow:0 10px 24px rgba(0,0,0,.18)}
+.tab span{font-size:10px;letter-spacing:-.15px}
 </style>
 </head>
 <body>
@@ -692,12 +716,12 @@ function rtAnalyze(x,sr){
   const srt=Array.from(env).sort((a,b)=>a-b),nz=Math.max(srt[Math.floor(nb*.25)],1e-12),thr=nz*1000;       // 30 dB sopra il fondo
   const ev=[];let last=-1e9;
   for(let b=0;b<nb;b++){if(env[b]>thr&&(b-last)*B/sr>1.5){let p=b,m=env[b];for(let k=b;k<Math.min(nb,b+20);k++)if(env[k]>m){m=env[k];p=k}ev.push(p);last=p}}
-  const res={500:[],1000:[],2000:[]};let approx=false;
+  const BANDS=[125,250,500,1000,2000,4000],res={},c50={},edtA={};BANDS.forEach(b=>{res[b]=[];c50[b]=[];edtA[b]=[]});let approx=false;
   ev.forEach((p,k)=>{
     const s0=Math.max(0,p*B-Math.round(sr*.004)),s1=Math.min(x.length,k+1<ev.length?ev[k+1]*B-Math.round(sr*.3):p*B+Math.round(sr*3.5));
     if(s1-s0<sr*.8)return;
     const seg=x.subarray(s0,s1);
-    [500,1000,2000].forEach(fc=>{
+    BANDS.forEach(fc=>{
       const y=bpf(bpf(seg,sr,fc,1.414),sr,fc,1.414),n=y.length,e=new Float64Array(n);for(let i=0;i<n;i++)e[i]=y[i]*y[i];
       const t0=Math.floor(n*.88);let Nn=0;for(let i=t0;i<n;i++)Nn+=e[i];Nn=Math.max(Nn/(n-t0),1e-20);
       const Bk=Math.round(sr*.01),nk=Math.floor(n/Bk),sm=[];for(let b=0;b<nk;b++){let s=0;for(let i=b*Bk;i<(b+1)*Bk;i++)s+=e[i];sm.push(s/Bk)}
@@ -709,12 +733,13 @@ function rtAnalyze(x,sr){
       const pts=[];const st=Math.round(sr*.01);for(let i=0;i<end;i+=st)pts.push([i/sr,10*Math.log10(Math.max(edc[i]/E0,1e-12))]);
       const fit=(hi,lo)=>{const sel=pts.filter(p=>p[1]<=hi&&p[1]>=lo);if(sel.length<4)return null;const mt=mean(sel.map(p=>p[0])),mv=mean(sel.map(p=>p[1]));let sxy=0,sxx=0;sel.forEach(p=>{sxy+=(p[0]-mt)*(p[1]-mv);sxx+=(p[0]-mt)*(p[0]-mt)});const sl=sxy/sxx;return sl<0?-60/sl:null};
       let t=null;if(dr>=35)t=fit(-5,-25);else{t=fit(-5,-15);approx=true}
+      const ed=fit(0,-10);if(ed&&ed>.05&&ed<8)edtA[fc].push(ed);const i50=Math.round(sr*.05);if(edc.length>i50+10){const e50=edc[i50],e0=edc[0];if(e50>0&&e0>e50)c50[fc].push(10*Math.log10((e0-e50)/e50))}
       if(t&&t>.1&&t<8)res[fc].push(t);
     });
   });
   const med=a=>{if(!a.length)return null;const s=[...a].sort((p,q)=>p-q);return s[Math.floor(s.length/2)]};
-  const bands={500:med(res[500]),1000:med(res[1000]),2000:med(res[2000])},vals=Object.values(bands).filter(v=>v);
-  return{n:ev.length,bands,rt:vals.length?mean(vals):null,approx};
+  const bands={},c50m={},edtm={};BANDS.forEach(b=>{bands[b]=med(res[b]);c50m[b]=med(c50[b]);edtm[b]=med(edtA[b])});const vals=[500,1000,2000].map(b=>bands[b]).filter(v=>v);
+  return{n:ev.length,bands,c50:c50m,edt:edtm,rt:vals.length?mean(vals):null,approx};
 }
 const rtRate=t=>t<=1.2?['Ottimo per la parola','good']:t<=1.5?['Accettabile','ac']:t<=2?['Lungo','bad']:['Molto lungo','bad'];
 
@@ -820,11 +845,12 @@ function toast(t){document.querySelectorAll('.toast').forEach(x=>x.remove());con
 ACT.closeSheet=closeSheet;
 
 /* ---------- navigazione ---------- */
+const KEEPN=['meas','diag','ring','listen','rta'];
 function go(v,p={},o={}){
   if(R.v==='eco'&&v!=='eco')ecoAbort();
   if(!o.replace)R.stack.push({v:R.v,p:R.p});
-  if(!['meas','diag','ring','listen'].includes(v))Eng.stopNoise();
-  if(v!=='listen')Player.stop();
+  if(!KEEPN.includes(v))Eng.stopNoise();
+  if(v!=='listen')Player.stop();if(v!=='gen')genStop(true);if(v!=='spl'&&v!=='sent'&&SPLE.on&&!SENT.on)SPLE.stop();
   if(v==='listen'&&R.v!=='listen')Player.mode='dry';
   R.dir=o.dir||(o.replace?'fade':'push');R.v=v;R.p=p;render();window.scrollTo(0,0);
 }
@@ -832,13 +858,13 @@ let back=function(){
   if(R.v==='eco')ecoAbort();
   const s=R.stack.pop();closeSheet();
   if(!s){go('home',{},{replace:true});return}
-  if(!['meas','diag','ring','listen'].includes(s.v))Eng.stopNoise();
-  if(s.v!=='listen')Player.stop();
+  if(!KEEPN.includes(s.v))Eng.stopNoise();
+  if(s.v!=='listen')Player.stop();if(s.v!=='gen')genStop(true);if(s.v!=='spl'&&s.v!=='sent'&&SPLE.on&&!SENT.on)SPLE.stop();
   R.dir='pop';R.v=s.v;R.p=s.p;render();window.scrollTo(0,0);
 };
 function render(keepScroll){
   const y=window.scrollY;if(keepScroll)R.dir='none';cleanup();const V=VIEWS[R.v];
-  $('#app').innerHTML=V.html(R.p);decorate();tabs();hookCharts($('#app'));animateIn();if(V.after)V.after(R.p);
+  $('#app').innerHTML=V.html(R.p);decorate();tabs();livepill();hookCharts($('#app'));animateIn();if(V.after)V.after(R.p);
   if(keepScroll)window.scrollTo(0,y);
   onScroll();
 }
@@ -1201,7 +1227,7 @@ function sheetText(e){
   if(DB.qDone){L.push('');L.push('CANALI');sourcesFromQ(q).forEach(id=>{const r=REC[id];L.push(`• ${r.n}: ${r.hpf?'taglia i bassi a '+r.hpf+' Hz':'—'}${r.cuts[0]?'; '+nf(r.cuts[0][1])+' dB a '+hz(r.cuts[0][0]):''}`)})}
   return L.join('\n');
 }
-VIEWS.sheet={html:()=>{const e=getE();if(!e)return '';return scr({nav:{title:'La scheda'},lt:'Per il culto',ls:'Le impostazioni da riprodurre sul mixer.',body:`<pre class="pre" id="sheetTxt">${esc(sheetText(e))}</pre>`,dock:`${btn(ic('share',20,2)+'Condividi','data-a="share"')}${btn('Immagine prima e dopo','data-a="shareCard"','tinted')}${btn('Promemoria per i volontari','data-a="shareTeam"','tinted')}`})}};
+VIEWS.sheet={html:()=>{const e=getE();if(!e)return '';return scr({nav:{title:'La scheda'},lt:'Per il culto',ls:'Le impostazioni da riprodurre sul mixer.',body:`<pre class="pre" id="sheetTxt">${esc(sheetText(e))}</pre>`,dock:`${btn(ic('share',20,2)+'Condividi','data-a="share"')}${btn('Altri formati','data-a="formats"','tinted')}${btn('Promemoria per i volontari','data-a="shareTeam"','tinted')}`})}};
 ACT.share=async()=>{const t=sheetText(getE());try{if(navigator.share)await navigator.share({text:t});else{await navigator.clipboard.writeText(t);toast('Copiato')}}catch(e){}};
 ACT.copy=async()=>{try{await navigator.clipboard.writeText(sheetText(getE()));toast('Copiato')}catch(e){const r=document.createRange();r.selectNode($('#sheetTxt'));getSelection().removeAllRanges();getSelection().addRange(r)}};
 
@@ -1223,7 +1249,7 @@ VIEWS.set={html:()=>scr({nav:{title:'Impostazioni'},lt:'Impostazioni',body:`
   <div><div class="hdr">Giorni del culto</div><div class="chips">${DAYS.map((d,i)=>`<button class="chip ${(DB.set.days||[0]).includes(i)?'on':''}" data-a="dayt" data-i="${i}">${d}</button>`).join('')}</div><p class="t-foot" style="padding:8px 4px 0">Il giorno prima e il giorno stesso ti ricordiamo il controllo.</p></div>
   ${list([row({tile:'sliders',tc:'gray',t:'Il mio mixer',val:mixName(DB.q.mixType),a:'data-a="mixsheet"',chev:1}),row({tile:'bulb',tc:'gray',t:'Racconta la sala',s:DB.qDone?'Compilata':'Non ancora',a:'data-a="roomStart2"',chev:1}),row({tile:'mic',tc:'gray',t:'Prova il microfono',a:'data-a="go" data-v="diag"',chev:1}),row({tile:'file',tc:'gray',t:'Esporta i dati',a:'data-a="export"',chev:1})],'Altro','Tutti i dati sono salvati solo su questo telefono.','ic')}
   ${list([row({tile:'vol',tc:'gray',t:'Il La di Intona',s:'Una nota a fine taratura. Se il telefono è collegato al mixer, la sentono tutti in sala.',right:`<button class="tgl ${DB.set.chime?'on':''}" data-a="chimeT" aria-label="Il La di Intona" aria-pressed="${!!DB.set.chime}"></button>`})],'Suono','','ic')}
-  <button class="btn danger" data-a="wipe">Cancella tutto</button><p class="t-foot" style="text-align:center">Intona · versione 0.7</p>`})};
+  <button class="btn danger" data-a="wipe">Cancella tutto</button><p class="t-foot" style="text-align:center">Intona · versione 0.8</p>`})};
 ACT.theme=d=>{DB.set.theme=d.v;save();applyTheme();render(true)};
 ACT.textsz=d=>{DB.set.text=d.v;save();applyTheme();render(true)};
 ACT.rolesw=d=>{DB.set.role=d.v;save();render(true)};
@@ -1345,7 +1371,7 @@ VIEWS.eco={html:()=>{
     const lab=rtRate(r.rt),s=r.rt.toFixed(1).replace('.',','),b=r.bands;
     return scr({nav:{title:'Riverbero',back:false,right:`<button class="gbtn txt" data-a="go" data-v="home">Fine</button>`},lt:'Riverbero',ls:r.rt>1.5?'Le parole iniziano a sovrapporsi. L\'equalizzatore non lo risolve: aiutano i materiali.':'Il suono si spegne abbastanza in fretta per la parola.',
       body:`<div class="card hero" style="text-align:center;padding:28px 20px"><div class="bignum">${s}<small>s</small></div><div style="margin-top:14px">${pill(lab[1],lab[0])}</div></div>
-      ${list([500,1000,2000].map(f=>row({t:hz(f),val:b[f]?b[f].toFixed(1).replace('.',',')+' s':'—'})),'Per zona')}
+      ${list([125,250,500,1000,2000,4000].map(f=>row({t:hz(f),s:r.edt&&r.edt[f]?'EDT '+decFmt(r.edt[f])+' s':'',val:b[f]?decFmt(b[f])+' s':'—'})),'Per zona')}${(()=>{const v=r.c50?[500,1000,2000].map(f=>r.c50[f]).filter(x=>x!=null):[];if(!v.length)return '';const c=mean(v);return list([row({tile:'person',tc:'gray',t:'Chiarezza della parola (C50)',s:c>=2?'Ottima':c>=0?'Buona':c>=-2?'Al limite':'Difficile',val:(c>0?'+':'')+decFmt(c)+' dB'})],'','Stima dal battito di mani: indicativa. Sopra 0 dB la parola è chiara.','ic')})()}
       <div class="banner info">${ic('bulb',22,1.9)}<span>Per chi predica molto la parola, le chiese evangeliche e pentecostali stanno meglio tra <b>0,8 e 1,2 secondi</b>. Sopra 1,5 la comprensione cala.</span></div>${r.approx?`<p class="t-foot">Misura approssimata: il fondo rumoroso ha accorciato la parte utile.</p>`:''}`,
       dock:`${btn('Vedi cosa aiuta','data-a="go" data-v="tips"')}${btn('Rimisura','data-a="ecoAgain"','tinted')}`})}
   return '';
@@ -1359,7 +1385,7 @@ VIEWS.eco={html:()=>{
     if((E.claps>=3&&now-E.lastT>4200)||now-E.t0>(FAST?22000:40000))ecoFinish();
   },100)}};
 ACT.ecoStart=async()=>{try{await Eng.openMic();E.cap=await Eng.capture();Object.assign(E,{stage:'listen',claps:0,t0:performance.now(),lastT:0,min:undefined,res:null});R.dir='fade';render()}catch(e){toast('Microfono non disponibile')}};
-function ecoFinish(){if(!E.cap)return;const{x,sr}=E.cap.stop();E.cap=null;E.res=rtAnalyze(x,sr);E.stage='result';if(E.res.rt){DB.rt={t:E.res.rt,bands:E.res.bands,date:Date.now()};save()}R.dir='fade';render()}
+function ecoFinish(){if(!E.cap)return;const{x,sr}=E.cap.stop();E.cap=null;E.res=rtAnalyze(x,sr);E.stage='result';if(E.res.rt){DB.rt={t:E.res.rt,bands:E.res.bands,c50:E.res.c50,edt:E.res.edt,date:Date.now()};save()}R.dir='fade';render()}
 ACT.ecoStop=()=>{ecoAbort();R.dir='fade';render()};
 ACT.ecoAgain=()=>{E.stage='intro';R.dir='fade';render()};
 
@@ -1492,7 +1518,7 @@ VIEWS.lib={html:()=>{
    ${g('Impara',[row({tile:'school',tc:'c-purple',t:'Lezioni da 5 minuti',s:'Un concetto per volta',a:'data-a="go" data-v="les"',chev:1}),row({tile:'wave',tc:'c-pink',t:'Impara a sentire',s:'Ascolta come suona ogni problema',a:'data-a="go" data-v="earl"',chev:1}),row({tile:'book',tc:'c-brown',t:'Glossario',s:'Le parole, spiegate semplici',a:'data-a="go" data-v="gloss"',chev:1})])}
    ${g('In pratica',[row({tile:'group',tc:'c-green',t:'Momenti del culto',s:'Lode, preghiera, predicazione, ministero',a:'data-a="dlist" data-src="mom"',chev:1}),row({tile:'mic',tc:'c-orange',t:'Posizionare i microfoni',s:'Dove, e a che distanza',a:'data-a="dlist" data-src="mic"',chev:1}),row({tile:'sliders',t:'Ricette per strumento',s:'Valori di partenza',a:'data-a="go" data-v="rec"',chev:1}),row({tile:'help',tc:'c-blue',t:'Dove trovo l\'EQ?',s:'Per tipo di mixer',a:'data-a="go" data-v="mixh"',chev:1})])}
    ${g('Acustica',[row({tile:'cube',tc:'c-teal',t:'Acustica a basso costo',s:'Tende, pannelli, casse: cosa fare e quanto costa',a:'data-a="dlist" data-src="acu"',chev:1})])}
-   ${g('Strumenti',[row({tile:'wave',tc:'c-indigo',t:'Test dell\'eco',s:DB.rt?'Riverbero '+DB.rt.t.toFixed(1).replace('.',',')+' s':'Misura il riverbero con le mani',a:'data-a="go" data-v="eco"',chev:1}),row({tile:'mic',tc:'c-red',t:'Ring-out del microfono',s:'Trova il fischio',a:'data-a="go" data-v="ring"',chev:1}),row({tile:'vol',tc:'c-teal',t:'Volume della sala',s:'Lode e parola a confronto',a:'data-a="go" data-v="vol"',chev:1}),row({tile:'speaker',tc:'gray',t:'Prova il microfono',s:'Spettro in tempo reale',a:'data-a="go" data-v="diag"',chev:1})])}
+   ${g('Strumenti',[row({tile:'gauge',tc:'c-blue',t:'Tutti gli strumenti',s:'Analizzatore, fonometro, monitor del culto, generatore',a:'data-a="tab" data-v="tools"',chev:1})])}
    </div>`})},
  after:()=>{const i=$('#sIn');if(!i)return;i.addEventListener('input',()=>{const q=i.value.trim(),main=$('#libMain'),res=$('#sRes');if(!q){res.innerHTML='';main.style.display='';return}
    main.style.display='none';const r=runSearch(q);res.innerHTML=r.length?list(r.map(x=>row({tile:x.i,tc:'gray',t:x.t,s:x.s,a:`data-a="sres" data-k="${x.k}" data-id="${x.id}" ${x.src?`data-src="${x.src}"`:''}`,chev:1})),'Risultati','','ic'):`<p class="t-body sec" style="padding:8px 4px">Niente per «${esc(q)}». Prova con un\'altra parola, per esempio «fischio» o «tende».</p>`})}};
@@ -1696,15 +1722,489 @@ const _ca=VIEWS.cmp.after;VIEWS.cmp.after=p=>{_ca(p);const e=getE();if(DB.set.ch
    INTONA 0.7 · barra a schede, impostazioni che si salvano da sole
    ============================================================= */
 IC.life='<circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="3.6"/><path d="M5.6 5.6l3.9 3.9M14.5 14.5l3.9 3.9M18.4 5.6l-3.9 3.9M9.5 14.5l-3.9 3.9"/>';
-const TABS=[['home','home','Home'],['sos','life','Aiuto'],['lib','book','Libreria'],['set','gear','Opzioni']];
+const TABS=[['home','home','Home'],['tools','gauge','Strumenti'],['sos','life','Aiuto'],['lib','book','Libreria'],['set','gear','Opzioni']];
 const tabbar=v=>`<nav class="tabbar" aria-label="Sezioni">${TABS.map(([k,i,l])=>`<button class="tab ${k===v?'on':''}" data-a="tab" data-v="${k}" ${k===v?'aria-current="page"':''}>${ic(i,24,1.9)}<span>${l}</span></button>`).join('')}</nav>`;
 function tabs(){if(!TABS.some(t=>t[0]===R.v))return;const s=$('#app .scr');if(!s)return;s.classList.add('has-tab','tab-'+R.v);$('#app').insertAdjacentHTML('beforeend',tabbar(R.v))}
 ACT.tab=d=>{if(R.v===d.v)return;R.stack=[];go(d.v,{},{replace:true,dir:'fade'})};
 const _setAfter=VIEWS.set.after;
 VIEWS.set.after=p=>{if(_setAfter)_setAfter(p);['sName','sSala'].forEach(id=>{const i=$('#'+id);if(i)i.addEventListener('input',()=>{DB.set.name=$('#sName').value.trim();DB.set.sala=$('#sSala').value.trim();save()})})};
 
+
+/* =============================================================
+   INTONA 0.8 · strumenti: motore
+   Pesature A/C/Z, fonometro (Fast/Slow, Leq, massimo, picco),
+   analizzatore a 1/3 e 1/6 di ottava, calibrazione del microfono,
+   esportazione (Equalizer APO, CSV), rilevamento del fischio.
+   ============================================================= */
+
+/* ---------- pesature (formule IEC 61672) ---------- */
+const wA=f=>{const f2=f*f,r=(12194*12194*f2*f2)/((f2+20.6*20.6)*Math.sqrt((f2+107.7*107.7)*(f2+737.9*737.9))*(f2+12194*12194));return 20*Math.log10(r)+2.0};
+const wC=f=>{const f2=f*f,r=(12194*12194*f2)/((f2+20.6*20.6)*(f2+12194*12194));return 20*Math.log10(r)+0.06};
+const WT={Z:()=>0,A:wA,C:wC};
+const C6=Array.from({length:46},(_,i)=>63*Math.pow(2,i/6));          // bande a 1/6 di ottava, 63 Hz – 12,5 kHz
+
+/* ---------- filtri A e C nel dominio del tempo (blocchi da 50 ms) ----------
+   Serve per il fonometro: potenza di blocco per Z, A, C e picco.
+   La stessa funzione gira nel worklet (via toString) e, se manca, sul thread principale. */
+function makeSPL(fs,cb){
+  const P=Math.PI*2,wp=P*1000,c=wp/Math.tan(wp/(2*fs)),w1=P*20.598997,w2=P*107.65265,w3=P*737.86223,w4=P*12194.217;
+  const bq=(B2,B1,B0,A2,A1,A0)=>{const c2=c*c,a0=A2*c2+A1*c+A0;return{b0:(B2*c2+B1*c+B0)/a0,b1:(2*B0-2*B2*c2)/a0,b2:(B2*c2-B1*c+B0)/a0,a1:(2*A0-2*A2*c2)/a0,a2:(A2*c2-A1*c+A0)/a0,x1:0,x2:0,y1:0,y2:0}};
+  const run=(s,x)=>{const y=s.b0*x+s.b1*s.x1+s.b2*s.x2-s.a1*s.y1-s.a2*s.y2;s.x2=s.x1;s.x1=x;s.y2=s.y1;s.y1=y;return y};
+  const mag=(secs,f)=>{const w=P*f/fs,cr=Math.cos(w),ci=-Math.sin(w),c2r=Math.cos(2*w),c2i=-Math.sin(2*w);let m=1;secs.forEach(s=>{const nr=s.b0+s.b1*cr+s.b2*c2r,ni=s.b1*ci+s.b2*c2i,dr=1+s.a1*cr+s.a2*c2r,di=s.a1*ci+s.a2*c2i;m*=Math.hypot(nr,ni)/Math.hypot(dr,di)});return m};
+  const S1=bq(1,0,0,1,2*w1,w1*w1),S2=bq(1,0,0,1,w2+w3,w2*w3),S3a=bq(0,0,1,1,2*w4,w4*w4),S3c=bq(0,0,1,1,2*w4,w4*w4);
+  const gA=1/mag([S1,S2,S3a],1000),gC=1/mag([S1,S3c],1000),N=Math.round(fs*.05);
+  let n=0,sz=0,sa=0,sc=0,pk=0;
+  return x=>{for(let i=0;i<x.length;i++){const v=x[i],y1=run(S1,v),yc=run(S3c,y1)*gC,ya=run(S3a,run(S2,y1))*gA;sz+=v*v;sa+=ya*ya;sc+=yc*yc;const a=Math.abs(v);if(a>pk)pk=a;if(++n>=N){cb({pz:sz/n,pa:sa/n,pc:sc/n,pk});n=0;sz=sa=sc=pk=0}}}
+}
+const SPL_WK=`${makeSPL.toString()}
+class SPLP extends AudioWorkletProcessor{constructor(){super();this.f=makeSPL(sampleRate,m=>this.port.postMessage(m))}process(i){const x=i[0]&&i[0][0];if(x)this.f(x);return true}}
+registerProcessor('spl',SPLP)`;
+
+/* ---------- fonometro ---------- */
+const SPL_OFF_DEF=120;                                            // 0 dBFS ≈ 120 dB SPL: stima per iPhone, da calibrare
+const splOff=()=>DB.spl&&DB.spl.off!=null?DB.spl.off:SPL_OFF_DEF;
+const splCal=()=>!!(DB.spl&&DB.spl.off!=null);
+const pdb=p=>10*Math.log10(Math.max(p,1e-14));
+const SPLE={on:false,node:null,src:null,t0:0,n:0,
+  S:{A:0,C:0,Z:0},t:{AF:0,AS:0,CF:0,CS:0,ZF:0,ZS:0},mx:{},mn:{},peak:0,clipUntil:0,hist:[],sec:{n:0,a:0,c:0,z:0,fm:0},recent:[],
+  reset(){this.n=0;this.S={A:0,C:0,Z:0};this.peak=0;this.hist=[];this.sec={n:0,a:0,c:0,z:0,fm:0};this.recent=[];this.t0=Date.now();
+    ['AF','AS','CF','CS','ZF','ZS'].forEach(k=>{this.mx[k]=0;this.mn[k]=Infinity;this.t[k]=0})},
+  block(m){
+    const{pz,pa,pc,pk}=m,af=1-Math.exp(-.05/.125),as=1-Math.exp(-.05/1),t=this.t;
+    this.n++;this.S.A+=pa;this.S.C+=pc;this.S.Z+=pz;
+    t.AF+=(pa-t.AF)*af;t.AS+=(pa-t.AS)*as;t.CF+=(pc-t.CF)*af;t.CS+=(pc-t.CS)*as;t.ZF+=(pz-t.ZF)*af;t.ZS+=(pz-t.ZS)*as;
+    for(const k in t){if(this.n>20){if(t[k]>this.mx[k])this.mx[k]=t[k];if(t[k]<this.mn[k])this.mn[k]=t[k]}}
+    if(pk>this.peak)this.peak=pk;if(pk>.98)this.clipUntil=Date.now()+2000;
+    this.recent.push(pa);if(this.recent.length>120)this.recent.shift();
+    const s=this.sec;s.n++;s.a+=pa;s.c+=pc;s.z+=pz;if(t.AF>s.fm)s.fm=t.AF;
+    if(s.n>=20){this.hist.push({t:Date.now(),a:s.a/s.n,c:s.c/s.n,z:s.z/s.n,fm:s.fm});if(this.hist.length>14400)this.hist.shift();this.sec={n:0,a:0,c:0,z:0,fm:0}}
+  },
+  async start(){
+    if(this.on)return;await Eng.openMic();const c=Eng.ctx;this.reset();
+    const src=c.createMediaStreamSource(Eng.stream),sink=c.createGain();sink.gain.value=0;let node;
+    try{if(!this._wk){await c.audioWorklet.addModule(URL.createObjectURL(new Blob([SPL_WK],{type:'application/javascript'})));this._wk=1}
+      node=new AudioWorkletNode(c,'spl',{numberOfOutputs:1,outputChannelCount:[1]});node.port.onmessage=e=>this.block(e.data)}
+    catch(e){const f=makeSPL(c.sampleRate,m=>this.block(m));node=c.createScriptProcessor(2048,1,1);node.onaudioprocess=ev=>f(ev.inputBuffer.getChannelData(0))}
+    src.connect(node);node.connect(sink);sink.connect(c.destination);Object.assign(this,{src,node,sink,on:true});
+  },
+  stop(){if(!this.on)return;try{this.src.disconnect();this.node.disconnect();this.sink.disconnect()}catch(e){}this.on=false},
+  /* livello con pesatura w (A,C,Z) e tempo tw (F,S) */
+  cur(w='A',tw='F'){return pdb(this.t[w+tw])+splOff()},
+  leq(w='A'){return this.n?pdb(this.S[w]/this.n)+splOff():null},
+  max(w='A',tw='F'){return this.mx[w+tw]>0?pdb(this.mx[w+tw])+splOff():null},
+  min(w='A',tw='F'){return isFinite(this.mn[w+tw])?pdb(this.mn[w+tw])+splOff():null},
+  peakDb(){return this.peak>0?20*Math.log10(this.peak)+splOff():null},
+  leqLast(sec,w='A'){const k=w==='A'?'a':w==='C'?'c':'z',a=this.hist.slice(-sec);return a.length?pdb(mean(a.map(h=>h[k])))+splOff():null},
+  recentA(sec){const n=Math.min(this.recent.length,sec*20),a=this.recent.slice(-n);return a.length?pdb(mean(a)):null},
+  clipping(){return Date.now()<this.clipUntil}
+};
+const splZone=db=>db<55?['Silenzio','']:db<70?['Piano','']:db<80?['Parola','good']:db<85?['Medio','']:db<=95?['Lode','good']:db<=102?['Alto','ac']:['Troppo alto','bad'];
+
+/* ---------- calibrazione del microfono (file .cal / .txt: frequenza, dB) ---------- */
+function calParse(txt){
+  const pts=[];let sens=null;
+  txt.split(/\r?\n/).forEach(raw=>{const l=raw.trim();if(!l)return;
+    const m=/sens(?:itivity|\s*factor)?\s*[=:]?\s*(-?\d+(?:[.,]\d+)?)/i.exec(l);if(m&&!/^[-+\d]/.test(l)){sens=parseFloat(m[1].replace(',','.'));return}
+    if(/^["*#\/;a-z]/i.test(l))return;
+    let p=l.split(/[\s;\t]+/);if(p.length<2&&l.includes(','))p=l.split(',');
+    const f=parseFloat(p[0]),d=parseFloat((p[1]||'').replace(',','.'));if(isFinite(f)&&isFinite(d)&&f>=5&&f<=40000)pts.push([f,d])});
+  pts.sort((a,b)=>a[0]-b[0]);
+  if(pts.length<8)return null;
+  if(pts.length>240){const o=[];for(let i=0;i<240;i++)o.push(pts[Math.round(i*(pts.length-1)/239)]);return{pts:o,sens}}
+  return{pts,sens};
+}
+function calAt(f){const p=DB.cal&&DB.cal.pts;if(!p||!p.length)return 0;if(f<=p[0][0])return p[0][1];if(f>=p[p.length-1][0])return p[p.length-1][1];
+  let i=1;while(i<p.length&&p[i][0]<f)i++;const a=p[i-1],b=p[i],t=Math.log(f/a[0])/Math.log(b[0]/a[0]);return a[1]+(b[1]-a[1])*t}
+let _calG={};
+function calGains(cent){if(!DB.cal||!DB.cal.on||!DB.cal.pts)return null;const k=DB.cal.id+'|'+cent.length+'|'+cent[0];if(!_calG[k])_calG[k]=Float64Array.from(cent,f=>Math.pow(10,-calAt(f)/10));return _calG[k]}
+const _bp0=Eng.bandPow;
+Eng.bandPow=function(){const o=_bp0.call(this),g=calGains(F);if(g)for(let i=0;i<o.length;i++)o[i]*=g[i];return o};
+Eng.bandsPow=function(cent,half){
+  this.an.getFloatFrequencyData(this.fbuf);const key=cent.length+'|'+half+'|'+this.binHz;
+  if(this._bk2!==key){this._bb2=cent.map(fc=>{const a=Math.max(1,Math.ceil(fc*Math.pow(2,-half)/this.binHz)),b=Math.max(a,Math.ceil(fc*Math.pow(2,half)/this.binHz)-1);return[a,b]});this._bk2=key}
+  const o=new Float64Array(cent.length);for(let i=0;i<cent.length;i++){let s=0;const[a,b]=this._bb2[i];for(let k=a;k<=b;k++)s+=Math.pow(10,this.fbuf[k]/10);o[i]=s}return o};
+
+/* ---------- esportazione ---------- */
+const stamp=t=>new Date(t).toLocaleDateString('it-IT',{day:'numeric',month:'long',year:'numeric'});
+function exportAPO(e){
+  const L=['# Intona · '+(DB.set.name||'La mia chiesa')+(DB.set.sala?' · '+DB.set.sala:''),'# '+stamp(e.t)+' · punteggio '+e.score+(e.after?' → '+e.after.score:''),'# Filtri di taglio per Equalizer APO, REW e programmi simili',''];
+  if(!e.filters.length)L.push('# nessuna correzione consigliata');
+  e.filters.forEach((f,i)=>L.push(`Filter ${i+1}: ON PK Fc ${f.f} Hz Gain ${f.g.toFixed(1)} dB Q ${f.q.toFixed(2)}`));
+  return L.join('\n')}
+function exportCSV(e){
+  const r=x=>(+x).toFixed(2),L=['frequenza_hz,misurata_db,obiettivo_db,differenza_db,prevista_db'+(e.after?',dopo_db':'')];
+  F.forEach((f,i)=>L.push([f,r(e.T[i]+e.D[i]),r(e.T[i]),r(e.D[i]),r(e.P?e.P[i]:e.D[i])].concat(e.after?[r(e.after.D[i])]:[]).join(',')));
+  return L.join('\n')}
+async function shareFile(text,name,type,title){
+  try{const f=new File([text],name,{type});
+    if(navigator.canShare&&navigator.canShare({files:[f]})){await navigator.share({files:[f],title});return}
+    if(navigator.share){await navigator.share({title,text});return}
+    await navigator.clipboard.writeText(text);toast('Copiato')}
+  catch(e){if(e&&e.name==='AbortError')return;try{await navigator.clipboard.writeText(text);toast('Copiato')}catch(_){toast('Non riesco a condividere')}}}
+
+/* ---------- ricerca del fischio sullo spettro (condivisa da ring-out e monitor) ---------- */
+function ringPeak(){
+  if(!Eng.ready())return null;Eng.an.getFloatFrequencyData(Eng.fbuf);const fb=Eng.fbuf,bh=Eng.binHz,k0=Math.round(150/bh),k1=Math.round(10000/bh);
+  let pk=-1e9,pi=0;for(let k=k0;k<k1;k++)if(fb[k]>pk){pk=fb[k];pi=k}
+  let sum=0,c=0;for(let k=Math.max(k0,pi-40);k<Math.min(k1,pi+40);k++)if(Math.abs(k-pi)>3){sum+=Math.pow(10,fb[k]/10);c++}
+  return{f:pi*bh,pk,prom:pk-dBp(sum/Math.max(c,1))}}
+
+/* =============================================================
+   INTONA 0.8 · strumenti: schermate (1/2) hub, analizzatore, fonometro
+   ============================================================= */
+Object.assign(IC,{
+ bars:'<path d="M5 20V12M10 20V6M15 20V10M20 20V4"/>',
+ gauge:'<path d="M4 17a8 8 0 0 1 16 0"/><path d="M12 17l4-5"/><circle cx="12" cy="17" r="1.2"/>',
+ eye:'<path d="M2.5 12S6 5.5 12 5.5 21.5 12 21.5 12 18 18.5 12 18.5 2.5 12 2.5 12z"/><circle cx="12" cy="12" r="2.8"/>',
+ sine:'<path d="M2 12c3-9 6-9 10 0s7 9 10 0"/>',
+ ruler:'<rect x="3" y="8" width="18" height="8" rx="1.5"/><path d="M7 8v3M11 8v4M15 8v3M19 8v4"/>',
+ note:'<path d="M6 3h9l4 4v14H6z"/><path d="M9 11h7M9 15h7"/>',
+ snap:'<path d="M4 7h4l1.5-2h5L16 7h4v12H4z"/><circle cx="12" cy="13" r="3.2"/>',
+ pause2:'<path d="M9 5v14M15 5v14"/>'
+});
+const cssv=n=>getComputedStyle(document.documentElement).getPropertyValue(n).trim();
+const decFmt=(v,d=1)=>(+v).toFixed(d).replace('.',',');
+const mmss=s=>{s=Math.max(0,Math.round(s));const h=Math.floor(s/3600),m=Math.floor(s%3600/60),x=s%60;return h?`${h}:${String(m).padStart(2,'0')}:${String(x).padStart(2,'0')}`:`${m}:${String(x).padStart(2,'0')}`};
+const micLabel=()=>DB.cal&&DB.cal.on?DB.cal.name:'Telefono, nessuna correzione';
+
+/* ---------- la scheda Strumenti ---------- */
+VIEWS.tools={html:()=>scr({nav:{back:false},lt:'Strumenti',ls:'Misura, prova e calcola.',body:
+  list([
+   row({tile:'bars',tc:'c-blue',t:'Analizzatore',s:'Lo spettro in tempo reale',a:'data-a="go" data-v="rta"',chev:1}),
+   row({tile:'gauge',tc:'c-teal',t:'Fonometro',s:'dB(A), Leq, massimo, picco',a:'data-a="go" data-v="spl"',chev:1}),
+   row({tile:'eye',tc:'c-green',t:'Monitor del culto',s:SENT.on?'Attivo adesso':'Volume e fischi mentre suonate',a:'data-a="go" data-v="sent"',chev:1}),
+   row({tile:'wave',tc:'c-indigo',t:'Test dell\'eco',s:DB.rt?'Riverbero '+decFmt(DB.rt.t)+' s':'Il riverbero con tre battiti di mani',a:'data-a="go" data-v="eco"',chev:1}),
+   row({tile:'cube',tc:'c-orange',t:'Modi della sala',s:'Le frequenze che la sala rinforza',a:'data-a="go" data-v="modes"',chev:1})],'Misura','','ic')+
+  list([
+   row({tile:'sine',tc:'c-pink',t:'Generatore',s:'Tono, rumore rosa o bianco, sweep',a:'data-a="go" data-v="gen"',chev:1}),
+   row({tile:'mic',tc:'c-red',t:'Ring-out',s:'Trova il fischio',a:'data-a="go" data-v="ring"',chev:1}),
+   row({tile:'vol',tc:'c-teal',t:'Volume della sala',s:'Lode e parola a confronto',a:'data-a="go" data-v="vol"',chev:1}),
+   row({tile:'speaker',tc:'gray',t:'Prova il microfono',s:'Controlla che il telefono non filtri',a:'data-a="go" data-v="diag"',chev:1})],'Prova','','ic')+
+  list([
+   row({tile:'ruler',tc:'c-purple',t:'Ritardo delle casse',s:'Quanti millisecondi per le casse di rinforzo',a:'data-a="go" data-v="delay"',chev:1}),
+   row({tile:'note',tc:'c-brown',t:'Taccuino del mixer',s:DB.notes&&DB.notes.length?DB.notes.length+' note':'Scrivi le impostazioni, passale a chi ti sostituisce',a:'data-a="go" data-v="notes"',chev:1}),
+   row({tile:'mic',tc:'gray',t:'Microfono di misura',val:DB.cal&&DB.cal.on?'Con calibrazione':'Telefono',a:'data-a="go" data-v="micp"',chev:1})],'Imposta e calcola','','ic')})};
+
+/* =============================================================
+   ANALIZZATORE (RTA)
+   ============================================================= */
+const RTA={res:3,mode:'bars',avg:'med',peak:true,wt:'Z',tgt:'off',frozen:false,P:null,L:null,pk:null,snap:null,vol:.25,col:null};
+const rtaCent=()=>RTA.res===3?F:C6;
+function rtaStep(){
+  if(!Eng.ready())return false;const cent=rtaCent();let p;
+  if(RTA.frozen&&RTA.P&&RTA.P.length===cent.length)p=RTA.P;
+  else{p=RTA.res===3?Eng.bandPow():Eng.bandsPow(C6,1/12);if(RTA.res!==3){const g=calGains(C6);if(g)for(let i=0;i<p.length;i++)p[i]*=g[i]}
+    const a={fast:.2,med:.045,slow:.01}[RTA.avg];
+    if(!RTA.P||RTA.P.length!==p.length){RTA.P=Float64Array.from(p);RTA.pk=null}else for(let i=0;i<p.length;i++)RTA.P[i]+=(p[i]-RTA.P[i])*a;p=RTA.P}
+  const w=WT[RTA.wt],L=Float64Array.from(p,(v,i)=>pdb(v)+w(cent[i]));
+  let s=0,n=0;cent.forEach((f,i)=>{if(f>=200&&f<=4000){s+=L[i];n++}});const c=s/n;for(let i=0;i<L.length;i++)L[i]-=c;
+  if(!RTA.pk||RTA.pk.length!==L.length)RTA.pk=Float64Array.from(L);else if(!RTA.frozen)for(let i=0;i<L.length;i++)RTA.pk[i]=Math.max(L[i],RTA.pk[i]-.12);
+  RTA.L=L;return true}
+function rtaTarget(){
+  const cent=rtaCent(),V=DB.qDone?rt60(DB.q).V:undefined,ref=RTA.tgt==='music'?'musica':'pink';
+  const T=cent.map(f=>targetCurve(f,DB.q.obj||'entrambe',ref,V));let s=0,n=0;cent.forEach((f,i)=>{if(f>=200&&f<=4000){s+=T[i];n++}});return T.map(v=>v-s/n)}
+function rtaDraw(){
+  const cv=$('#rtaC'),sc=$('#rtaS');if(!cv||!RTA.L)return;
+  if(!RTA.col)RTA.col={tint:cssv('--tint'),line:cssv('--tint-line'),l1:cssv('--l1'),l2:cssv('--l2'),l3:cssv('--l3'),sep:cssv('--sep'),green:cssv('--green'),red:cssv('--red'),fill:cssv('--fill2')};
+  const C=RTA.col,cent=rtaCent(),L=RTA.L;
+  if(RTA.mode==='cascata'){if(sc)rtaSpecRow(sc,L,cent);return}
+  const dpr=devicePixelRatio||1,W=cv.clientWidth,H=cv.clientHeight;if(cv.width!==Math.round(W*dpr)){cv.width=Math.round(W*dpr);cv.height=Math.round(H*dpr)}
+  const g=cv.getContext('2d');g.setTransform(dpr,0,0,dpr,0,0);g.clearRect(0,0,W,H);
+  const ml=30,mr=6,mt=8,mb=22,pw=W-ml-mr,ph=H-mt-mb,X=f=>ml+Math.log(f/63)/Math.log(12500/63)*pw,Y=v=>mt+(1-(clamp(v,-24,16)+24)/40)*ph;
+  g.font='10.5px -apple-system,system-ui,sans-serif';g.textAlign='right';g.textBaseline='middle';g.lineWidth=1;
+  [-18,-12,-6,0,6,12].forEach(v=>{g.strokeStyle=v===0?C.l3:C.sep;g.globalAlpha=v===0?.9:.7;g.beginPath();g.moveTo(ml,Y(v));g.lineTo(W-mr,Y(v));g.stroke();g.globalAlpha=1;g.fillStyle=C.l2;g.fillText((v>0?'+':v<0?'−':'')+Math.abs(v),ml-5,Y(v))});
+  g.textAlign='center';g.textBaseline='alphabetic';[125,250,500,1000,2000,4000,8000].forEach(f=>{g.fillStyle=C.l2;g.fillText(kl(f),X(f),H-6);g.strokeStyle=C.sep;g.globalAlpha=.4;g.beginPath();g.moveTo(X(f),mt);g.lineTo(X(f),H-mb);g.stroke();g.globalAlpha=1});
+  const T=RTA.tgt!=='off'?rtaTarget():null,N=cent.length;
+  const dev=i=>T?L[i]-T[i]:0;
+  if(RTA.mode==='bars'){
+    const bw=pw/N,y0=Y(-24);
+    for(let i=0;i<N;i++){const x=ml+i*bw+bw*.15,w=bw*.7,y=Y(L[i]);let col=C.tint;if(T){const d=dev(i);col=d>3?C.red:d<-3?C.l3:C.green}
+      g.fillStyle=col;g.beginPath();if(g.roundRect)g.roundRect(x,y,w,Math.max(2,y0-y),Math.min(3,w/2));else g.rect(x,y,w,y0-y);g.fill();
+      if(RTA.peak){g.fillStyle=C.l1;g.globalAlpha=.8;g.fillRect(x,Y(RTA.pk[i])-1,w,2);g.globalAlpha=1}}
+  }else{
+    const pts=cent.map((f,i)=>[X(f),Y(L[i])]);
+    const path=()=>{g.beginPath();g.moveTo(pts[0][0],pts[0][1]);for(let i=0;i<pts.length-1;i++){const p0=pts[Math.max(i-1,0)],p1=pts[i],p2=pts[i+1],p3=pts[Math.min(i+2,pts.length-1)];g.bezierCurveTo(p1[0]+(p2[0]-p0[0])/6,p1[1]+(p2[1]-p0[1])/6,p2[0]-(p3[0]-p1[0])/6,p2[1]-(p3[1]-p1[1])/6,p2[0],p2[1])}};
+    path();g.lineTo(pts[N-1][0],Y(-24));g.lineTo(pts[0][0],Y(-24));g.closePath();g.fillStyle=C.tint;g.globalAlpha=.22;g.fill();g.globalAlpha=1;
+    path();g.strokeStyle=C.line;g.lineWidth=2.6;g.lineJoin='round';g.lineCap='round';g.stroke();
+    if(RTA.peak){g.strokeStyle=C.l2;g.lineWidth=1.2;g.setLineDash([2,4]);g.beginPath();RTA.pk.forEach((v,i)=>{i?g.lineTo(X(cent[i]),Y(v)):g.moveTo(X(cent[i]),Y(v))});g.stroke();g.setLineDash([])}}
+  if(T){g.strokeStyle=C.l1;g.lineWidth=1.6;g.setLineDash([5,5]);g.beginPath();cent.forEach((f,i)=>{i?g.lineTo(X(f),Y(T[i])):g.moveTo(X(f),Y(T[i]))});g.stroke();g.setLineDash([])}
+  if(RTA.snap&&RTA.snap.res===RTA.res){g.strokeStyle=C.l2;g.lineWidth=2;g.globalAlpha=.8;g.beginPath();cent.forEach((f,i)=>{i?g.lineTo(X(f),Y(RTA.snap.L[i])):g.moveTo(X(f),Y(RTA.snap.L[i]))});g.stroke();g.globalAlpha=1}
+}
+function rtaSpecRow(cv,L,cent){
+  const dpr=devicePixelRatio||1,W=cv.clientWidth,H=cv.clientHeight;if(cv.width!==Math.round(W*dpr)){cv.width=Math.round(W*dpr);cv.height=Math.round(H*dpr);const g0=cv.getContext('2d');g0.fillStyle='#0B0B0C';g0.fillRect(0,0,cv.width,cv.height)}
+  const g=cv.getContext('2d'),w=cv.width,h=cv.height,dy=Math.max(1,Math.round(dpr*1.5));
+  g.drawImage(cv,0,0,w,h-dy,0,dy,w,h-dy);const img=g.createImageData(w,dy),N=cent.length;
+  for(let x=0;x<w;x++){const pos=x/(w-1)*(N-1),i=Math.floor(pos),t=pos-i,v=L[i]+(L[Math.min(i+1,N-1)]-L[i])*t,s=clamp((v+18)/40,0,1);
+    let r,gg,b;if(s<.55){const u=s/.55;r=245*u;gg=184*u*u;b=61*u*u*u}else{const u=(s-.55)/.45;r=245+10*u;gg=184+60*u;b=61+159*u}
+    for(let y=0;y<dy;y++){const o=(y*w+x)*4;img.data[o]=r;img.data[o+1]=gg;img.data[o+2]=b;img.data[o+3]=255}}
+  g.putImageData(img,0,0)}
+const segA=(k,cur,opts)=>seg(opts.map(([v,l])=>[l,String(cur)===String(v),`data-a="rtaSet" data-k="${k}" data-v="${v}"`]));
+VIEWS.rta={html:()=>{
+  const ready=Eng.ready();
+  return scr({nav:{title:'Analizzatore'},lt:'Analizzatore',ls:'Lo spettro di quello che sente il telefono. Zero è il livello medio della voce.',
+    body:`<div class="card tight rta"><canvas id="rtaC" ${RTA.mode==='cascata'?'hidden':''} role="img" aria-label="Spettro in tempo reale"></canvas><canvas id="rtaS" ${RTA.mode==='cascata'?'':'hidden'} role="img" aria-label="Cascata dello spettro nel tempo"></canvas>
+      <div class="legend">${RTA.tgt!=='off'?`<span><i class="d" style="border-color:var(--l1)"></i>Bersaglio</span>`:''}${RTA.snap?`<span><i style="border-color:var(--l2)"></i>Traccia salvata</span>`:''}${RTA.peak&&RTA.mode!=='cascata'?`<span><i class="d" style="border-color:var(--l2)"></i>Picchi</span>`:''}<span>${RTA.res===3?'1/3':'1/6'} di ottava · pesatura ${RTA.wt}</span></div></div>
+    ${ready?'':banner('info','mic','<b>Attiva il microfono</b> per vedere lo spettro.')}
+    <div class="vsl" style="gap:14px">
+      <div><div class="hdr">Vista</div>${segA('mode',RTA.mode,[['bars','Barre'],['curve','Curva'],['cascata','Cascata']])}</div>
+      <div><div class="hdr">Risoluzione</div>${segA('res',RTA.res,[[3,'1/3 di ottava'],[6,'1/6 di ottava']])}</div>
+      <div><div class="hdr">Media</div>${segA('avg',RTA.avg,[['fast','Veloce'],['med','Media'],['slow','Lenta']])}</div>
+      <div><div class="hdr">Pesatura</div>${segA('wt',RTA.wt,[['Z','Lineare'],['A','A'],['C','C']])}</div>
+      <div><div class="hdr">Bersaglio</div>${segA('tgt',RTA.tgt,[['off','Nessuno'],['pink','Rumore rosa'],['music','Musica']])}</div>
+    </div>
+    ${list([row({tile:'sine',tc:'gray',t:'Rumore rosa',s:Eng.noiseOn?'Dal telefono, nel mixer':'Per misurare la sala',right:`<button class="tgl ${Eng.noiseOn?'on':''}" data-a="rtaNoise" aria-label="Rumore rosa" aria-pressed="${Eng.noiseOn}"></button>`}),
+      row({tile:'gear',tc:'gray',t:'Volume del rumore',right:`<input type="range" id="rtaVol" min="5" max="100" value="${Math.round(RTA.vol*100)}" style="width:140px">`}),
+      row({tile:'bars',tc:'gray',t:'Picchi',right:`<button class="tgl ${RTA.peak?'on':''}" data-a="rtaPeak" aria-label="Picchi" aria-pressed="${RTA.peak}"></button>`}),
+      row({tile:'mic',tc:'gray',t:'Microfono',val:esc(micLabel()),a:'data-a="go" data-v="micp"',chev:1})],'Opzioni','Con il rumore rosa una sala ideale appare piatta. Con la musica guarda soprattutto le differenze nel tempo.','ic')}`,
+    dock:ready?`${btn(ic(RTA.frozen?'play':'pause',20,2)+(RTA.frozen?'Riprendi':'Congela'),'data-a="rtaFreeze"',RTA.frozen?'':'tinted')}${btn(ic('snap',20,2)+(RTA.snap?'Togli la traccia salvata':'Salva la traccia per confrontare'),'data-a="rtaSnap"','gray')}`:btn('Attiva il microfono','data-a="rtaMic"')})},
+ after:()=>{RTA.col=null;const v=$('#rtaVol');if(v)v.addEventListener('input',()=>{RTA.vol=v.value/100;Eng.setNoise(RTA.vol)});if(!Eng.ready())return;tmr(()=>{if(rtaStep())rtaDraw()},33)}};
+ACT.rtaMic=async()=>{try{await Eng.openMic();render(true)}catch(e){toast('Microfono non disponibile')}};
+ACT.rtaSet=d=>{RTA[d.k]=d.k==='res'?+d.v:d.v;if(d.k==='res'){RTA.P=null;RTA.pk=null;RTA.snap=null}render(true)};
+ACT.rtaFreeze=()=>{RTA.frozen=!RTA.frozen;render(true)};
+ACT.rtaPeak=()=>{RTA.peak=!RTA.peak;render(true)};
+ACT.rtaSnap=()=>{RTA.snap=RTA.snap?null:(RTA.L?{L:Float64Array.from(RTA.L),res:RTA.res}:null);render(true)};
+ACT.rtaNoise=async()=>{try{if(Eng.noiseOn)Eng.stopNoise();else await Eng.startNoise(RTA.vol)}catch(e){}render(true)};
+
+/* =============================================================
+   FONOMETRO
+   ============================================================= */
+const SP={w:'A',tw:'F',win:300};
+function tsAgg(hist,k,maxN,raw){if(raw)return hist.slice(-maxN);const g=Math.max(1,Math.ceil(hist.length/maxN)),o=[];for(let i=0;i<hist.length;i+=g){const b=hist.slice(i,i+g);o.push({v:pdb(mean(b.map(h=>h[k])))+splOff(),m:pdb(Math.max(...b.map(h=>h.fm)))+splOff()})}return o}
+function tsChart(hist,k,o={}){
+  const w=358,h=150,ml=30,mr=6,mt=8,mb=20,lo=40,hi=110,Y=v=>mt+(hi-clamp(v,lo,hi))/(hi-lo)*(h-mt-mb);
+  const pts=o.win?hist.slice(-o.win):hist,a=tsAgg(pts,k,300,o.raw),n=a.length,span=o.win?Math.ceil(o.win/Math.max(1,Math.ceil(pts.length/300))):n,X=i=>ml+(i+Math.max(0,span-n))/Math.max(1,span-1)*(w-ml-mr);
+  let s=`<svg viewBox="0 0 ${w} ${h}" role="img" aria-label="Livello sonoro nel tempo" style="width:100%;height:auto;display:block">`;
+  s+=`<rect x="${ml}" y="${Y(80)}" width="${w-ml-mr}" height="${Y(70)-Y(80)}" fill="var(--green)" opacity=".12"/><rect x="${ml}" y="${Y(95)}" width="${w-ml-mr}" height="${Y(85)-Y(95)}" fill="var(--tint)" opacity=".16"/>`;
+  [60,80,100].forEach(v=>{s+=`<line x1="${ml}" x2="${w-mr}" y1="${Y(v)}" y2="${Y(v)}" stroke="var(--sep)" stroke-width=".6"/><text x="${ml-6}" y="${Y(v)+3.5}" text-anchor="end" font-size="10.5" fill="var(--l2)">${v}</text>`});
+  if(o.limit)s+=`<line x1="${ml}" x2="${w-mr}" y1="${Y(o.limit)}" y2="${Y(o.limit)}" stroke="var(--red)" stroke-width="1.4" stroke-dasharray="5 4"/>`;
+  if(n>1){const d=a.map((p,i)=>(i?'L':'M')+X(i).toFixed(1)+' '+Y(p.v).toFixed(1)).join(''),dm=a.map((p,i)=>(i?'L':'M')+X(i).toFixed(1)+' '+Y(p.m).toFixed(1)).join('');
+    s+=`<path d="${dm}" fill="none" stroke="var(--l3)" stroke-width="1" stroke-linejoin="round"/><path d="${d}" fill="none" stroke="var(--tint-line)" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>`}
+  s+=`<text x="${ml}" y="${h-4}" font-size="10.5" fill="var(--l2)">${o.left||''}</text><text x="${w-mr}" y="${h-4}" text-anchor="end" font-size="10.5" fill="var(--l2)">ora</text></svg>`;return s}
+const splStats=(w,tw)=>{const f=v=>v==null?'—':Math.round(v);return{cur:SPLE.on?SPLE.cur(w,tw):null,leq:f(SPLE.leq(w)),mx:f(SPLE.max(w,tw)),pk:f(SPLE.peakDb())}};
+VIEWS.spl={html:()=>{
+  const cal=splCal();
+  return scr({nav:{title:'Fonometro',right:gb('share','splShare','Condividi il rapporto')},lt:'Fonometro',ls:'Tieni il telefono dove siede il pubblico, all\'altezza dell\'orecchio.',
+    body:`<div class="card hero" style="text-align:center;padding:26px 20px"><div class="bignum" id="sNum">${SPLE.on?'…':'—'}</div><div class="t-sub" id="sUnit" style="margin-top:6px">dB(${SP.w==='Z'?'Z':SP.w}) · ${SP.tw==='F'?'Fast':'Slow'}</div><div id="sZone" style="margin-top:12px"></div><div id="sClip"></div></div>
+    <div class="vsl" style="gap:14px"><div><div class="hdr">Pesatura</div>${seg([['A',SP.w==='A','data-a="splSet" data-k="w" data-v="A"'],['C',SP.w==='C','data-a="splSet" data-k="w" data-v="C"'],['Z (lineare)',SP.w==='Z','data-a="splSet" data-k="w" data-v="Z"']])}</div>
+    <div><div class="hdr">Tempo</div>${seg([['Fast (125 ms)',SP.tw==='F','data-a="splSet" data-k="tw" data-v="F"'],['Slow (1 s)',SP.tw==='S','data-a="splSet" data-k="tw" data-v="S"']])}</div></div>
+    <div class="big3"><div><div class="lab">Leq</div><b id="sLeq">—</b><small>dB</small></div><div><div class="lab">Massimo</div><b id="sMax">—</b><small>dB</small></div><div><div class="lab">Picco</div><b id="sPk">—</b><small>dB</small></div></div>
+    <div class="card tight"><div style="display:flex;justify-content:space-between;align-items:baseline"><div class="t-head">Ultimi minuti</div><span class="t-foot" id="sDur">0:00</span></div><div id="sChart" style="margin-top:8px">${tsChart([],'a',{win:300,left:'−5 min'})}</div><div class="legend"><span><i style="border-color:var(--tint-line)"></i>Leq al secondo</span><span><i style="border-color:var(--l3)"></i>Massimo Fast</span><span><i class="z" style="background:var(--green)"></i>Parola</span><span><i class="z" style="background:var(--tint)"></i>Lode</span></div></div>
+    ${cal?banner('good','check',`<b>Calibrato.</b> Tolleranza circa ±3 dB.`):banner('bad','alert','<b>Non calibrato: ±8 dB.</b> Il telefono non sa quanto è forte il suono. Confrontalo con un altro fonometro e calibra qui sotto.')}
+    ${list([row({tile:'gear',tc:'gray',t:'Calibra con un altro misuratore',s:cal?'Calibrato':'Dà i dB reali',a:'data-a="splCal"',chev:1}),row({tile:'file',tc:'gray',t:'Rapporto in CSV',s:'Un valore al secondo',a:'data-a="splCsv"',chev:1})],'','Indicazioni comuni: parola 70–80 dB(A), lode 85–95 dB(A). Come riferimento prudente, la norma per i locali di spettacolo (DPCM 215/1999) usa 95 dB(A) di Leq e 102 dB(A) di massimo con costante Slow. Non vale per forza per una chiesa: chiedi a un tecnico del tuo comune.','ic')}`,
+    dock:SPLE.on?`${btn('Ferma','data-a="splToggle"','gray')}${btn('Azzera','data-a="splReset"','plain')}`:btn('Avvia la misura','data-a="splToggle"')})},
+ after:()=>{
+  const paint=()=>{const n=$('#sNum');if(!n)return;if(!SPLE.on){return}
+    const s=splStats(SP.w,SP.tw),z=splZone(SPLE.cur('A','F'));n.textContent=Math.round(s.cur);
+    $('#sZone').innerHTML=SP.w==='A'?pill(z[1],z[0]):'';$('#sLeq').textContent=s.leq;$('#sMax').textContent=s.mx;$('#sPk').textContent=s.pk;$('#sDur').textContent=mmss((Date.now()-SPLE.t0)/1000);
+    $('#sClip').innerHTML=SPLE.clipping()?`<div style="margin-top:12px">${pill('bad','Il microfono è in saturazione')}</div>`:''};
+  if(SPLE.on){paint();tmr(paint,250);const k=SP.w==='A'?'a':SP.w==='C'?'c':'z';tmr(()=>{const c=$('#sChart');if(c)c.innerHTML=tsChart(SPLE.hist,k,{win:300,left:'−5 min'})},1000);const c=$('#sChart');if(c)c.innerHTML=tsChart(SPLE.hist,k,{win:300,left:'−5 min'})}}};
+ACT.splSet=d=>{SP[d.k]=d.v;render(true)};
+ACT.splToggle=async()=>{try{if(SPLE.on){if(SENT.on){toast('Il monitor del culto sta usando il microfono');return}SPLE.stop()}else{await SPLE.start()}render(true)}catch(e){toast('Microfono non disponibile')}};
+ACT.splReset=()=>{SPLE.reset();render(true)};
+ACT.splCal=()=>openSheet(`<h2 class="t-title2" style="margin:6px 0 8px">Calibra il fonometro</h2><p class="t-body" style="margin-bottom:14px">Il telefono non sa quanto è forte il suono in dB. Con un altro misuratore, anche un'app sul telefono di qualcuno, gli dici il valore giusto.</p>${list([row({t:'1',s:'Avvia la misura e fai suonare il rumore rosa a volume normale.'}),row({t:'2',s:'Tieni i due telefoni vicini.'}),row({t:'3',s:'Scrivi qui il valore dB(A) dell\'altro misuratore.'})])}<div style="height:12px"></div><input class="input" id="splCalIn" type="number" inputmode="decimal" placeholder="Es. 85"><div style="height:12px"></div>${btn('Calibra ora','data-a="splCalGo"')}${splCal()?`<div style="height:8px"></div>${btn('Togli la calibrazione','data-a="splCalOff"','gray')}`:''}`);
+ACT.splCalGo=()=>{const v=parseFloat(($('#splCalIn')||{}).value),p=SPLE.recentA(3);if(!isFinite(v)||p===null){toast(SPLE.on?'Inserisci un valore':'Avvia prima la misura');return}DB.spl={off:v-pdb(p),date:Date.now()};save();closeSheet();render(true);toast('Calibrato')};
+ACT.splCalOff=()=>{DB.spl=null;save();closeSheet();render(true)};
+function splReportText(){
+  if(!SPLE.n)return null;const sec=Math.round((Date.now()-SPLE.t0)/1000),f=v=>v==null?'—':Math.round(v),L=[];
+  L.push('FONOMETRO · Intona'+(DB.set.name?' · '+DB.set.name:''),stamp(Date.now()),'Durata: '+mmss(sec),'');
+  L.push('LAeq: '+f(SPLE.leq('A'))+' dB(A)','LAFmax: '+f(SPLE.max('A','F'))+' dB(A)','LASmax: '+f(SPLE.max('A','S'))+' dB(A)','LCeq: '+f(SPLE.leq('C'))+' dB(C)','Picco: '+f(SPLE.peakDb())+' dB','');
+  L.push(splCal()?'Calibrato con un altro misuratore (tolleranza circa ±3 dB).':'NON calibrato: valori indicativi, tolleranza circa ±8 dB.');return L.join('\n')}
+ACT.splShare=()=>{const t=splReportText();if(!t){toast('Avvia prima la misura');return}shareFile(t,'fonometro.txt','text/plain','Fonometro')};
+ACT.splCsv=()=>{if(!SPLE.hist.length){toast('Avvia prima la misura');return}const o=splOff(),L=['secondo,LAeq_dB,LCeq_dB,LZeq_dB,LAFmax_dB'];SPLE.hist.forEach((h,i)=>L.push([i+1,pdb(h.a)+o,pdb(h.c)+o,pdb(h.z)+o,pdb(h.fm)+o].map((v,j)=>j?(+v).toFixed(1):v).join(',')));shareFile(L.join('\n'),'fonometro.csv','text/csv','Fonometro')};
+
+/* =============================================================
+   INTONA 0.8 · strumenti: schermate (2/2)
+   monitor del culto, generatore, ritardo, modi della sala,
+   microfono di misura, taccuino, confronto tra tarature
+   ============================================================= */
+
+/* ---------- monitor del culto ---------- */
+const SENT={on:false,limit:95,t0:0,above:0,events:[],level:0,state:'ok',until:0,ring:[],evLast:0,lastTick:0,iv:null,wl:null};
+async function sentStart(){
+  await SPLE.start();SPLE.reset();
+  Object.assign(SENT,{on:true,t0:Date.now(),above:0,events:[],state:'ok',ring:[],evLast:0,lastTick:Date.now(),level:0});
+  clearInterval(SENT.iv);SENT.iv=setInterval(sentTick,250);
+  try{if(navigator.wakeLock)SENT.wl=await navigator.wakeLock.request('screen')}catch(e){}
+}
+document.addEventListener('visibilitychange',async()=>{if(document.visibilityState==='visible'&&SENT.on&&navigator.wakeLock){try{SENT.wl=await navigator.wakeLock.request('screen')}catch(e){}}});
+function sentTick(){
+  const now=Date.now(),dt=(now-SENT.lastTick)/1000;SENT.lastTick=now;const L=SPLE.cur('A','F');SENT.level=L;if(L>SENT.limit)SENT.above+=dt;
+  const rp=ringPeak();
+  if(rp){SENT.ring.push(rp);if(SENT.ring.length>6)SENT.ring.shift();const f=rp.f;
+    const stable=SENT.ring.length>=5&&SENT.ring.every(h=>h.prom>16&&Math.abs(h.f-f)/f<.03&&h.pk>-85);
+    if(stable&&now-SENT.evLast>6000){const r=Math.round(f/(f<1000?5:25))*(f<1000?5:25);SENT.events.push({t:now,f:r,L});SENT.evLast=now;SENT.state='fischio';SENT.until=now+8000}}
+  if(SENT.state==='fischio'&&now>SENT.until)SENT.state='ok';
+  if(SENT.state!=='fischio')SENT.state=L>SENT.limit?'alto':'ok';
+}
+function sentStop(){
+  clearInterval(SENT.iv);SENT.on=false;try{if(SENT.wl)SENT.wl.release()}catch(e){}SENT.wl=null;
+  const dur=Math.round((Date.now()-SENT.t0)/1000),h=SPLE.hist,step=Math.max(1,Math.ceil(h.length/180)),series=[];
+  for(let i=0;i<h.length;i+=step){const b=h.slice(i,i+step);series.push(Math.round((pdb(mean(b.map(x=>x.a)))+splOff())*10)/10)}
+  const rep={id:Date.now(),t0:SENT.t0,dur,leq:SPLE.leq('A'),max:SPLE.max('A','F'),maxS:SPLE.max('A','S'),above:Math.round(SENT.above),limit:SENT.limit,events:SENT.events.map(e=>({t:e.t,f:e.f})),cal:splCal(),series,step};
+  if(!SPLE.n||dur<10){SPLE.stop();return null}
+  DB.reports=[rep,...(DB.reports||[])].slice(0,20);save();SPLE.stop();return rep}
+function sentText(r){
+  const f=v=>v==null?'—':Math.round(v),L=['RAPPORTO DEL CULTO · Intona'+(DB.set.name?' · '+DB.set.name:''),stamp(r.t0)+' · '+mmss(r.dur),''];
+  L.push('Volume medio (LAeq): '+f(r.leq)+' dB(A)','Massimo (LAFmax): '+f(r.max)+' dB(A)','Tempo sopra '+r.limit+' dB(A): '+Math.round(r.above/60*10)/10+' minuti');
+  L.push('Fischi rilevati: '+(r.events.length?r.events.length+' ('+r.events.map(e=>hz(e.f)).join(', ')+')':'nessuno'),'');
+  L.push('Riferimenti comuni: parola 70–80 dB(A), lode 85–95 dB(A).',r.cal?'Calibrato (tolleranza circa ±3 dB).':'NON calibrato: valori indicativi, tolleranza circa ±8 dB.');return L.join('\n')}
+const limChips=()=>`<div class="chips">${[[80,'Parola'],[90,''],[95,'Lode'],[100,'']].map(([v,l])=>`<button class="chip ${SENT.limit===v?'on':''}" data-a="sentLimSet" data-v="${v}">${v}${l?' · '+l:''}</button>`).join('')}</div>`;
+VIEWS.sent={html:()=>{
+  const on=SENT.on,reps=DB.reports||[];
+  return scr({nav:{title:'Monitor del culto'},lt:'Monitor del culto',ls:on?'In ascolto. Lascia il telefono in sala, meglio se in carica.':'Metti il telefono dove siede il pubblico e lascialo acceso. Intona tiene il conto del volume e ti avvisa se fischia.',
+    body:`<div class="card status ok" id="stCard"><div class="t-cap" id="stT">${on?'Tutto bene':'Pronto'}</div><div class="bignum" id="stL" style="margin:6px 0 2px">${on?'…':'—'}</div><div class="t-sub">dB(A) · Fast</div><p class="t-body" id="stM" style="margin-top:10px">${on?'':'Premi «Avvia» quando inizia il culto.'}</p></div>
+    <div class="big3"><div><div class="lab">Leq</div><b id="stLeq">—</b><small>dB(A)</small></div><div><div class="lab">Massimo</div><b id="stMax">—</b><small>dB(A)</small></div><div><div class="lab">Sopra il limite</div><b id="stAb">0</b><small>minuti</small></div></div>
+    <div class="vsl" style="gap:10px"><div class="hdr" style="padding-bottom:0">Limite di avviso, in dB(A)</div>${limChips()}</div>
+    <div class="card tight"><div class="t-head">Ultimi 30 minuti</div><div id="stChart" style="margin-top:8px">${tsChart([],'a',{win:1800,limit:SENT.limit,left:'−30 min'})}</div></div>
+    <div id="stEv"></div>
+    ${splCal()?'':banner('bad','alert','<b>Non calibrato: ±8 dB.</b> I valori vanno bene per confrontare un culto con l\'altro. Per i dB reali calibra nel fonometro.')}
+    ${!on&&reps.length?list(reps.slice(0,5).map(r=>row({t:stamp(r.t0),s:`Leq ${Math.round(r.leq)} dB(A) · ${mmss(r.dur)}${r.events.length?' · '+r.events.length+' fischi':''}`,a:`data-a="sentRep" data-id="${r.id}"`,chev:1})),'Rapporti precedenti','','ic'):''}`,
+    dock:on?btn('Termina e crea il rapporto','data-a="sentStop"'):btn('Avvia il monitor','data-a="sentStart"')})},
+ after:()=>{
+  if(!SENT.on)return;
+  const paint=()=>{const c=$('#stCard');if(!c)return;const L=SENT.level||SPLE.cur('A','F'),st=SENT.state,last=SENT.events[SENT.events.length-1];
+    c.className='card status '+st;$('#stT').textContent=st==='fischio'?'Possibile fischio':st==='alto'?'Volume alto':'Tutto bene';$('#stL').textContent=Math.round(L);
+    $('#stM').textContent=st==='fischio'&&last?`Intorno a ${hz(last.f)}. Abbassa il microfono che fischia, poi taglia 3–6 dB lì, stretto.`:st==='alto'?`Sopra il limite di ${SENT.limit} dB(A). Abbassa il master di 1–2 dB.`:'Sotto il limite.';
+    $('#stLeq').textContent=SPLE.leq('A')==null?'—':Math.round(SPLE.leq('A'));$('#stMax').textContent=SPLE.max('A','F')==null?'—':Math.round(SPLE.max('A','F'));$('#stAb').textContent=decFmt(SENT.above/60);
+    const ev=$('#stEv');if(ev)ev.innerHTML=SENT.events.length?list(SENT.events.slice(-4).reverse().map(e=>row({tile:'alert',tc:'c-red',t:'Fischio a '+hz(e.f),s:new Date(e.t).toLocaleTimeString('it-IT',{hour:'2-digit',minute:'2-digit'})})),'Fischi · '+SENT.events.length,'','ic'):''};
+  paint();tmr(paint,250);const ch=()=>{const c=$('#stChart');if(c)c.innerHTML=tsChart(SPLE.hist,'a',{win:1800,limit:SENT.limit,left:'−30 min'})};ch();tmr(ch,2000)}};
+ACT.sentStart=async()=>{try{await sentStart();render(true)}catch(e){toast('Microfono non disponibile')}};
+ACT.sentStop=()=>{const r=sentStop();if(r)go('sentrep',{id:r.id},{replace:true,dir:'fade'});else{toast('Troppo corto per un rapporto');render(true)}};
+ACT.sentLimSet=d=>{SENT.limit=+d.v;render(true)};
+ACT.sentRep=d=>go('sentrep',{id:+d.id});
+VIEWS.sentrep={html:p=>{
+  const r=(DB.reports||[]).find(x=>x.id===p.id);if(!r)return scr({nav:{title:'Rapporto'},lt:'Nessun rapporto',body:''});
+  const f=v=>v==null?'—':Math.round(v),hist=r.series.map(v=>({v,m:v}));
+  return scr({nav:{title:'Rapporto del culto',right:gb('share','sentShare','Condividi',`data-id="${r.id}"`)},lt:'Rapporto del culto',ls:stamp(r.t0)+' · '+mmss(r.dur),
+    body:`<div class="big3"><div><div class="lab">Leq</div><b>${f(r.leq)}</b><small>dB(A)</small></div><div><div class="lab">Massimo</div><b>${f(r.max)}</b><small>dB(A)</small></div><div><div class="lab">Sopra ${r.limit}</div><b>${decFmt(r.above/60)}</b><small>minuti</small></div></div>
+    <div class="card tight"><div class="t-head">Il volume nel tempo</div><div style="margin-top:8px">${tsChart(hist,'a',{raw:true,limit:r.limit,left:'inizio'})}</div></div>
+    ${r.events.length?list(r.events.map(e=>row({tile:'alert',tc:'c-red',t:'Fischio a '+hz(e.f),s:new Date(e.t).toLocaleTimeString('it-IT',{hour:'2-digit',minute:'2-digit'})})),'Fischi','','ic'):banner('good','check','<b>Nessun fischio</b> in tutto il culto.')}
+    ${r.cal?'':banner('bad','alert','Questo rapporto non è calibrato: tolleranza circa ±8 dB. Utile per confrontare un culto con l\'altro.')}`,
+    dock:`${btn(ic('share',20,2)+'Condividi il rapporto',`data-a="sentShare" data-id="${r.id}"`)}${btn('Fine','data-a="go" data-v="sent"','tinted')}`})}};
+ACT.sentShare=d=>{const r=(DB.reports||[]).find(x=>x.id===+d.id);if(r)shareFile(sentText(r),'rapporto-culto.txt','text/plain','Rapporto del culto')};
+function livepill(){if(!SENT.on||R.v==='sent')return;$('#app').insertAdjacentHTML('beforeend',`<button class="livepill" data-a="go" data-v="sent" aria-label="Monitor del culto attivo"><i></i><b>Monitor</b><span id="lpL">${Math.round(SENT.level||0)} dB(A)</span></button>`)}
+setInterval(()=>{const e=$('#lpL');if(e&&SENT.on)e.textContent=Math.round(SENT.level||0)+' dB(A)'},1000);
+
+/* ---------- generatore ---------- */
+const GEN={on:false,mode:'sine',f:1000,v:.25,src:null,g:null,iv:null};
+const genGain=()=>Math.pow(GEN.v,2)*.5;
+function whiteBuf(){if(GEN._w)return GEN._w;const c=Eng.ctx,b=c.createBuffer(1,c.sampleRate*4,c.sampleRate),d=b.getChannelData(0);for(let i=0;i<d.length;i++)d[i]=(Math.random()*2-1)*.5;return GEN._w=b}
+async function genStart(){
+  await Eng.ensureCtx();genStop(true);const c=Eng.ctx,g=c.createGain();g.gain.value=0;g.connect(c.destination);let s;
+  if(GEN.mode==='sine'||GEN.mode==='sweep'){s=c.createOscillator();s.type='sine';s.frequency.value=GEN.mode==='sine'?GEN.f:20;
+    if(GEN.mode==='sweep'){const run=()=>{const t=c.currentTime;s.frequency.cancelScheduledValues(t);s.frequency.setValueAtTime(20,t);s.frequency.exponentialRampToValueAtTime(20000,t+20)};run();GEN.iv=setInterval(run,21000)}}
+  else{s=c.createBufferSource();s.buffer=GEN.mode==='pink'?Eng.pinkBuf():whiteBuf();s.loop=true}
+  s.connect(g);s.start();g.gain.setTargetAtTime(genGain(),c.currentTime,.25);Object.assign(GEN,{on:true,src:s,g})}
+function genStop(q){clearInterval(GEN.iv);if(GEN.src){const s=GEN.src,g=GEN.g,c=Eng.ctx;try{g.gain.setTargetAtTime(0,c.currentTime,.05);setTimeout(()=>{try{s.stop();s.disconnect();g.disconnect()}catch(e){}},q?80:300)}catch(e){}}GEN.src=null;GEN.on=false}
+const genPos=f=>Math.round(Math.log(f/20)/Math.log(1000)*1000);
+VIEWS.gen={html:()=>scr({nav:{title:'Generatore'},lt:'Generatore',ls:'Un suono di prova dal telefono verso il mixer: per controllare un canale, un sub o il fischio di una cassa.',
+  body:`${banner('bad','alert','<b>Parte piano.</b> Tieni basso il fader del canale del telefono e alzalo poco alla volta. Un tono forte può rovinare le casse.')}
+  ${seg([['Tono',GEN.mode==='sine','data-a="genMode" data-v="sine"'],['Rosa',GEN.mode==='pink','data-a="genMode" data-v="pink"'],['Bianco',GEN.mode==='white','data-a="genMode" data-v="white"'],['Sweep',GEN.mode==='sweep','data-a="genMode" data-v="sweep"']])}
+  ${GEN.mode==='sine'?`<div class="card"><div class="bignum" id="gF" style="text-align:center">${GEN.f>=1000?decFmt(GEN.f/1000,GEN.f>=10000?1:2):Math.round(GEN.f)}<small>${GEN.f>=1000?'kHz':'Hz'}</small></div><input type="range" id="gFr" min="0" max="1000" value="${genPos(GEN.f)}" style="margin-top:14px" aria-label="Frequenza"><div class="chips" style="margin-top:12px">${[[40,'40'],[63,'63'],[100,'100'],[250,'250'],[440,'La 440'],[1000,'1 k'],[4000,'4 k'],[10000,'10 k']].map(([f,l])=>`<button class="chip ${GEN.f===f?'on':''}" data-a="genF" data-f="${f}">${l}</button>`).join('')}</div></div>`
+   :GEN.mode==='sweep'?`<div class="card"><p class="t-body">Un suono che sale da 20 Hz a 20 kHz in 20 secondi, e ricomincia. Ascolta se qualche cassa vibra, taglia o manca.</p></div>`
+   :`<div class="card"><p class="t-body">${GEN.mode==='pink'?'Il rumore rosa ha la stessa energia in ogni zona: serve per misurare la sala.':'Il rumore bianco è più acuto: serve per cercare fruscii e difetti.'}</p></div>`}
+  ${list([row({tile:'vol',tc:'gray',t:'Volume',right:`<input type="range" id="gV" min="2" max="100" value="${Math.round(GEN.v*100)}" style="width:150px">`})],'','Il volume qui è solo del telefono. Il fader del mixer decide quanto arriva in sala.','ic')}`,
+  dock:btn(GEN.on?ic('pause',20,2)+'Ferma':ic('play',20,2)+'Suona','data-a="genToggle"',GEN.on?'gray':'')}),
+ after:()=>{const fr=$('#gFr'),v=$('#gV');
+  if(fr)fr.addEventListener('input',()=>{GEN.f=Math.round(20*Math.pow(1000,fr.value/1000));if(GEN.on&&GEN.src&&GEN.mode==='sine')GEN.src.frequency.setTargetAtTime(GEN.f,Eng.ctx.currentTime,.03);const e=$('#gF');if(e)e.innerHTML=(GEN.f>=1000?decFmt(GEN.f/1000,GEN.f>=10000?1:2):GEN.f)+`<small>${GEN.f>=1000?'kHz':'Hz'}</small>`});
+  if(v)v.addEventListener('input',()=>{GEN.v=v.value/100;if(GEN.on&&GEN.g)GEN.g.gain.setTargetAtTime(genGain(),Eng.ctx.currentTime,.05)})}};
+ACT.genMode=d=>{GEN.mode=d.v;if(GEN.on)genStart();render(true)};
+ACT.genF=d=>{GEN.f=+d.f;if(GEN.on&&GEN.src&&GEN.mode==='sine')GEN.src.frequency.setTargetAtTime(GEN.f,Eng.ctx.currentTime,.03);render(true)};
+ACT.genToggle=async()=>{try{if(GEN.on)genStop();else await genStart()}catch(e){toast('Audio non disponibile')}render(true)};
+
+/* ---------- ritardo delle casse ---------- */
+const DLY={d:15,t:20};
+const dlyStep=(l,sub,k,v,u)=>`<div class="stepper"><div class="l"><b class="t-head" style="font-weight:600">${l}</b><span class="t-foot">${sub}</span></div><button data-a="dlyN" data-k="${k}" data-d="-1" aria-label="Meno">${ic('minus',20,2.2)}</button><div class="v">${v}<small>${u}</small></div><button data-a="dlyN" data-k="${k}" data-d="1" aria-label="Più">${ic('plus',20,2.2)}</button></div>`;
+VIEWS.delay={html:()=>{const c=331.3+.606*DLY.t,ms=DLY.d/c*1000;
+  return scr({nav:{title:'Ritardo delle casse'},lt:'Ritardo delle casse',ls:'Le casse di rinforzo in fondo devono suonare un poco dopo quelle sul palco, altrimenti si sente un doppio.',
+    body:`<div class="card hero" style="text-align:center;padding:26px 20px"><div class="bignum">${decFmt(ms+10)}<small>ms</small></div><p class="t-sub" style="margin-top:8px">${decFmt(ms)} ms di distanza, più 10 ms perché la voce sembri ancora venire dal palco</p></div>
+    <div class="list">${dlyStep('Distanza','Dalle casse principali alla cassa di rinforzo','d',DLY.d,'m')}</div><div class="list">${dlyStep('Temperatura','Il suono corre più veloce al caldo','t',DLY.t,'°C')}</div>
+    ${list([5,10,15,20,30].map(m=>row({t:m+' metri',val:decFmt(m/c*1000+10)+' ms'})),'Per riferimento','','')}
+    ${banner('info','bulb','<b>Dove si imposta:</b> nel mixer o nel processore, sull\'uscita delle casse di rinforzo, alla voce <b>Delay</b> in millisecondi. Poi ascolta in fondo: la voce deve sembrare arrivare dal palco.')}`})}};
+ACT.dlyN=d=>{const lim={d:[1,80],t:[0,40]}[d.k];DLY[d.k]=clamp(DLY[d.k]+ +d.d,lim[0],lim[1]);render(true)};
+
+/* ---------- modi della sala ---------- */
+function roomModes(L,W,H,T){
+  const c=331.3+.606*T,out=[];
+  [['L',L],['W',W],['H',H]].forEach(([n,d])=>{for(let k=1;;k++){const f=k*c/(2*d);if(f>250)break;out.push({f,dim:n,k,ax:true})}});
+  [['LW',L,W],['LH',L,H],['WH',W,H]].forEach(([n,a,b])=>{for(let i=1;i<=3;i++)for(let j=1;j<=3;j++){const f=c/2*Math.sqrt((i/a)*(i/a)+(j/b)*(j/b));if(f<=250)out.push({f,dim:n,k:i+'·'+j,ax:false})}});
+  return out.sort((a,b)=>a.f-b.f)}
+const MODE_COL={L:'var(--tint)',W:'#2BA8C2',H:'#F2406A'};
+VIEWS.modes={html:()=>{
+  const q=DB.q,V=q.L*q.W*q.Hh,T60=DB.rt?DB.rt.t:rt60(q).t,fs=2000*Math.sqrt(T60/V),ax=roomModes(q.L,q.W,q.Hh,20).filter(m=>m.ax&&m.f>=20),low=ax.filter(m=>m.f<=fs);
+  const co=new Set(),pairs=[];ax.forEach((a,i)=>ax.forEach((b,j)=>{if(i<j&&a.f<=fs&&a.dim!==b.dim&&Math.abs(a.f-b.f)/a.f<.06){co.add(i);co.add(j);pairs.push([a,b])}}));
+  const w=358,h=100,ml=10,mr=10,X=f=>ml+Math.log(f/20)/Math.log(250/20)*(w-ml-mr);
+  let s=`<svg viewBox="0 0 ${w} ${h}" role="img" aria-label="Modi assiali della sala sotto 250 Hz" style="width:100%;height:auto;display:block"><line x1="${ml}" x2="${w-mr}" y1="76" y2="76" stroke="var(--sep)"/>`;
+  [20,31.5,63,125,250].forEach(f=>{s+=`<text x="${X(f)}" y="94" text-anchor="middle" font-size="10.5" fill="var(--l2)">${kl(f)}</text>`});
+  if(fs<250)s+=`<rect x="${X(fs)}" y="14" width="${w-mr-X(fs)}" height="62" fill="var(--fill)" opacity=".7" rx="6"/><text x="${(X(fs)+w-mr)/2}" y="30" text-anchor="middle" font-size="10.5" fill="var(--l2)">troppo fitti per contarli</text>`;
+  ax.forEach((m,i)=>{if(m.f>250)return;const hh=m.f<=fs?60-Math.min(m.k-1,3)*8:22;s+=`<line x1="${X(m.f)}" x2="${X(m.f)}" y1="76" y2="${76-hh}" stroke="${m.f<=fs?MODE_COL[m.dim]:'var(--l3)'}" stroke-width="${m.f<=fs?3:1.6}" stroke-linecap="round"/>${co.has(i)?`<circle cx="${X(m.f)}" cy="${76-hh-5}" r="5" fill="none" stroke="var(--red)" stroke-width="2"/>`:''}`});
+  s+=`</svg>`;
+  const e=DB.hist[0],near=[];if(e)F.forEach((f,i)=>{if(f<=fs&&Math.abs(e.D[i])>=3){const m=ax.reduce((b,x)=>Math.abs(x.f-f)<Math.abs(b.f-f)?x:b,ax[0]);if(m&&Math.abs(m.f-f)/f<.12)near.push({f,d:e.D[i],m})}});
+  const nm={L:'Lunghezza',W:'Larghezza',H:'Altezza'};
+  return scr({nav:{title:'Modi della sala'},lt:'Modi della sala',ls:'Ogni sala rinforza alcune note basse, in base alle sue misure. È fisica, non un difetto dell\'impianto.',
+    body:`${list([stepper('Lunghezza','Dal palco al fondo','L',q.L,'m'),stepper('Larghezza','Da muro a muro','W',q.W,'m'),stepper('Altezza','Dal pavimento al soffitto','Hh',q.Hh,'m')],'Le misure della tua sala')}
+    <div class="card tight"><div class="t-head">Dove la sala rinforza</div><p class="t-foot" style="margin-bottom:8px">Da 20 a 250 Hz. Lunghezza in ambra, larghezza in azzurro, altezza in rosa. Cerchiati: due modi quasi uguali che si sommano.</p>${s}</div>
+    <div class="big3"><div><div class="lab">Primo modo</div><b>${Math.round(ax[0]?ax[0].f:0)}</b><small>Hz</small></div><div><div class="lab">Si sommano</div><b>${pairs.length}</b><small>coppie</small></div><div><div class="lab">Schroeder</div><b>${Math.round(fs)}</b><small>Hz</small></div></div>
+    ${near.length?banner('info','target',`<b>La tua misura lo conferma.</b> ${near.slice(0,2).map(n=>`${nf(n.d)} dB a ${hz(n.f)}, vicino al modo ${hz(n.m.f)} (${nm[n.m.dim]})`).join('; ')}.`):''}
+    ${banner('info','bulb','<b>Cosa fare:</b> sotto la frequenza di Schroeder i modi sono note separate. Un taglio stretto sul master sistema un posto solo. Meglio spostare il sub o le casse, o tagliare largo. Non alzare mai i bassi per compensare un buco.')}
+    ${list([row({t:'Sala di '+decFmt(V,0)+' m³',s:'Riverbero '+(DB.rt?'misurato':'stimato')+' '+decFmt(T60)+' s'}),...low.slice(0,8).map(m=>row({t:hz(m.f),s:nm[m.dim]+', '+m.k+'° modo',val:pairs.some(p=>p[0]===m||p[1]===m)?'si somma':''}))],'I primi modi','','')}`})}};
+
+/* ---------- microfono di misura ---------- */
+function calChart(){const p=DB.cal.pts,w=358,h=110,ml=26,mr=6,mt=8,mb=18,X=f=>ml+Math.log(f/20)/Math.log(20000/20)*(w-ml-mr),Y=v=>mt+(1-(clamp(v,-8,8)+8)/16)*(h-mt-mb);
+  let s=`<svg viewBox="0 0 ${w} ${h}" role="img" aria-label="Correzione del microfono" style="width:100%;height:auto;display:block">`;[-6,0,6].forEach(v=>{s+=`<line x1="${ml}" x2="${w-mr}" y1="${Y(v)}" y2="${Y(v)}" stroke="var(--sep)" stroke-width="${v?.6:1}"/><text x="${ml-5}" y="${Y(v)+3.5}" text-anchor="end" font-size="10.5" fill="var(--l2)">${v>0?'+':v<0?'−':''}${Math.abs(v)}</text>`});
+  [100,1000,10000].forEach(f=>{s+=`<text x="${X(f)}" y="${h-4}" text-anchor="middle" font-size="10.5" fill="var(--l2)">${kl(f)}</text>`});
+  s+=`<path d="${p.map((q,i)=>(i?'L':'M')+X(q[0]).toFixed(1)+' '+Y(q[1]).toFixed(1)).join('')}" fill="none" stroke="var(--tint-line)" stroke-width="2.4" stroke-linejoin="round"/></svg>`;return s}
+VIEWS.micp={html:()=>{const c=DB.cal;
+  return scr({nav:{title:'Microfono di misura'},lt:'Microfono di misura',ls:'Il telefono va bene per cominciare. Con un microfono di misura e il suo file di calibrazione le misure sono più fedeli.',
+    body:`${list([row({tile:'mic',tc:c&&c.on?'gray':'',t:'Telefono',s:'Nessuna correzione',a:'data-a="micpOff"',chk:!(c&&c.on)}),row({tile:'file',tc:c&&c.on?'':'gray',t:c?esc(c.name):'File di calibrazione',s:c?c.pts.length+' punti'+(c.sens!=null?' · sensibilità '+decFmt(c.sens,2):''):'Nessun file',a:c?'data-a="micpOn"':'data-a="micpFile"',chk:!!(c&&c.on)})],'Quale microfono','','ic')}
+    ${c?`<div class="card tight"><div class="t-head">Correzione in dB</div><div style="margin-top:8px">${calChart()}</div></div>`:''}
+    <input type="file" id="calIn" accept=".cal,.txt,.csv,text/plain" hidden>
+    ${list([row({tile:'file',tc:'gray',t:c?'Cambia il file':'Scegli un file',a:'data-a="micpFile"',chev:1}),...(c?[row({tile:'x',tc:'gray',t:'Togli la calibrazione',a:'data-a="micpDel"'})]:[])],'','Vanno bene i file .cal e .txt di REW e dei microfoni come miniDSP UMIK-1 e Dayton iMM-6: due colonne, frequenza e correzione in dB. Un microfono di misura costa da circa 25 a 140 euro e riduce molto l\'errore.','ic')}`})}};
+ACT.micpFile=()=>{const f=$('#calIn');if(f)f.click()};
+function micpBind(){const f=$('#calIn');if(!f)return;f.onchange=async()=>{const file=f.files[0];if(!file)return;try{const r=calParse(await file.text());if(!r){toast('Non riconosco il file');return}DB.cal={id:Date.now(),name:file.name.replace(/\.[^.]+$/,''),pts:r.pts,sens:r.sens,on:true};_calG={};save();render(true);toast('Calibrazione caricata')}catch(e){toast('Non riesco a leggere il file')}}}
+VIEWS.micp.after=micpBind;
+ACT.micpOn=()=>{if(DB.cal){DB.cal.on=true;_calG={};save();render(true)}};
+ACT.micpOff=()=>{if(DB.cal){DB.cal.on=false;_calG={};save();render(true)}};
+ACT.micpDel=()=>{DB.cal=null;_calG={};save();render(true)};
+
+/* ---------- taccuino del mixer (la memoria dei culti) ---------- */
+const NOTE_TPL='Mixer: \nGain voce di chi predica: \nFiltro dei bassi: \nEQ del master: \nMonitor: \nVolume lode / parola: \nNote: ';
+VIEWS.notes={html:()=>{const n=DB.notes||[];
+  return scr({nav:{title:'Taccuino',right:gb('plus','noteNew','Nuova nota')},lt:'Taccuino del mixer',ls:'Scrivi le impostazioni che funzionano, per te e per chi ti sostituisce.',
+    body:n.length?list(n.map(x=>row({tile:'note',tc:'c-brown',t:esc(x.t||'Senza titolo'),s:esc((x.b||'').split('\n').find(l=>l.trim())||'Vuota')+' · '+stamp(x.d),a:`data-a="noteOpen" data-id="${x.id}"`,chev:1})),'','','ic')
+      :`<div class="card" style="text-align:center"><div class="hero-ic">${ic('note',44,1.6)}</div><p class="t-body" style="margin-top:14px">Qui tieni le impostazioni di ogni momento: culto della domenica, prova della band, preghiera. Chi ti sostituisce parte da dove sei arrivato tu.</p></div>`,
+    dock:btn('Nuova nota','data-a="noteNew"')})}};
+ACT.noteNew=()=>{const x={id:Date.now(),t:'Culto della domenica',b:NOTE_TPL,d:Date.now()};DB.notes=[x,...(DB.notes||[])];save();go('note',{id:x.id})};
+ACT.noteOpen=d=>go('note',{id:+d.id});
+VIEWS.note={html:p=>{const x=(DB.notes||[]).find(n=>n.id===p.id);if(!x)return scr({nav:{title:'Nota'},lt:'Nota non trovata',body:''});
+  return scr({nav:{title:'Nota',right:gb('share','noteShare','Condividi',`data-id="${x.id}"`)},lt:'Nota',body:`<input class="input" id="nT" value="${esc(x.t)}" placeholder="Titolo" aria-label="Titolo"><textarea class="input" id="nB" aria-label="Testo" placeholder="Impostazioni, valori, promemoria…">${esc(x.b)}</textarea><p class="t-foot">Si salva da sola, solo su questo telefono.</p>${btn('Elimina la nota','data-a="noteDel" data-id="'+x.id+'"','danger')}`})},
+ after:()=>{const t=$('#nT'),b=$('#nB');const sv=()=>{const x=(DB.notes||[]).find(n=>n.id===R.p.id);if(!x)return;x.t=t.value;x.b=b.value;x.d=Date.now();save()};if(t)t.addEventListener('input',sv);if(b)b.addEventListener('input',sv)}};
+ACT.noteShare=d=>{const x=(DB.notes||[]).find(n=>n.id===+d.id);if(x)shareFile((x.t?x.t+'\n':'')+stamp(x.d)+'\n\n'+x.b,'nota-mixer.txt','text/plain',x.t||'Nota del mixer')};
+ACT.noteDel=d=>{DB.notes=(DB.notes||[]).filter(n=>n.id!==+d.id);save();back()};
+
+/* ---------- storico e confronto tra tarature ---------- */
+const HS={cmp:false,sel:[]};
+VIEWS.hist={html:()=>{const h=DB.hist;
+  return scr({nav:{title:'Storico',right:h.length>=2?`<button class="gbtn txt" data-a="histCmp">${HS.cmp?'Fine':'Confronta'}</button>`:''},lt:'Storico',ls:h.length?(HS.cmp?'Scegli due tarature da confrontare.':'Tocca una taratura per rivederla.'):'Le tarature compariranno qui.',
+    body:h.length?list(h.map(x=>row({lead:`<span class="num" style="font:700 24px var(--round);min-width:44px">${x.after?x.after.score:x.score}</span>`,t:new Date(x.t).toLocaleDateString('it-IT',{day:'numeric',month:'long',year:'numeric'}),s:`${x.npts} punti · ${x.tier==='alta'?'microfono di misura':'telefono'}${x.after?' · rimisurata':''}`,a:HS.cmp?`data-a="histSel" data-id="${x.id}"`:`data-a="open" data-id="${x.id}"`,chev:!HS.cmp,chk:HS.cmp&&HS.sel.includes(x.id)})),'','','ic'):'',
+    dock:HS.cmp?btn('Confronta le due','data-a="histGo"','',HS.sel.length===2?'':'disabled'):''})}};
+ACT.histCmp=()=>{HS.cmp=!HS.cmp;HS.sel=[];render(true)};
+ACT.histSel=d=>{const id=+d.id,i=HS.sel.indexOf(id);if(i>=0)HS.sel.splice(i,1);else{if(HS.sel.length>=2)HS.sel.shift();HS.sel.push(id)}render(true)};
+ACT.histGo=()=>{if(HS.sel.length!==2)return;const[a,b]=HS.sel.map(id=>DB.hist.find(h=>h.id===id)).sort((x,y)=>x.t-y.t);HS.cmp=false;go('cmp2',{a:a.id,b:b.id})};
+VIEWS.cmp2={html:p=>{
+  const a=DB.hist.find(h=>h.id===p.a),b=DB.hist.find(h=>h.id===p.b);if(!a||!b)return scr({nav:{title:'Confronto'},lt:'Non trovate',body:''});
+  const sa=a.after?a.after.score:a.score,sb=b.after?b.after.score:b.score,da=a.after?a.after.D:a.D,db=b.after?b.after.D:b.D,d=sb-sa;
+  const dt=x=>new Date(x.t).toLocaleDateString('it-IT',{day:'numeric',month:'short'});
+  return scr({nav:{title:'Confronto'},lt:d>=3?'È migliorata':d<=-3?'È peggiorata':'Quasi uguale',ls:`${dt(a)} contro ${dt(b)}`,
+    body:`<div class="card hero" style="text-align:center;padding:26px 20px"><div style="display:flex;align-items:center;justify-content:center;gap:18px"><span class="bignum" style="color:var(--l3);font-size:48px">${sa}</span><span class="ter">${ic('chev',26,2.4)}</span><span class="bignum">${sb}</span></div>${d?`<div style="margin-top:14px">${pill(d>0?'good':'ac',(d>0?'+':'')+d+' punti')}</div>`:''}</div>
+    <div class="card tight"><div class="t-head" style="margin-bottom:12px">La sala, una contro l'altra</div>${chart({T:b.T,ser:[{n:dt(a),v:da,c:'var(--l3)'},{n:dt(b),v:db,c:'var(--tint-line)'}],label:'Confronto tra due tarature'})}</div>`})}};
+
+SOS.push({id:'troppoforte',i:'vol',t:'Qualcuno dice «troppo forte»',s:'Con i numeri la conversazione è più facile',steps:['Non discutere: chiedi dove è seduta la persona e cosa le dà fastidio (il volume, i bassi, la voce dura).','Misura lì con il fonometro: indicazioni comuni, parola 70–80 dB(A), lode 85–95 dB(A).','Se è la lode, abbassa i bassi e la chitarra solista, non tutto: spesso è una zona di suoni, non il livello.','Se non si capisce la parola, alza la voce rispetto alla musica prima di abbassare tutto.','Segna il livello a ogni culto: con una cifra davanti, la conversazione è più semplice.'],tools:[['Apri il fonometro','spl']]});
+ACT.formats=()=>openSheet(`<h2 class="t-title2" style="margin:6px 0 14px">Altri formati</h2>${list([row({tile:'snap',tc:'c-pink',t:'Immagine prima e dopo',s:'Per WhatsApp',a:'data-a="shareCard"',chev:1}),row({tile:'sliders',tc:'c-blue',t:'Filtri per Equalizer APO e REW',s:'Testo, un filtro per riga',a:'data-a="fmtApo"',chev:1}),row({tile:'file',tc:'c-green',t:'Dati della misura in CSV',s:'Frequenza, misurata, obiettivo, differenza',a:'data-a="fmtCsv"',chev:1})],'','','ic')}<div style="height:12px"></div>${btn('Chiudi','data-a="closeSheet"','tinted')}`);
+ACT.fmtApo=()=>{const e=getE();if(e)shareFile(exportAPO(e),'intona-filtri.txt','text/plain','Filtri Intona')};
+ACT.fmtCsv=()=>{const e=getE();if(e)shareFile(exportCSV(e),'intona-misura.csv','text/csv','Misura Intona')};
 /* ---- avvio ---- */
-window.Intona=window.Accordo={shareImage,MARK,WORD,ill,eqGraph,DB:()=>DB,Eng,M,F,Player,E,V,rtAnalyze,aLevel,analyze,planEq,targetCurve,go,R,VIEWS,ACT,render};
+window.Intona=window.Accordo={makeSPL,calParse,roomModes,exportAPO,exportCSV,SPLE,SENT,RTA,GEN,sentStop,tsChart,shareImage,MARK,WORD,ill,eqGraph,DB:()=>DB,Eng,M,F,Player,E,V,rtAnalyze,aLevel,analyze,planEq,targetCurve,go,R,VIEWS,ACT,render};
 applyTheme();
 if('serviceWorker' in navigator&&location.protocol.startsWith('http'))addEventListener('load',()=>navigator.serviceWorker.register('sw.js').catch(()=>{}));
 go(DB.seen?'home':'welcome',{},{replace:true,dir:'fade'});

@@ -44,3 +44,9 @@ Con "riduci movimento" attivo, niente animazioni.
 - **Via gli effetti**: nessun alone ambra dietro simbolo e bottoni, nessun gradiente di sfondo sulle carte, spettro in tinta piena.
 - **Scene illustrate**: di default si mostra solo lo stato vuoto dello storico (`history-empty`). Le altre scene restano nel progetto e si riattivano aggiungendo il loro nome a `ILL_SHOW` in `index.html`.
 - Impostazioni senza bottone «Salva»: nome e sala si salvano mentre si scrive.
+
+## 0.8 · strumenti
+- Quinta scheda **Strumenti** (Home, Strumenti, Aiuto, Libreria, Opzioni).
+- **Analizzatore**: il grafico resta fisso in alto mentre si scorrono i comandi; barre, curva, cascata; colori per scostamento dal bersaglio (verde ±3 dB, rosso sopra, grigio sotto).
+- **Fonometro e monitor del culto**: un grande numero, il colore dello stato (verde, arancio, rosso) e il rapporto. Mentre il monitor lavora compare in alto una pillola di vetro «Monitor · 88 dB(A)» su ogni schermata.
+- Sempre visibile se il valore è **calibrato** o no, con la tolleranza (±3 dB o ±8 dB).
